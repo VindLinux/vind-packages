@@ -1,0 +1,11 @@
+cd libffi-3.5.2 || exit 1
+
+# also build the static library alongside the shared one, off by default unless "static" is enabled
+static_flag="--disable-static"
+if echo "$COMP_ATTRS" | grep -qw static; then
+    static_flag=""
+fi
+
+./configure --prefix="$PREFIX" --with-gcc-arch=native $static_flag
+
+make $MAKEOPTS

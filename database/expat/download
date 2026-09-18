@@ -1,0 +1,2 @@
+curl -fL --retry 3 --retry-delay 2 -o expat-2.7.3.tar.gz https://github.com/libexpat/libexpat/releases/download/R_2_7_3/expat-2.7.3.tar.gz
+tar -xf expat-2.7.3.tar.gz

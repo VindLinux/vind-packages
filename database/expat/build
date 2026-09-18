@@ -1,0 +1,17 @@
+cd expat-2.7.3 || exit 1
+
+# also build the static library alongside the shared one, off by default unless "static" is enabled
+static_flag="--disable-static"
+if echo "$COMP_ATTRS" | grep -qw static; then
+    static_flag=""
+fi
+
+# build the xmlwf command-line well-formedness checker, off by default unless "xmlwf" is enabled
+xmlwf_flag="--without-xmlwf"
+if echo "$COMP_ATTRS" | grep -qw xmlwf; then
+    xmlwf_flag=""
+fi
+
+./configure --prefix="$PREFIX" $static_flag $xmlwf_flag
+
+make $MAKEOPTS

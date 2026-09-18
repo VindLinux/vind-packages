@@ -1,0 +1,18 @@
+cd openssl-3.0.20 || exit 1
+
+# also build shared libraries in addition to static, off by default unless "shared" is enabled
+shared_flag="no-shared"
+if echo "$COMP_ATTRS" | grep -qw shared; then
+    shared_flag="shared"
+fi
+
+# build with zlib compression support, off by default unless "zlib" is enabled
+zlib_flag="no-zlib"
+if echo "$COMP_ATTRS" | grep -qw zlib; then
+    zlib_flag="zlib"
+fi
+
+# openssl uses its own "Configure" script, not the usual autotools "configure"
+./Configure --prefix="$PREFIX" --openssldir="$PREFIX/ssl" $shared_flag $zlib_flag
+
+make $MAKEOPTS
