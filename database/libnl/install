@@ -1,0 +1,1 @@
+cd libnl-3.12.0 && make DESTDIR="$DESTDIR" install

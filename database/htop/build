@@ -1,0 +1,55 @@
+cd htop-3.5.3 || exit 1
+
+unicode_flag="--disable-unicode"
+if echo "$COMP_ATTRS" | grep -qw unicode; then
+    unicode_flag="--enable-unicode"
+fi
+
+static_flag="--disable-static"
+if echo "$COMP_ATTRS" | grep -qw static; then
+    static_flag="--enable-static"
+fi
+
+pcp_flag="--disable-pcp"
+if echo "$COMP_ATTRS" | grep -qw pcp; then
+    pcp_flag="--enable-pcp"
+fi
+
+hwloc_flag="--disable-hwloc"
+if echo "$COMP_ATTRS" | grep -qw hwloc; then
+    hwloc_flag="--enable-hwloc"
+fi
+
+capabilities_flag="--disable-capabilities"
+if echo "$COMP_ATTRS" | grep -qw capabilities; then
+    capabilities_flag="--enable-capabilities"
+fi
+
+delayacct_flag="--disable-delayacct"
+if echo "$COMP_ATTRS" | grep -qw delayacct; then
+    delayacct_flag="--enable-delayacct"
+fi
+
+sensors_flag="--disable-sensors"
+if echo "$COMP_ATTRS" | grep -qw sensors; then
+    sensors_flag="--enable-sensors"
+fi
+
+libunwind_flag="--without-libunwind"
+if echo "$COMP_ATTRS" | grep -qw libunwind; then
+    libunwind_flag="--with-libunwind"
+fi
+
+./configure \
+    --prefix="$PREFIX" \
+    "$unicode_flag" \
+    "$static_flag" \
+    "$pcp_flag" \
+    "$affinity_flag" \
+    "$hwloc_flag" \
+    "$capabilities_flag" \
+    "$delayacct_flag" \
+    "$sensors_flag" \
+    "$libunwind_flag"
+
+make $MAKEOPTS

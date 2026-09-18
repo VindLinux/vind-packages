@@ -1,0 +1,2 @@
+curl -fL --retry 3 --retry-delay 2 -o file-5.46.tar.gz https://astron.com/pub/file/file-5.46.tar.gz
+tar -xf file-5.46.tar.gz

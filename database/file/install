@@ -1,0 +1,1 @@
+cd file-5.46 && make DESTDIR="$DESTDIR" install

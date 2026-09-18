@@ -1,0 +1,13 @@
+cd zstd-1.5.7 || exit 1
+
+zlib_flag=0
+if echo "$COMP_ATTRS" | grep -qw zlib; then
+    zlib_flag=1
+fi
+
+lzma_flag=0
+if echo "$COMP_ATTRS" | grep -qw lzma; then
+    lzma_flag=1
+fi
+
+make $MAKEOPTS HAVE_ZLIB="$zlib_flag" HAVE_LZMA="$lzma_flag"

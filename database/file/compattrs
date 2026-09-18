@@ -1,0 +1,9 @@
+elf
+elf-core
+zlib
+bzlib
+xzlib
+zstdlib
+lzlib
+lrziplib
+libseccomp

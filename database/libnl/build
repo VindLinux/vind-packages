@@ -1,0 +1,14 @@
+cd libnl-3.12.0 || exit 1
+
+static_flag="--disable-static"
+
+if echo "$COMP_ATTRS" | grep -qw static; then
+    static_flag="--enable-static"
+fi
+
+./configure \
+    --prefix="$PREFIX" \
+    --sysconfdir=/etc \
+    "$static_flag"
+
+make $MAKEOPTS

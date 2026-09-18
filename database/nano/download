@@ -1,0 +1,2 @@
+curl -fL --retry 3 --retry-delay 2 -o nano-9.2.tar.xz https://www.nano-editor.org/dist/v9/nano-9.2.tar.xz
+tar -xf nano-9.2.tar.xz

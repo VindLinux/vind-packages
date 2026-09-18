@@ -1,0 +1,78 @@
+cd xz-5.8.3 || exit 1
+
+static_flag="--disable-static"
+if echo "$COMP_ATTRS" | grep -qw static; then
+    static_flag="--enable-static"
+fi
+
+debug_flag="--disable-debug"
+if echo "$COMP_ATTRS" | grep -qw debug; then
+    debug_flag="--enable-debug"
+fi
+
+microlzma_flag="--disable-microlzma"
+if echo "$COMP_ATTRS" | grep -qw microlzma; then
+    microlzma_flag="--enable-microlzma"
+fi
+
+lzip_decoder_flag="--disable-lzip-decoder"
+if echo "$COMP_ATTRS" | grep -qw lzip-decoder; then
+    lzip_decoder_flag="--enable-lzip-decoder"
+fi
+
+xz_flag="--disable-xz"
+if echo "$COMP_ATTRS" | grep -qw xz; then
+    xz_flag="--enable-xz"
+fi
+
+xzdec_flag="--disable-xzdec"
+if echo "$COMP_ATTRS" | grep -qw xzdec; then
+    xzdec_flag="--enable-xzdec"
+fi
+
+lzmadec_flag="--disable-lzmadec"
+if echo "$COMP_ATTRS" | grep -qw lzmadec; then
+    lzmadec_flag="--enable-lzmadec"
+fi
+
+lzmainfo_flag="--disable-lzmainfo"
+if echo "$COMP_ATTRS" | grep -qw lzmainfo; then
+    lzmainfo_flag="--enable-lzmainfo"
+fi
+
+lzma_links_flag="--disable-lzma-links"
+if echo "$COMP_ATTRS" | grep -qw lzma-links; then
+    lzma_links_flag="--enable-lzma-links"
+fi
+
+scripts_flag="--disable-scripts"
+if echo "$COMP_ATTRS" | grep -qw scripts; then
+    scripts_flag="--enable-scripts"
+fi
+
+doxygen_flag="--disable-doxygen"
+if echo "$COMP_ATTRS" | grep -qw doxygen; then
+    doxygen_flag="--enable-doxygen"
+fi
+
+sandbox_flag="--enable-sandbox=no"
+if echo "$COMP_ATTRS" | grep -qw sandbox; then
+    sandbox_flag="--enable-sandbox=auto"
+fi
+
+./configure \
+    --prefix="$PREFIX" \
+    "$static_flag" \
+    "$debug_flag" \
+    "$microlzma_flag" \
+    "$lzip_decoder_flag" \
+    "$xz_flag" \
+    "$xzdec_flag" \
+    "$lzmadec_flag" \
+    "$lzmainfo_flag" \
+    "$lzma_links_flag" \
+    "$scripts_flag" \
+    "$doxygen_flag" \
+    "$sandbox_flag"
+
+make $MAKEOPTS

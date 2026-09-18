@@ -1,0 +1,12 @@
+static
+debug
+microlzma
+lzip-decoder
+xz
+xzdec
+lzmadec
+lzmainfo
+lzma-links
+scripts
+doxygen
+sandbox

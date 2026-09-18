@@ -1,0 +1,7 @@
+zlib?zlib
+bzlib?bzip2
+xzlib?xz
+zstdlib?zstd
+lzlib?lzip
+lrziplib?lrzip
+libseccomp?libseccomp

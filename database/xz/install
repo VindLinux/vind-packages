@@ -1,0 +1,1 @@
+cd xz-5.8.3 && make DESTDIR="$DESTDIR" install

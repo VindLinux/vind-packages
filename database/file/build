@@ -1,0 +1,61 @@
+cd file-5.46 || exit 1
+
+elf_flag="--disable-elf"
+if echo "$COMP_ATTRS" | grep -qw elf; then
+    elf_flag="--enable-elf"
+fi
+
+elf_core_flag="--disable-elf-core"
+if echo "$COMP_ATTRS" | grep -qw elf-core; then
+    elf_core_flag="--enable-elf-core"
+fi
+
+zlib_flag="--disable-zlib"
+if echo "$COMP_ATTRS" | grep -qw zlib; then
+    zlib_flag="--enable-zlib"
+fi
+
+bzlib_flag="--disable-bzlib"
+if echo "$COMP_ATTRS" | grep -qw bzlib; then
+    bzlib_flag="--enable-bzlib"
+fi
+
+xzlib_flag="--disable-xzlib"
+if echo "$COMP_ATTRS" | grep -qw xzlib; then
+    xzlib_flag="--enable-xzlib"
+fi
+
+zstdlib_flag="--disable-zstdlib"
+if echo "$COMP_ATTRS" | grep -qw zstdlib; then
+    zstdlib_flag="--enable-zstdlib"
+fi
+
+lzlib_flag="--disable-lzlib"
+if echo "$COMP_ATTRS" | grep -qw lzlib; then
+    lzlib_flag="--enable-lzlib"
+fi
+
+lrziplib_flag="--disable-lrziplib"
+if echo "$COMP_ATTRS" | grep -qw lrziplib; then
+    lrziplib_flag="--enable-lrziplib"
+fi
+
+libseccomp_flag="--disable-libseccomp"
+if echo "$COMP_ATTRS" | grep -qw libseccomp; then
+    libseccomp_flag="--enable-libseccomp"
+fi
+
+./configure \
+    --prefix="$PREFIX" \
+    "$elf_flag" \
+    "$elf_core_flag" \
+    "$zlib_flag" \
+    "$bzlib_flag" \
+    "$xzlib_flag" \
+    "$zstdlib_flag" \
+    "$lzlib_flag" \
+    "$lrziplib_flag" \
+    "$libseccomp_flag" \
+    "$fsect_man5_flag"
+
+make $MAKEOPTS

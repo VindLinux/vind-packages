@@ -1,0 +1,116 @@
+cd nano-9.2 || exit 1
+
+browser_flag="--disable-browser"
+if echo "$COMP_ATTRS" | grep -qw browser; then
+    browser_flag="--enable-browser"
+fi
+
+color_flag="--disable-color"
+if echo "$COMP_ATTRS" | grep -qw color; then
+    color_flag="--enable-color"
+fi
+
+comment_flag="--disable-comment"
+if echo "$COMP_ATTRS" | grep -qw comment; then
+    comment_flag="--enable-comment"
+fi
+
+formatter_flag="--disable-formatter"
+if echo "$COMP_ATTRS" | grep -qw formatter; then
+    formatter_flag="--enable-formatter"
+fi
+
+help_flag="--disable-help"
+if echo "$COMP_ATTRS" | grep -qw help; then
+    help_flag="--enable-help"
+fi
+
+histories_flag="--disable-histories"
+if echo "$COMP_ATTRS" | grep -qw histories; then
+    histories_flag="--enable-histories"
+fi
+
+justify_flag="--disable-justify"
+if echo "$COMP_ATTRS" | grep -qw justify; then
+    justify_flag="--enable-justify"
+fi
+
+libmagic_flag="--disable-libmagic"
+if echo "$COMP_ATTRS" | grep -qw libmagic; then
+    libmagic_flag="--enable-libmagic"
+fi
+
+linter_flag="--disable-linter"
+if echo "$COMP_ATTRS" | grep -qw linter; then
+    linter_flag="--enable-linter"
+fi
+
+linenumbers_flag="--disable-linenumbers"
+if echo "$COMP_ATTRS" | grep -qw linenumbers; then
+    linenumbers_flag="--enable-linenumbers"
+fi
+
+mouse_flag="--disable-mouse"
+if echo "$COMP_ATTRS" | grep -qw mouse; then
+    mouse_flag="--enable-mouse"
+fi
+
+multibuffer_flag="--disable-multibuffer"
+if echo "$COMP_ATTRS" | grep -qw multibuffer; then
+    multibuffer_flag="--enable-multibuffer"
+fi
+
+nanorc_flag="--disable-nanorc"
+if echo "$COMP_ATTRS" | grep -qw nanorc; then
+    nanorc_flag="--enable-nanorc"
+fi
+
+speller_flag="--disable-speller"
+if echo "$COMP_ATTRS" | grep -qw speller; then
+    speller_flag="--enable-speller"
+fi
+
+tabcomp_flag="--disable-tabcomp"
+if echo "$COMP_ATTRS" | grep -qw tabcomp; then
+    tabcomp_flag="--enable-tabcomp"
+fi
+
+wordcomp_flag="--disable-wordcomp"
+if echo "$COMP_ATTRS" | grep -qw wordcomp; then
+    wordcomp_flag="--enable-wordcomp"
+fi
+
+wrapping_flag="--disable-wrapping"
+if echo "$COMP_ATTRS" | grep -qw wrapping; then
+    wrapping_flag="--enable-wrapping"
+fi
+
+utf8_flag="--disable-utf8"
+if echo "$COMP_ATTRS" | grep -qw utf8; then
+    utf8_flag="--enable-utf8"
+fi
+
+./configure \
+    --prefix="$PREFIX" \
+    --sysconfdir=/etc \
+    "$browser_flag" \
+    "$color_flag" \
+    "$comment_flag" \
+    "$formatter_flag" \
+    "$help_flag" \
+    "$histories_flag" \
+    "$justify_flag" \
+    "$libmagic_flag" \
+    "$linter_flag" \
+    "$linenumbers_flag" \
+    "$mouse_flag" \
+    "$multibuffer_flag" \
+    "$nanorc_flag" \
+    "$speller_flag" \
+    "$tabcomp_flag" \
+    "$wordcomp_flag" \
+    "$wrapping_flag" \
+    "$utf8_flag" \
+    "$tiny_flag"
+
+make $MAKEOPTS

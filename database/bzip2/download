@@ -1,0 +1,2 @@
+curl -fL --retry 3 --retry-delay 2 -o bzip2-1.0.8.tar.gz https://sourceware.org/pub/bzip2/bzip2-1.0.8.tar.gz
+tar -xf bzip2-1.0.8.tar.gz

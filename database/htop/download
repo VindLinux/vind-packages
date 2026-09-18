@@ -1,0 +1,2 @@
+curl -fL --retry 3 --retry-delay 2 -o htop-3.5.3.tar.xz https://github.com/htop-dev/htop/releases/download/3.5.3/htop-3.5.3.tar.xz
+tar -xf htop-3.5.3.tar.xz
