@@ -1,0 +1,16 @@
+cd ncurses-6.4 || exit 1
+
+wide_flag="--disable-widec"
+if echo "$COMP_ATTRS" | grep -qw wide; then
+    wide_flag="--enable-widec"
+fi
+
+shared_flag="--without-shared"
+if echo "$COMP_ATTRS" | grep -qw shared; then
+    shared_flag="--with-shared"
+fi
+
+./configure --prefix="$PREFIX" \
+    $wide_flag $shared_flag
+
+make $MAKEOPTS

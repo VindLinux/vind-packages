@@ -1,0 +1,1 @@
+cd ncurses-6.4 && make DESTDIR="$DESTDIR" install

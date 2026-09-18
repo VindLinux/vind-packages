@@ -1,0 +1,24 @@
+cd vim-9.1.0000 || exit 1
+
+python_flag="--disable-pythoninterp --disable-python3interp"
+if echo "$COMP_ATTRS" | grep -qw python; then
+    python_flag="--enable-python3interp=dynamic"
+fi
+
+lua_flag="--disable-luainterp"
+if echo "$COMP_ATTRS" | grep -qw lua; then
+    lua_flag="--enable-luainterp --with-lua-prefix=$PREFIX"
+fi
+
+clipboard_flag="--disable-xterm-clipboard"
+if echo "$COMP_ATTRS" | grep -qw clipboard; then
+    clipboard_flag="--enable-xterm-clipboard"
+fi
+
+CPPFLAGS="-I$PREFIX/include" \
+LDFLAGS="-L$PREFIX/lib" \
+LD_LIBRARY_PATH="$PREFIX/lib${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}" \
+./configure --prefix="$PREFIX" --with-tlib=ncursesw --enable-multibyte \
+    $python_flag $lua_flag $clipboard_flag
+
+make $MAKEOPTS
