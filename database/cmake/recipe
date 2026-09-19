@@ -1,0 +1,45 @@
+src="cmake-$PKG_VERSION"
+tarball="$src.tar.gz"
+series="${PKG_VERSION%.*}"
+
+pkg_download()
+{
+    curl -fL --retry 3 --retry-delay 2 -o "$tarball" \
+        "https://cmake.org/files/v$series/$tarball" || exit 1
+    tar -xf "$tarball" || exit 1
+}
+
+pkg_build()
+{
+    cd "$src" || exit 1
+
+    sed -i '/"lib64"/s/64//' Modules/GNUInstallDirs.cmake || exit 1
+
+    set -- --prefix="$PREFIX" \
+        --system-libs \
+        --mandir=/share/man \
+        --no-system-jsoncpp \
+        --no-system-cppdap \
+        --no-system-librhash \
+        --docdir="/share/doc/cmake-$PKG_VERSION"
+
+    if attr_on qt; then
+        set -- "$@" --qt-gui
+    fi
+
+    LD_LIBRARY_PATH="$PREFIX/lib" \
+    CC="$CC" \
+    CXX="$CXX" \
+    CFLAGS="-pthread $CFLAGS" \
+    CXXFLAGS="-pthread -stdlib=libc++ $CXXFLAGS" \
+    LDFLAGS="-stdlib=libc++ $LDFLAGS" \
+    ./bootstrap "$@" || exit 1
+
+    make $MAKEOPTS
+}
+
+pkg_install()
+{
+    cd "$src" || exit 1
+    make DESTDIR="$DESTDIR" install
+}

@@ -1,0 +1,48 @@
+src="Python-$PKG_VERSION"
+tarball="$src.tar.xz"
+
+pkg_download()
+{
+    curl -fL --retry 3 --retry-delay 2 -o "$tarball" \
+        "https://www.python.org/ftp/python/$PKG_VERSION/$tarball" || exit 1
+    tar -xf "$tarball" || exit 1
+}
+
+pkg_build()
+{
+    cd "$src" || exit 1
+
+    set -- --prefix="$PREFIX" \
+        --with-openssl="$PREFIX" \
+        --enable-shared \
+        --with-system-expat \
+        --with-ensurepip=upgrade \
+        --without-static-libpython
+
+    if attr_on readline; then
+        set -- "$@" --with-readline=readline
+    else
+        set -- "$@" --without-readline
+    fi
+
+    if attr_on jit; then
+        set -- "$@" --enable-experimental-jit=yes
+    fi
+
+    if attr_on dtrace; then
+        set -- "$@" --with-dtrace
+    fi
+
+    if attr_on sqlite_extensions; then
+        set -- "$@" --enable-loadable-sqlite-extensions
+    fi
+
+    ./configure "$@" || exit 1
+    make $MAKEOPTS
+}
+
+pkg_install()
+{
+    cd "$src" || exit 1
+    make DESTDIR="$DESTDIR" install
+}

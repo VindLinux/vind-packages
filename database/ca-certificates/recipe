@@ -1,0 +1,24 @@
+pkg_download()
+{
+    curl -fL --retry 3 --retry-delay 2 -o cacert.pem \
+        https://curl.se/ca/cacert.pem || exit 1
+    curl -fL --retry 3 --retry-delay 2 -o cacert.pem.sha256 \
+        https://curl.se/ca/cacert.pem.sha256 || exit 1
+    sha256sum -c cacert.pem.sha256
+}
+
+pkg_install()
+{
+    install -d "$DESTDIR/etc/ssl/certs" || exit 1
+    install -d "$DESTDIR/etc/pki/tls/certs" || exit 1
+    install -m 644 cacert.pem "$DESTDIR/etc/ssl/certs/ca-certificates.crt" || exit 1
+    ln -sf ../../ssl/certs/ca-certificates.crt "$DESTDIR/etc/pki/tls/certs/ca-bundle.crt" || exit 1
+
+    install -d "$DESTDIR/etc/ssl/certs/mozilla" || exit 1
+    awk -v dir="$DESTDIR/etc/ssl/certs/mozilla" 'BEGIN{n=0} /-----BEGIN CERTIFICATE-----/{n++; f=dir"/cert"n".pem"} {if (f) print > f} /-----END CERTIFICATE-----/{close(f); f=""}' cacert.pem || exit 1
+
+    for cert in "$DESTDIR/etc/ssl/certs/mozilla"/*.pem; do
+        hash=$(openssl x509 -noout -hash -in "$cert")
+        ln -sf "mozilla/$(basename "$cert")" "$DESTDIR/etc/ssl/certs/${hash}.0"
+    done
+}

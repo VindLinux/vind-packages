@@ -1,0 +1,37 @@
+src="nano-$PKG_VERSION"
+tarball="$src.tar.xz"
+
+pkg_download()
+{
+    curl -fL --retry 3 --retry-delay 2 -o "$tarball" \
+        "https://www.nano-editor.org/dist/v${PKG_VERSION%%.*}/$tarball" || exit 1
+    tar -xf "$tarball" || exit 1
+}
+
+pkg_build()
+{
+    cd "$src" || exit 1
+
+    set -- --prefix="$PREFIX" --sysconfdir=/etc --enable-utf8
+
+    if ! attr_on nls; then
+        set -- "$@" --disable-nls
+    fi
+
+    if ! attr_on libmagic; then
+        set -- "$@" --disable-libmagic
+    fi
+
+    if attr_on tiny; then
+        set -- "$@" --enable-tiny
+    fi
+
+    ./configure "$@" || exit 1
+    make $MAKEOPTS
+}
+
+pkg_install()
+{
+    cd "$src" || exit 1
+    make DESTDIR="$DESTDIR" install
+}

@@ -1,0 +1,52 @@
+src="curl-$PKG_VERSION"
+
+pkg_download()
+{
+    curl -fL --retry 3 --retry-delay 2 -o "curl-$PKG_VERSION.tar.xz" "https://curl.se/download/curl-$PKG_VERSION.tar.xz"
+    tar -xf "curl-$PKG_VERSION.tar.xz"
+}
+
+pkg_build()
+{
+    cd "$src" || exit 1
+
+    ssh2_flag="--without-libssh2"
+    if attr_on ssh2; then
+        ssh2_flag="--with-libssh2"
+    fi
+
+    http2_flag="--without-nghttp2"
+    if attr_on http2; then
+        http2_flag="--with-nghttp2"
+    fi
+
+    idn_flag="--without-libidn2"
+    if attr_on idn; then
+        idn_flag="--with-libidn2"
+    fi
+
+    brotli_flag="--without-brotli"
+    if attr_on brotli; then
+        brotli_flag="--with-brotli"
+    fi
+
+    zstd_flag="--without-zstd"
+    if attr_on zstd; then
+        zstd_flag="--with-zstd"
+    fi
+
+    ./configure --prefix="$PREFIX" --disable-static --with-openssl \
+        --with-ca-bundle=/etc/ssl/cert.pem --with-ca-path=/etc/ssl/certs \
+        $ssh2_flag $http2_flag $idn_flag $brotli_flag $zstd_flag
+    make $MAKEOPTS
+}
+
+pkg_install()
+{
+    cd "$src" || exit 1
+    make DESTDIR="$DESTDIR" install
+    rm -rf docs/examples/.deps
+    find docs \( -name "Makefile*" -o -name "*.1" -o -name "*.3" -o -name CMakeLists.txt \) -delete
+    mkdir -p "$DESTDIR$PREFIX/share/doc/curl-$PKG_VERSION"
+    cp -v -R docs/* "$DESTDIR$PREFIX/share/doc/curl-$PKG_VERSION/"
+}

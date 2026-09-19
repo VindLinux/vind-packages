@@ -1,0 +1,55 @@
+src="ncurses-$PKG_VERSION"
+tarball="$src.tar.gz"
+
+pkg_download()
+{
+    curl -fL --retry 3 --retry-delay 2 -o "$tarball" \
+        "https://ftp.gnu.org/gnu/ncurses/$tarball" || exit 1
+    tar -xf "$tarball" || exit 1
+}
+
+pkg_build()
+{
+    cd "$src" || exit 1
+
+    set -- --prefix="$PREFIX" \
+        --with-shared \
+        --without-debug \
+        --enable-widec \
+        --enable-pc-files
+
+    if attr_on gpm; then
+        set -- "$@" --with-gpm
+    else
+        set -- "$@" --without-gpm
+    fi
+
+    if attr_on pcre2; then
+        set -- "$@" --with-pcre2
+    else
+        set -- "$@" --without-pcre2
+    fi
+
+    if ! attr_on cxx; then
+        set -- "$@" --without-cxx-binding
+    fi
+
+    ./configure "$@" || exit 1
+    make $MAKEOPTS
+}
+
+pkg_install()
+{
+    cd "$src" || exit 1
+    make DESTDIR="$DESTDIR" install || exit 1
+
+    cd "$DESTDIR$PREFIX/lib" || exit 1
+    printf 'INPUT(-lncursesw)\n' > libncurses.so
+    printf 'INPUT(-lformw)\n'    > libform.so
+    printf 'INPUT(-lmenuw)\n'    > libmenu.so
+    printf 'INPUT(-lpanelw)\n'   > libpanel.so
+    printf 'INPUT(-lncursesw)\n' > libcurses.so
+
+    cd "$DESTDIR$PREFIX/lib/pkgconfig" || exit 1
+    ln -sf ncursesw.pc ncurses.pc
+}

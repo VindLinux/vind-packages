@@ -1,0 +1,26 @@
+src="dash-$PKG_VERSION"
+
+pkg_download()
+{
+    curl -fL --retry 3 --retry-delay 2 -o "dash-$PKG_VERSION.tar.gz" "http://gondor.apana.org.au/~herbert/dash/files/dash-$PKG_VERSION.tar.gz"
+    tar -xf "dash-$PKG_VERSION.tar.gz"
+}
+
+pkg_build()
+{
+    cd "$src" || exit 1
+
+    libedit_flag="--without-libedit"
+    if attr_on libedit; then
+        libedit_flag="--with-libedit"
+    fi
+
+    ./configure --prefix="$PREFIX" $libedit_flag
+    make $MAKEOPTS
+}
+
+pkg_install()
+{
+    cd "$src" || exit 1
+    make DESTDIR="$DESTDIR" install
+}

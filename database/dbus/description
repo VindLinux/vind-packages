@@ -1,0 +1,1 @@
+Reference implementation of D-Bus, a message bus system providing a simple way for applications and system services to talk to one another, used for both interprocess communication and coordinated process lifecycle management on Linux.

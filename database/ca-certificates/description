@@ -1,0 +1,1 @@
+Common CA certificates: a bundle of Mozilla's trusted root Certificate Authority certificates, extracted and converted to PEM format, used by OpenSSL, curl, and other SSL/TLS applications to verify the authenticity of connections.

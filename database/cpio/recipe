@@ -1,0 +1,26 @@
+src="cpio-$PKG_VERSION"
+
+pkg_download()
+{
+    curl -fL --retry 3 --retry-delay 2 -o "cpio-$PKG_VERSION.tar.gz" "https://ftp.gnu.org/gnu/cpio/cpio-$PKG_VERSION.tar.gz"
+    tar -xf "cpio-$PKG_VERSION.tar.gz"
+}
+
+pkg_build()
+{
+    cd "$src" || exit 1
+
+    mt_flag="--disable-mt"
+    if attr_on mt; then
+        mt_flag="--enable-mt"
+    fi
+
+    ./configure --prefix="$PREFIX" CFLAGS="-std=gnu17 -O2" $mt_flag
+    make $MAKEOPTS
+}
+
+pkg_install()
+{
+    cd "$src" || exit 1
+    make DESTDIR="$DESTDIR" install
+}

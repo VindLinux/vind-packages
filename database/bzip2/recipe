@@ -1,0 +1,30 @@
+src="bzip2-$PKG_VERSION"
+tarball="$src.tar.gz"
+
+pkg_download()
+{
+    curl -fL --retry 3 --retry-delay 2 -o "$tarball" \
+        "https://sourceware.org/pub/bzip2/$tarball" || exit 1
+    tar -xf "$tarball" || exit 1
+}
+
+pkg_build()
+{
+    cd "$src" || exit 1
+    make CFLAGS="$CFLAGS" -f Makefile-libbz2_so $MAKEOPTS || exit 1
+    make CFLAGS="$CFLAGS" $MAKEOPTS
+}
+
+pkg_install()
+{
+    cd "$src" || exit 1
+
+    mkdir -p "$DESTDIR$PREFIX/bin" "$DESTDIR$PREFIX/lib" "$DESTDIR$PREFIX/include" "$DESTDIR$PREFIX/share/man/man1" || exit 1
+    cp -v bzip2-shared "$DESTDIR$PREFIX/bin/bzip2" || exit 1
+    cp -av libbz2.so* "$DESTDIR$PREFIX/lib/" || exit 1
+    ln -sfv "libbz2.so.$PKG_VERSION" "$DESTDIR$PREFIX/lib/libbz2.so" || exit 1
+    cp -v bzlib.h "$DESTDIR$PREFIX/include/" || exit 1
+    cp -v bzip2.1 "$DESTDIR$PREFIX/share/man/man1/" || exit 1
+    ln -sfv bzip2 "$DESTDIR$PREFIX/bin/bunzip2" || exit 1
+    ln -sfv bzip2 "$DESTDIR$PREFIX/bin/bzcat"
+}

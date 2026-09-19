@@ -1,0 +1,41 @@
+src="pcre2-$PKG_VERSION"
+tarball="$src.tar.gz"
+
+pkg_download()
+{
+    curl -fL --retry 3 --retry-delay 2 -o "$tarball" \
+        "https://github.com/PCRE2Project/pcre2/releases/download/pcre2-$PKG_VERSION/$tarball" || exit 1
+    tar -xf "$tarball" || exit 1
+}
+
+pkg_build()
+{
+    cd "$src" || exit 1
+
+    set -- --prefix="$PREFIX" --disable-static --enable-jit
+
+    if attr_on pcre2_16; then
+        set -- "$@" --enable-pcre2-16
+    fi
+
+    if attr_on pcre2_32; then
+        set -- "$@" --enable-pcre2-32
+    fi
+
+    if attr_on zlib; then
+        set -- "$@" --enable-pcre2grep-libz
+    fi
+
+    if attr_on bzip2; then
+        set -- "$@" --enable-pcre2grep-libbz2
+    fi
+
+    ./configure "$@" || exit 1
+    make $MAKEOPTS
+}
+
+pkg_install()
+{
+    cd "$src" || exit 1
+    make DESTDIR="$DESTDIR" install
+}

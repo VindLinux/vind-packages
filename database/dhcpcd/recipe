@@ -1,0 +1,31 @@
+src="dhcpcd-$PKG_VERSION"
+
+pkg_download()
+{
+    curl -fL --retry 3 --retry-delay 2 -o "dhcpcd-$PKG_VERSION.tar.xz" "https://github.com/NetworkConfiguration/dhcpcd/releases/download/v$PKG_VERSION/dhcpcd-$PKG_VERSION.tar.xz"
+    tar -xf "dhcpcd-$PKG_VERSION.tar.xz"
+}
+
+pkg_build()
+{
+    cd "$src" || exit 1
+
+    libpcap_flag=""
+    if attr_on libpcap; then
+        libpcap_flag="--with-libpcap"
+    fi
+
+    openssl_flag=""
+    if attr_on openssl; then
+        openssl_flag="--with-openssl"
+    fi
+
+    ./configure --prefix="$PREFIX" $libpcap_flag $openssl_flag
+    make $MAKEOPTS
+}
+
+pkg_install()
+{
+    cd "$src" || exit 1
+    make DESTDIR="$DESTDIR" install
+}

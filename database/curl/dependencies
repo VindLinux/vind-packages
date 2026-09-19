@@ -1,0 +1,6 @@
+libpsl
+ssh2?libssh2
+http2?nghttp2
+idn?libidn2
+brotli?brotli
+zstd?zstd

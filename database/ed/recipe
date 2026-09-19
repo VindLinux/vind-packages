@@ -1,0 +1,20 @@
+src="ed-$PKG_VERSION"
+
+pkg_download()
+{
+    curl -fL --retry 3 --retry-delay 2 -o "ed-$PKG_VERSION.tar.lz" "https://ftp.gnu.org/gnu/ed/ed-$PKG_VERSION.tar.lz"
+    bsdtar -xf "ed-$PKG_VERSION.tar.lz"
+}
+
+pkg_build()
+{
+    cd "$src" || exit 1
+    ./configure --prefix="$PREFIX"
+    make $MAKEOPTS
+}
+
+pkg_install()
+{
+    cd "$src" || exit 1
+    make DESTDIR="$DESTDIR" install
+}

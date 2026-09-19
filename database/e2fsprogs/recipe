@@ -1,0 +1,31 @@
+src="e2fsprogs-$PKG_VERSION"
+
+pkg_download()
+{
+    curl -fL --retry 3 --retry-delay 2 -o "e2fsprogs-$PKG_VERSION.tar.gz" "https://downloads.sourceforge.net/project/e2fsprogs/e2fsprogs/v$PKG_VERSION/e2fsprogs-$PKG_VERSION.tar.gz"
+    tar -xf "e2fsprogs-$PKG_VERSION.tar.gz"
+}
+
+pkg_build()
+{
+    cd "$src" || exit 1
+
+    e2initrd_flag="--disable-e2initrd-helper"
+    if attr_on e2initrd-helper; then
+        e2initrd_flag="--enable-e2initrd-helper"
+    fi
+
+    libarchive_flag="--without-libarchive"
+    if attr_on libarchive; then
+        libarchive_flag="--with-libarchive"
+    fi
+
+    CFLAGS="$CFLAGS -std=gnu11" ./configure --prefix="$PREFIX" --enable-elf-shlibs --disable-libblkid --disable-libuuid --disable-fsck $e2initrd_flag $libarchive_flag
+    make $MAKEOPTS
+}
+
+pkg_install()
+{
+    cd "$src" || exit 1
+    make DESTDIR="$DESTDIR" install install-libs
+}

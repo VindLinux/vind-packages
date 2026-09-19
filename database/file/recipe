@@ -1,0 +1,49 @@
+src="file-$PKG_VERSION"
+tarball="$src.tar.gz"
+
+pkg_download()
+{
+    curl -fL --retry 3 --retry-delay 2 -o "$tarball" \
+        "https://astron.com/pub/file/$tarball" || exit 1
+    tar -xf "$tarball" || exit 1
+}
+
+pkg_build()
+{
+    cd "$src" || exit 1
+
+    set -- --prefix="$PREFIX"
+
+    if ! attr_on zlib; then
+        set -- "$@" --disable-zlib
+    fi
+
+    if ! attr_on bzip2; then
+        set -- "$@" --disable-bzlib
+    fi
+
+    if ! attr_on xz; then
+        set -- "$@" --disable-xzlib
+    fi
+
+    if ! attr_on zstd; then
+        set -- "$@" --disable-zstdlib
+    fi
+
+    if ! attr_on lzip; then
+        set -- "$@" --disable-lzlib
+    fi
+
+    if ! attr_on lrzip; then
+        set -- "$@" --disable-lrziplib
+    fi
+
+    ./configure "$@" || exit 1
+    make $MAKEOPTS
+}
+
+pkg_install()
+{
+    cd "$src" || exit 1
+    make DESTDIR="$DESTDIR" install
+}

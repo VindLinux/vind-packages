@@ -1,0 +1,19 @@
+src="efibootmgr-$PKG_VERSION"
+
+pkg_download()
+{
+    curl -fL --retry 3 --retry-delay 2 -o "efibootmgr-$PKG_VERSION.tar.gz" "https://github.com/rhboot/efibootmgr/archive/$PKG_VERSION/efibootmgr-$PKG_VERSION.tar.gz"
+    tar -xf "efibootmgr-$PKG_VERSION.tar.gz"
+}
+
+pkg_build()
+{
+    cd "$src" || exit 1
+    make EFIDIR=LFS EFI_LOADER=grubx64.efi
+}
+
+pkg_install()
+{
+    cd "$src" || exit 1
+    make install EFIDIR=LFS
+}

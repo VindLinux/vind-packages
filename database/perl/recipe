@@ -1,0 +1,45 @@
+src="perl-$PKG_VERSION"
+tarball="$src.tar.xz"
+series="${PKG_VERSION%.*}"
+
+pkg_download()
+{
+    curl -fL --retry 3 --retry-delay 2 -o "$tarball" \
+        "https://www.cpan.org/src/5.0/$tarball" || exit 1
+    tar -xf "$tarball" || exit 1
+}
+
+pkg_build()
+{
+    cd "$src" || exit 1
+
+    perllib="$PREFIX/lib/perl5/$series"
+
+    set -- -des \
+        -Dprefix="$PREFIX" \
+        -Dvendorprefix="$PREFIX" \
+        -Dprivlib="$perllib/core_perl" \
+        -Darchlib="$perllib/core_perl" \
+        -Dsitelib="$perllib/site_perl" \
+        -Dsitearch="$perllib/site_perl" \
+        -Dvendorlib="$perllib/vendor_perl" \
+        -Dvendorarch="$perllib/vendor_perl" \
+        -Dman1dir="$PREFIX/share/man/man1" \
+        -Dman3dir="$PREFIX/share/man/man3" \
+        -Dpager="$PREFIX/bin/less -isR" \
+        -Duseshrplib \
+        -Dusethreads
+
+    if attr_on dtrace; then
+        set -- "$@" -Dusedtrace
+    fi
+
+    sh Configure "$@" || exit 1
+    make $MAKEOPTS
+}
+
+pkg_install()
+{
+    cd "$src" || exit 1
+    make DESTDIR="$DESTDIR" install
+}

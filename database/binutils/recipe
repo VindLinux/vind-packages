@@ -1,0 +1,48 @@
+src="binutils-$PKG_VERSION"
+build="$src-build"
+tarball="$src.tar.xz"
+
+pkg_download()
+{
+    curl -fL --retry 3 --retry-delay 2 -o "$tarball" \
+        "https://ftp.gnu.org/gnu/binutils/$tarball" || exit 1
+    tar -xf "$tarball" || exit 1
+}
+
+pkg_build()
+{
+    mkdir -pv "$build" || exit 1
+    cd "$build" || exit 1
+
+    set -- --with-system-zlib \
+        --prefix="$PREFIX" \
+        --sysconfdir=/etc \
+        --enable-ld=default \
+        --enable-plugins \
+        --disable-shared \
+        --disable-werror \
+        --enable-64-bit-bfd \
+        --enable-new-dtags \
+        --enable-default-hash-style=gnu
+
+    if attr_on gold; then
+        set -- "$@" --enable-gold
+    else
+        set -- "$@" --disable-gold
+    fi
+
+    if attr_on zstd; then
+        set -- "$@" --with-zstd
+    else
+        set -- "$@" --without-zstd
+    fi
+
+    "../$src/configure" "$@" || exit 1
+    make $MAKEOPTS
+}
+
+pkg_install()
+{
+    cd "$build" || exit 1
+    make DESTDIR="$DESTDIR" install
+}

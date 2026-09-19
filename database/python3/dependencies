@@ -1,0 +1,8 @@
+expat
+zlib
+openssl
+libffi
+readline?readline
+jit?llvm
+dtrace?systemtap
+sqlite_extensions?sqlite

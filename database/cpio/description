@@ -1,0 +1,1 @@
+Utility for copying files to and from cpio or tar archives, commonly used for creating initramfs images.

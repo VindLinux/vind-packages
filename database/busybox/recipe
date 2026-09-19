@@ -1,0 +1,49 @@
+src="busybox-$PKG_VERSION"
+tarball="$src.tar.bz2"
+
+pkg_download()
+{
+    curl -fL --retry 3 --retry-delay 2 -o "$tarball" \
+        "https://download.automotivelinux.org/AGL/mirror/$tarball" || exit 1
+    tar -xf "$tarball" || exit 1
+}
+
+pkg_build()
+{
+    cd "$src" || exit 1
+
+    make HOSTCC="$CC" CC="$CC" defconfig || exit 1
+
+    sed -i \
+        -e 's/^# CONFIG_STATIC is not set/CONFIG_STATIC=y/' \
+        -e 's/^# CONFIG_ASH is not set/CONFIG_ASH=y/' \
+        -e 's/^# CONFIG_SH_IS_ASH is not set/CONFIG_SH_IS_ASH=y/' \
+        -e 's/^# CONFIG_AWK is not set/CONFIG_AWK=y/' \
+        -e 's/^# CONFIG_SED is not set/CONFIG_SED=y/' \
+        -e 's/^# CONFIG_TR is not set/CONFIG_TR=y/' \
+        -e 's/^# CONFIG_EXPR is not set/CONFIG_EXPR=y/' \
+        -e 's/^# CONFIG_CUT is not set/CONFIG_CUT=y/' \
+        -e 's/^# CONFIG_SORT is not set/CONFIG_SORT=y/' \
+        -e 's/^# CONFIG_HEAD is not set/CONFIG_HEAD=y/' \
+        -e 's/^# CONFIG_TAIL is not set/CONFIG_TAIL=y/' \
+        -e 's/^# CONFIG_WC is not set/CONFIG_WC=y/' \
+        -e 's/^# CONFIG_NTPD is not set/CONFIG_NTPD=y/' \
+        -e 's/^CONFIG_TC=y/# CONFIG_TC is not set/' \
+        .config || exit 1
+
+    make clean || exit 1
+    make HOSTCC="$CC" CC="$CC" AR=/usr/bin/ar RANLIB=/usr/bin/ranlib STRIP=/usr/bin/strip $MAKEOPTS
+}
+
+pkg_install()
+{
+    mkdir -p "$DESTDIR$PREFIX/bin" || exit 1
+    cp "$src/busybox" "$DESTDIR$PREFIX/bin/busybox" || exit 1
+    chmod 755 "$DESTDIR$PREFIX/bin/busybox" || exit 1
+
+    cd "$DESTDIR$PREFIX/bin" || exit 1
+    for cmd in $(./busybox --list); do
+        [ "$cmd" = "busybox" ] && continue
+        ln -sf busybox "$cmd"
+    done
+}

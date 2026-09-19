@@ -1,0 +1,20 @@
+src="diffutils-$PKG_VERSION"
+
+pkg_download()
+{
+    curl -fL --retry 3 --retry-delay 2 -o "diffutils-$PKG_VERSION.tar.xz" "https://ftp.gnu.org/gnu/diffutils/diffutils-$PKG_VERSION.tar.xz"
+    tar -xf "diffutils-$PKG_VERSION.tar.xz"
+}
+
+pkg_build()
+{
+    cd "$src" || exit 1
+    ./configure --prefix="$PREFIX"
+    make $MAKEOPTS
+}
+
+pkg_install()
+{
+    cd "$src" || exit 1
+    make DESTDIR="$DESTDIR" install
+}

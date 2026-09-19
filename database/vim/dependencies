@@ -1,0 +1,10 @@
+ncurses
+python?python3
+lua?lua
+perl?perl
+ruby?ruby
+tcl?tcl
+x11?libx11
+x11?libxt
+gpm?gpm
+nls?gettext

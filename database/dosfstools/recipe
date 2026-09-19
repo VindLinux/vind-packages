@@ -1,0 +1,26 @@
+src="dosfstools-$PKG_VERSION"
+
+pkg_download()
+{
+    curl -fL --retry 3 --retry-delay 2 -o "dosfstools-$PKG_VERSION.tar.gz" "https://github.com/dosfstools/dosfstools/releases/download/v$PKG_VERSION/dosfstools-$PKG_VERSION.tar.gz"
+    tar -xf "dosfstools-$PKG_VERSION.tar.gz"
+}
+
+pkg_build()
+{
+    cd "$src" || exit 1
+
+    atari_flag="--disable-atari-check"
+    if attr_on atari; then
+        atari_flag="--enable-atari-check"
+    fi
+
+    ./configure --prefix="$PREFIX" --enable-compat-symlinks $atari_flag
+    make $MAKEOPTS
+}
+
+pkg_install()
+{
+    cd "$src" || exit 1
+    make DESTDIR="$DESTDIR" install
+}

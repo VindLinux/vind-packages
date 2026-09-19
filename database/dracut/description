@@ -1,0 +1,1 @@
+Event-driven initramfs infrastructure used to generate the initial RAM filesystem, responsible for locating and mounting the real root filesystem at boot.

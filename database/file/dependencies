@@ -1,0 +1,6 @@
+zlib?zlib
+bzip2?bzip2
+xz?xz
+zstd?zstd
+lzip?lzlib
+lrzip?lrzip

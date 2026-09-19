@@ -1,0 +1,69 @@
+src="vim-${PKG_VERSION}.0000"
+tarball="v${PKG_VERSION}.0000.tar.gz"
+
+pkg_download()
+{
+    curl -fL --retry 3 --retry-delay 2 -o "$tarball" \
+        "https://github.com/vim/vim/archive/refs/tags/$tarball" || exit 1
+    tar -xf "$tarball" || exit 1
+}
+
+pkg_build()
+{
+    cd "$src" || exit 1
+
+    set -- --prefix="$PREFIX" --with-tlib=ncursesw --enable-multibyte
+
+    if attr_on python; then
+        set -- "$@" --enable-python3interp=yes
+    fi
+
+    if attr_on lua; then
+        set -- "$@" --enable-luainterp=yes --with-lua-prefix="$PREFIX"
+    fi
+
+    if attr_on perl; then
+        set -- "$@" --enable-perlinterp=yes
+    fi
+
+    if attr_on ruby; then
+        set -- "$@" --enable-rubyinterp=yes
+    fi
+
+    if attr_on tcl; then
+        set -- "$@" --enable-tclinterp=yes
+    fi
+
+    if attr_on cscope; then
+        set -- "$@" --enable-cscope
+    fi
+
+    if attr_on x11; then
+        set -- "$@" --with-x
+    else
+        set -- "$@" --without-x --enable-gui=no
+    fi
+
+    if attr_on gpm; then
+        set -- "$@" --enable-gpm=yes
+    else
+        set -- "$@" --disable-gpm
+    fi
+
+    if ! attr_on nls; then
+        set -- "$@" --disable-nls
+    fi
+
+    CPPFLAGS="-I$PREFIX/include" \
+    LDFLAGS="-L$PREFIX/lib" \
+    LD_LIBRARY_PATH="$PREFIX/lib${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}" \
+    ./configure "$@" || exit 1
+
+    make $MAKEOPTS
+}
+
+pkg_install()
+{
+    cd "$src" || exit 1
+    make DESTDIR="$DESTDIR" install
+}

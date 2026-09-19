@@ -1,0 +1,16 @@
+pkg_download()
+{
+    :
+}
+
+pkg_build()
+{
+    mkdir -p clang-config || exit 1
+    printf -- '-stdlib=libc++\n' > clang-config/x86_64-unknown-linux-musl-clang++.cfg
+}
+
+pkg_install()
+{
+    install -d "$DESTDIR/etc/clang" || exit 1
+    install -m 644 clang-config/x86_64-unknown-linux-musl-clang++.cfg "$DESTDIR/etc/clang/x86_64-unknown-linux-musl-clang++.cfg"
+}

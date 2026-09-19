@@ -1,0 +1,26 @@
+src="dbus-$PKG_VERSION"
+
+pkg_download()
+{
+    curl -fL --retry 3 --retry-delay 2 -o "dbus-$PKG_VERSION.tar.xz" "https://dbus.freedesktop.org/releases/dbus/dbus-$PKG_VERSION.tar.xz"
+    tar -xf "dbus-$PKG_VERSION.tar.xz"
+}
+
+pkg_build()
+{
+    cd "$src" || exit 1
+
+    apparmor_flag="-Dapparmor=disabled"
+    if attr_on apparmor; then
+        apparmor_flag="-Dapparmor=enabled"
+    fi
+
+    meson setup --prefix="$PREFIX" --libdir="$PREFIX/lib" --sysconfdir=/etc --localstatedir=/var --buildtype=release --wrap-mode=nofallback -Dsystemd=disabled -Dselinux=disabled $apparmor_flag build
+    ninja -C build
+}
+
+pkg_install()
+{
+    cd "$src" || exit 1
+    DESTDIR="$DESTDIR" ninja -C build install
+}
