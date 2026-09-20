@@ -1,0 +1,1 @@
+Portable, high-level foreign function interface (FFI) library that allows code written in one language, such as an interpreter, to call functions in compiled code written in another language like C or C++.

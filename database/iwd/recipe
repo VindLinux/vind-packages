@@ -1,0 +1,39 @@
+src="iwd-$PKG_VERSION"
+tarball="$src.tar.xz"
+
+pkg_download()
+{
+    curl -fL --retry 3 --retry-delay 2 -o "$tarball" \
+        "https://www.kernel.org/pub/linux/network/wireless/$tarball" || exit 1
+    tar -xf "$tarball" || exit 1
+}
+
+pkg_build()
+{
+    cd "$src" || exit 1
+
+    set -- --prefix="$PREFIX" \
+        --sysconfdir=/etc \
+        --localstatedir=/var \
+        --enable-client \
+        --disable-manual-pages \
+        --disable-systemd-service \
+        --with-dbus-datadir="$PREFIX/share/dbus-1"
+
+    if attr_on wired; then
+        set -- "$@" --enable-wired
+    fi
+
+    if attr_on ofono; then
+        set -- "$@" --enable-ofono
+    fi
+
+    ./configure "$@" || exit 1
+    make $MAKEOPTS
+}
+
+pkg_install()
+{
+    cd "$src" || exit 1
+    make DESTDIR="$DESTDIR" install
+}

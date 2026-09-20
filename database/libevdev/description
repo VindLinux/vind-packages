@@ -1,0 +1,1 @@
+Wrapper library for evdev input devices that abstracts common tasks (querying capabilities, reading events, SYN_DROPPED resync handling) behind a stable API, avoiding direct/erroneous ioctl use. Required by libinput to talk to kernel input devices.

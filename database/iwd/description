@@ -1,0 +1,1 @@
+iNet Wireless Daemon (iwd) is a minimalistic wireless daemon for Linux that uses modern kernel interfaces like cfg80211 and nl80211 (netlink). It provides a D-Bus API and the iwctl command-line client, and does not depend on wpa_supplicant.

@@ -1,0 +1,18 @@
+src="libpciaccess-0.18.1"
+
+pkg_download()
+{
+    curl -fL --retry 3 --retry-delay 2 -o libpciaccess-0.18.1.tar.xz https://www.x.org/pub/individual/lib/libpciaccess-0.18.1.tar.xz
+    tar -xf libpciaccess-0.18.1.tar.xz
+}
+
+pkg_build()
+{
+    meson setup --prefix="$XORG_PREFIX" --libdir="$XORG_PREFIX/lib" --buildtype=release "$src/build" "$src"
+    ninja -C "$src/build" $MAKEOPTS
+}
+
+pkg_install()
+{
+    DESTDIR="$DESTDIR" ninja -C "$src/build" install
+}

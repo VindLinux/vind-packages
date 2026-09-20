@@ -1,0 +1,31 @@
+src="iproute2-$PKG_VERSION"
+tarball="$src.tar.gz"
+
+pkg_download()
+{
+    curl -fL --retry 3 --retry-delay 2 -o "$tarball" \
+        "https://mirrors.edge.kernel.org/pub/linux/utils/net/iproute2/$tarball" || exit 1
+    tar -xf "$tarball" || exit 1
+}
+
+pkg_build()
+{
+    cd "$src" || exit 1
+
+    set -- --prefix="$PREFIX"
+
+    if attr_on libbpf; then
+        set -- "$@" --libbpf_force on
+    else
+        set -- "$@" --libbpf_force off
+    fi
+
+    ./configure "$@" || exit 1
+    make $MAKEOPTS CCOPTS="-D_GNU_SOURCE -include endian.h"
+}
+
+pkg_install()
+{
+    cd "$src" || exit 1
+    make DESTDIR="$DESTDIR" install
+}

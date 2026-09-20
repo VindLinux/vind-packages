@@ -1,0 +1,1 @@
+Library providing useful functions commonly found on BSD systems (queue.h, err.h, arc4random, setproctitle, strlcpy/strlcat, fgetln, and more), easing the portability of software with strong BSD origins to Linux and other non-BSD systems.

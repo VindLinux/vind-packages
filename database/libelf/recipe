@@ -1,0 +1,29 @@
+src="elfutils-0.193"
+
+pkg_download()
+{
+    curl -fL --retry 3 --retry-delay 2 -o elfutils-0.193.tar.bz2 https://sourceware.org/elfutils/ftp/0.193/elfutils-0.193.tar.bz2
+    tar -xf elfutils-0.193.tar.bz2
+}
+
+pkg_build()
+{
+    cd "$src" || exit 1
+
+    LDFLAGS="$LDFLAGS -lfts -lobstack" ./configure \
+        --prefix="$PREFIX" \
+        --disable-debuginfod \
+        --enable-libdebuginfod=dummy \
+        --disable-demangler
+
+    make -C lib $MAKEOPTS
+    make -C libelf $MAKEOPTS
+}
+
+pkg_install()
+{
+    cd "$src" || exit 1
+    make -C libelf DESTDIR="$DESTDIR" install
+    install -Dm644 config/libelf.pc "$DESTDIR$PREFIX/lib/pkgconfig/libelf.pc"
+    rm -f "$DESTDIR$PREFIX/lib/libelf.a"
+}

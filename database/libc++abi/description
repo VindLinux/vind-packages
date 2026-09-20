@@ -1,0 +1,1 @@
+LLVM's implementation of low-level support for a standard C++ ABI, built together with libunwind as a standalone component against the already-installed LLVM/Clang 21.1.8. Uses LLVM's own unwinder (libunwind) rather than GCC's libgcc_s, since GCC is not present in the final system.

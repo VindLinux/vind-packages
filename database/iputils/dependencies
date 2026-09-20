@@ -1,0 +1,5 @@
+meson
+ninja
+cap?libcap
+idn?libidn2
+nls?gettext

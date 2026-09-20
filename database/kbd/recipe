@@ -1,0 +1,47 @@
+src="kbd-$PKG_VERSION"
+tarball="$src.tar.xz"
+
+pkg_download()
+{
+    curl -fL --retry 3 --retry-delay 2 -o "$tarball" \
+        "https://mirrors.edge.kernel.org/pub/linux/utils/kbd/$tarball" || exit 1
+    tar -xf "$tarball" || exit 1
+}
+
+pkg_build()
+{
+    cd "$src" || exit 1
+
+    set -- --prefix="$PREFIX"
+
+    if ! attr_on nls; then
+        set -- "$@" --disable-nls
+    fi
+
+    if ! attr_on vlock; then
+        set -- "$@" --disable-vlock
+    fi
+
+    for lib in zlib bzip2 lzma zstd; do
+        if attr_on "$lib"; then
+            set -- "$@" "--with-$lib"
+        else
+            set -- "$@" "--without-$lib"
+        fi
+    done
+
+    if attr_on xkb; then
+        set -- "$@" --enable-xkb
+    else
+        set -- "$@" --disable-xkb
+    fi
+
+    ./configure "$@" || exit 1
+    make $MAKEOPTS
+}
+
+pkg_install()
+{
+    cd "$src" || exit 1
+    make DESTDIR="$DESTDIR" install
+}

@@ -1,0 +1,1 @@
+Message digest library providing MD2, MD4, MD5, RIPEMD-160, SHA-1, SHA-2, and SHA-3 (SHAKE) functions commonly found on BSD systems, split out of libbsd to serve as a portable, standalone implementation for non-BSD systems.

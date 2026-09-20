@@ -1,0 +1,36 @@
+src="llvm-project-$PKG_VERSION.src"
+tarball="$src.tar.xz"
+build="$src/runtimes/build"
+
+pkg_download()
+{
+    curl -fL --retry 3 --retry-delay 2 -o "$tarball" \
+        "https://github.com/llvm/llvm-project/releases/download/llvmorg-$PKG_VERSION/$tarball" || exit 1
+    tar -xf "$tarball" || exit 1
+}
+
+pkg_build()
+{
+    unset CXXFLAGS CFLAGS LDFLAGS
+
+    cmake -G Ninja -S "$src/runtimes" -B "$build" \
+        -D CMAKE_BUILD_TYPE=Release \
+        -D CMAKE_INSTALL_PREFIX="$PREFIX" \
+        -D LLVM_ENABLE_RUNTIMES='libunwind;libcxx;libcxxabi' \
+        -D LLVM_DIR="$PREFIX/lib/cmake/llvm" \
+        -D LIBCXXABI_USE_LLVM_UNWINDER=ON \
+        -D LIBCXXABI_USE_COMPILER_RT=ON \
+        -D LIBCXX_CXX_ABI=libcxxabi \
+        -D LIBCXX_USE_COMPILER_RT=ON \
+        -D LIBCXX_HAS_MUSL_LIBC=ON \
+        -D LIBCXX_HAS_ATOMIC_LIB=OFF \
+        -D CMAKE_C_COMPILER_WORKS=ON \
+        -D CMAKE_CXX_COMPILER_WORKS=ON || exit 1
+
+    ninja -C "$build" $MAKEOPTS
+}
+
+pkg_install()
+{
+    DESTDIR="$DESTDIR" ninja -C "$build" install
+}

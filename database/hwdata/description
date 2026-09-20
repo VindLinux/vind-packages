@@ -1,0 +1,1 @@
+Collection of hardware identification and configuration data, including pci.ids and usb.ids databases used by tools like pciutils and usbutils.

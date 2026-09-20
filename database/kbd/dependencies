@@ -1,0 +1,9 @@
+autoconf
+readline
+nls?gettext
+vlock?linux-pam
+zlib?zlib
+bzip2?bzip2
+lzma?xz
+zstd?zstd
+xkb?libxkbcommon

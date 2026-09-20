@@ -1,0 +1,1 @@
+Netlink Protocol Library Suite, providing a collection of libraries and command-line tools for interacting with the Linux kernel's netlink-based interfaces (NETLINK_ROUTE, generic netlink, netfilter, etc.), used by tools such as iproute2 and wireless daemons like iwd and wpa_supplicant.

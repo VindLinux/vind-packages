@@ -1,0 +1,1 @@
+Asynchronous event notification library providing a mechanism to execute callbacks when file descriptors, timers, or signals become ready, using the best available OS backend (epoll, kqueue, select, etc). Used by tmux, memcached, and Tor.

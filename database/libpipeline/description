@@ -1,0 +1,1 @@
+C library for setting up and running pipelines of subprocesses without going through shell command-line parsing, avoiding its quoting pitfalls and injection risks. Required by man-db to build its formatter pipelines (e.g. zsoelim | tbl | nroff).

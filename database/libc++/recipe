@@ -1,0 +1,9 @@
+pkg_download()
+{
+    :
+}
+
+pkg_install()
+{
+    :
+}

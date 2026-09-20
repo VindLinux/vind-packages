@@ -1,0 +1,28 @@
+src="libclc-$PKG_VERSION.src"
+tarball="$src.tar.xz"
+
+pkg_download()
+{
+    curl -fL --retry 3 --retry-delay 2 -o "$tarball" \
+        "https://github.com/llvm/llvm-project/releases/download/llvmorg-$PKG_VERSION/$tarball" || exit 1
+    tar -xf "$tarball" || exit 1
+}
+
+pkg_build()
+{
+    cd "$src" || exit 1
+
+    set -- -D CMAKE_INSTALL_PREFIX="$PREFIX" -D CMAKE_BUILD_TYPE=Release
+
+    if attr_on runtime_subnormal; then
+        set -- "$@" -D ENABLE_RUNTIME_SUBNORMAL=ON
+    fi
+
+    cmake -S . -B build -G Ninja "$@" || exit 1
+    ninja -C build $MAKEOPTS
+}
+
+pkg_install()
+{
+    DESTDIR="$DESTDIR" ninja -C "$src/build" install
+}

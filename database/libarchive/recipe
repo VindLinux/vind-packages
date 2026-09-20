@@ -1,0 +1,43 @@
+src="libarchive-$PKG_VERSION"
+tarball="$src.tar.xz"
+
+pkg_download()
+{
+    curl -fL --retry 3 --retry-delay 2 -o "$tarball" \
+        "https://github.com/libarchive/libarchive/releases/download/v$PKG_VERSION/$tarball" || exit 1
+    tar -xf "$tarball" || exit 1
+}
+
+pkg_build()
+{
+    cd "$src" || exit 1
+
+    set -- --prefix="$PREFIX" --disable-static ac_cv_header_readpassphrase_h=no
+
+    for opt in \
+        zlib:zlib bzip2:bz2lib libb2:libb2 lz4:lz4 zstd:zstd lzma:lzma \
+        openssl:openssl xml2:xml2 expat:expat
+    do
+        if attr_on "${opt%%:*}"; then
+            set -- "$@" "--with-${opt#*:}"
+        else
+            set -- "$@" "--without-${opt#*:}"
+        fi
+    done
+
+    for opt in lzo2 mbedtls nettle; do
+        if attr_on "$opt"; then
+            set -- "$@" "--with-$opt"
+        fi
+    done
+
+    ./configure "$@" || exit 1
+    make $MAKEOPTS
+}
+
+pkg_install()
+{
+    cd "$src" || exit 1
+    make DESTDIR="$DESTDIR" install || exit 1
+    ln -sfv bsdunzip "$DESTDIR$PREFIX/bin/unzip"
+}

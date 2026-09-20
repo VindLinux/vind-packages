@@ -1,0 +1,1 @@
+Input device handling library abstracting evdev devices (keyboards, mice, touchpads, touchscreens, tablets) behind a common event API, including pointer acceleration and gesture recognition. Used by Wayland compositors (via wlroots) and X.Org.

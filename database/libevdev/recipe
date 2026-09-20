@@ -1,0 +1,23 @@
+src="libevdev-1.13.7"
+
+pkg_download()
+{
+    curl -fL --retry 3 --retry-delay 2 -o libevdev-1.13.7.tar.xz https://www.freedesktop.org/software/libevdev/libevdev-1.13.7.tar.xz
+    tar -xf libevdev-1.13.7.tar.xz
+}
+
+pkg_build()
+{
+    meson setup "$src/build" "$src" \
+        --prefix="$PREFIX" \
+        --buildtype=release \
+        -Ddocumentation=disabled \
+        -Dtests=disabled
+
+    ninja -C "$src/build" $MAKEOPTS
+}
+
+pkg_install()
+{
+    DESTDIR="$DESTDIR" ninja -C "$src/build" install
+}

@@ -1,0 +1,20 @@
+src="libdrm-$PKG_VERSION"
+tarball="$src.tar.xz"
+
+pkg_download()
+{
+    curl -fL --retry 3 --retry-delay 2 -o "$tarball" \
+        "https://dri.freedesktop.org/libdrm/$tarball" || exit 1
+    tar -xf "$tarball" || exit 1
+}
+
+pkg_build()
+{
+    meson setup --prefix="$XORG_PREFIX" --libdir="$XORG_PREFIX/lib" --buildtype=release -Dudev=true -Dvalgrind=disabled "$src/build" "$src" || exit 1
+    ninja -C "$src/build" $MAKEOPTS
+}
+
+pkg_install()
+{
+    DESTDIR="$DESTDIR" ninja -C "$src/build" install
+}

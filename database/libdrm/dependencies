@@ -1,0 +1,4 @@
+xorg-libraries
+meson
+ninja
+eudev

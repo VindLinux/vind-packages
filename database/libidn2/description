@@ -1,0 +1,1 @@
+Library implementing IDNA2008, Punycode, and Unicode TR46 for handling internationalized domain names.

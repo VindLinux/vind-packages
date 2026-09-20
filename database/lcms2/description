@@ -1,0 +1,1 @@
+Little CMS, a small-footprint color management engine providing fast transforms between ICC color profiles. Used by wlroots' Vulkan renderer for the color-management-v1 Wayland protocol (color range/encoding transforms).

@@ -1,0 +1,1 @@
+Library for parsing and interpreting EDID and DisplayID monitor descriptor blobs, exposing display name, supported modes, and color characteristics. Used by wlroots' DRM backend to query connected display capabilities.

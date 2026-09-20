@@ -1,0 +1,1 @@
+Library interface to the X Font Server (xfs), allowing clients to query fonts served over the network font protocol.

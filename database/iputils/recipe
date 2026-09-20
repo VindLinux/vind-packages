@@ -1,0 +1,43 @@
+src="iputils-$PKG_VERSION"
+tarball="$src.tar.gz"
+
+pkg_download()
+{
+    curl -fL --retry 3 --retry-delay 2 -o "$tarball" \
+        "https://github.com/iputils/iputils/archive/refs/tags/$PKG_VERSION.tar.gz" || exit 1
+    tar -xf "$tarball" || exit 1
+}
+
+pkg_build()
+{
+    cd "$src" || exit 1
+
+    set -- --prefix="$PREFIX" --libdir="$PREFIX/lib"
+
+    if attr_on cap; then
+        set -- "$@" -DUSE_CAP=true
+    else
+        set -- "$@" -DUSE_CAP=false
+    fi
+
+    if attr_on idn; then
+        set -- "$@" -DUSE_IDN=true
+    else
+        set -- "$@" -DUSE_IDN=false
+    fi
+
+    if attr_on nls; then
+        set -- "$@" -DUSE_GETTEXT=true
+    else
+        set -- "$@" -DUSE_GETTEXT=false
+    fi
+
+    meson setup build "$@" || exit 1
+    ninja -C build
+}
+
+pkg_install()
+{
+    cd "$src" || exit 1
+    DESTDIR="$DESTDIR" ninja -C build install
+}

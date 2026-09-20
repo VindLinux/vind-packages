@@ -1,0 +1,12 @@
+zlib
+bzip2
+libb2
+lz4
+zstd
+lzma
+lzo2
+mbedtls
+nettle
+openssl
+xml2
+expat

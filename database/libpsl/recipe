@@ -1,0 +1,18 @@
+src="libpsl-0.21.5"
+
+pkg_download()
+{
+    curl -fL --retry 3 --retry-delay 2 -o libpsl-0.21.5.tar.gz https://github.com/rockdaboot/libpsl/releases/download/0.21.5/libpsl-0.21.5.tar.gz
+    tar -xf libpsl-0.21.5.tar.gz
+}
+
+pkg_build()
+{
+    meson setup --prefix="$PREFIX" --libdir="$PREFIX/lib" --buildtype=release "$src/build" "$src"
+    ninja -C "$src/build" $MAKEOPTS
+}
+
+pkg_install()
+{
+    DESTDIR="$DESTDIR" ninja -C "$src/build" install
+}

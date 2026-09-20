@@ -1,0 +1,1 @@
+Standard file compression utility implementing the DEFLATE algorithm, providing gzip/gunzip/zcat for the .gz format.

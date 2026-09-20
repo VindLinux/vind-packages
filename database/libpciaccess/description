@@ -1,0 +1,1 @@
+Generic PCI access library for X, providing a platform-independent interface to query and configure PCI devices, used by graphics drivers.

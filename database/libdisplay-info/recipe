@@ -1,0 +1,20 @@
+src="libdisplay-info-$PKG_VERSION"
+tarball="$src.tar.bz2"
+
+pkg_download()
+{
+    curl -fL --retry 3 --retry-delay 2 -o "$tarball" \
+        "https://gitlab.freedesktop.org/emersion/libdisplay-info/-/archive/$PKG_VERSION/$tarball" || exit 1
+    tar -xf "$tarball" || exit 1
+}
+
+pkg_build()
+{
+    meson setup "$src/build" "$src" --prefix="$PREFIX" --buildtype=release || exit 1
+    ninja -C "$src/build" $MAKEOPTS
+}
+
+pkg_install()
+{
+    DESTDIR="$DESTDIR" ninja -C "$src/build" install
+}

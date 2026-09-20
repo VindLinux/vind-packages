@@ -1,0 +1,1 @@
+Lightweight library that eases the use of KMS hardware overlay planes from userspace: compositors create virtual 'layers', set KMS properties on them, and libliftoff allocates real planes for them when possible, falling back to composition otherwise.

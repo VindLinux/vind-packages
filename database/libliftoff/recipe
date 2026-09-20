@@ -1,0 +1,18 @@
+src="libliftoff-v0.5.0"
+
+pkg_download()
+{
+    curl -fL --retry 3 --retry-delay 2 -o libliftoff-0.5.0.tar.gz https://gitlab.freedesktop.org/emersion/libliftoff/-/archive/v0.5.0/libliftoff-v0.5.0.tar.gz
+    tar -xf libliftoff-0.5.0.tar.gz
+}
+
+pkg_build()
+{
+    meson setup "$src/build" "$src" --prefix="$PREFIX" --buildtype=release
+    ninja -C "$src/build" $MAKEOPTS
+}
+
+pkg_install()
+{
+    DESTDIR="$DESTDIR" ninja -C "$src/build" install
+}
