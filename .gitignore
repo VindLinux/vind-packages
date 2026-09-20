@@ -1,6 +1,7 @@
 # Local development scripts
 missing-packages.sh
 adapt-recipe
+logs
 
 # Legacy package database
 packages
