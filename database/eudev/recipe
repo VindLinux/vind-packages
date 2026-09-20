@@ -1,0 +1,70 @@
+src="eudev-3.2.14"
+
+pkg_download()
+{
+    curl -fL --retry 3 --retry-delay 2 \
+        -o eudev-3.2.14.tar.gz \
+        "https://github.com/eudev-project/eudev/releases/download/v3.2.14/eudev-3.2.14.tar.gz"
+
+    tar -xf eudev-3.2.14.tar.gz
+}
+
+pkg_build()
+{
+    cd "$src" || exit 1
+
+    kmod_flag="--disable-kmod"
+    if attr_on kmod; then
+        kmod_flag="--enable-kmod"
+    fi
+
+    hwdb_flag="--disable-hwdb"
+    if attr_on hwdb; then
+        hwdb_flag="--enable-hwdb"
+    fi
+
+    rule_generator_flag="--disable-rule-generator"
+    if attr_on rule-generator; then
+        rule_generator_flag="--enable-rule-generator"
+    fi
+
+    mtd_probe_flag="--disable-mtd_probe"
+    if attr_on mtd_probe; then
+        mtd_probe_flag="--enable-mtd_probe"
+    fi
+
+    blkid_flag="--disable-blkid"
+    if attr_on blkid; then
+        blkid_flag="--enable-blkid"
+    fi
+
+    selinux_flag="--disable-selinux"
+    if attr_on selinux; then
+        selinux_flag="--enable-selinux"
+    fi
+
+    ./configure \
+        --prefix="$PREFIX" \
+        --sysconfdir=/etc \
+        --bindir="$PREFIX/sbin" \
+        --enable-manpages \
+        --disable-static \
+        "$kmod_flag" \
+        "$hwdb_flag" \
+        "$rule_generator_flag" \
+        "$mtd_probe_flag" \
+        "$blkid_flag" \
+        "$selinux_flag"
+
+    make $MAKEOPTS
+}
+
+pkg_install()
+{
+    mkdir -p \
+        "$DESTDIR$PREFIX/lib/udev/rules.d" \
+        "$DESTDIR/etc/udev/rules.d"
+
+    cd "$src" || exit 1
+    make DESTDIR="$DESTDIR" install
+}

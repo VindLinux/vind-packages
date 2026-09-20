@@ -1,0 +1,44 @@
+src="expat-2.8.2"
+
+pkg_download()
+{
+    curl -fL --retry 3 --retry-delay 2 \
+        -o expat-2.8.2.tar.xz \
+        "https://github.com/libexpat/libexpat/releases/download/R_2_8_2/expat-2.8.2.tar.xz"
+
+    tar -xf expat-2.8.2.tar.xz
+}
+
+pkg_build()
+{
+    cd "$src" || exit 1
+
+    xmlwf_flag="--without-xmlwf"
+    if attr_on xmlwf; then
+        xmlwf_flag="--with-xmlwf"
+    fi
+
+    xml_attr_info_flag="--disable-xml-attr-info"
+    if attr_on xml-attr-info; then
+        xml_attr_info_flag="--enable-xml-attr-info"
+    fi
+
+    xml_context_flag="--disable-xml-context"
+    if attr_on xml-context; then
+        xml_context_flag="--enable-xml-context"
+    fi
+
+    ./configure \
+        --prefix="$PREFIX" \
+        "$xmlwf_flag" \
+        "$xml_attr_info_flag" \
+        "$xml_context_flag"
+
+    make $MAKEOPTS
+}
+
+pkg_install()
+{
+    cd "$src" || exit 1
+    make DESTDIR="$DESTDIR" install
+}

@@ -1,0 +1,1 @@
+Standalone dynamic and persistent device naming daemon (userspace devfs), a systemd-independent fork of udev that manages /dev device nodes and hotplug events.
