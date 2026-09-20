@@ -1,6 +1,2 @@
-kmod
-hwdb
-rule-generator
-mtd_probe
 blkid
-selinux
+rule_generator

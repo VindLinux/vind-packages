@@ -1,4 +1,3 @@
 gperf
-kmod?kmod
+kmod
 blkid?util-linux
-selinux?libselinux

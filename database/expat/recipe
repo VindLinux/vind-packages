@@ -1,39 +1,25 @@
-src="expat-2.8.2"
+src="expat-$PKG_VERSION"
+tarball="$src.tar.xz"
+tag="R_$(printf '%s' "$PKG_VERSION" | tr . _)"
 
 pkg_download()
 {
-    curl -fL --retry 3 --retry-delay 2 \
-        -o expat-2.8.2.tar.xz \
-        "https://github.com/libexpat/libexpat/releases/download/R_2_8_2/expat-2.8.2.tar.xz"
-
-    tar -xf expat-2.8.2.tar.xz
+    curl -fL --retry 3 --retry-delay 2 -o "$tarball" \
+        "https://github.com/libexpat/libexpat/releases/download/$tag/$tarball" || exit 1
+    tar -xf "$tarball" || exit 1
 }
 
 pkg_build()
 {
     cd "$src" || exit 1
 
-    xmlwf_flag="--without-xmlwf"
-    if attr_on xmlwf; then
-        xmlwf_flag="--with-xmlwf"
+    set -- $XORG_CONFIG
+
+    if attr_on xml_attr_info; then
+        set -- "$@" --enable-xml-attr-info
     fi
 
-    xml_attr_info_flag="--disable-xml-attr-info"
-    if attr_on xml-attr-info; then
-        xml_attr_info_flag="--enable-xml-attr-info"
-    fi
-
-    xml_context_flag="--disable-xml-context"
-    if attr_on xml-context; then
-        xml_context_flag="--enable-xml-context"
-    fi
-
-    ./configure \
-        --prefix="$PREFIX" \
-        "$xmlwf_flag" \
-        "$xml_attr_info_flag" \
-        "$xml_context_flag"
-
+    ./configure "$@" || exit 1
     make $MAKEOPTS
 }
 
