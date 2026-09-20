@@ -1,0 +1,20 @@
+src="tree-$PKG_VERSION"
+tarball="unix-tree-$PKG_VERSION.tar.bz2"
+
+pkg_download()
+{
+    curl -fL --retry 3 --retry-delay 2 -o "$tarball" \
+        "https://gitlab.com/OldManProgrammer/unix-tree/-/archive/$PKG_VERSION/$tarball" || exit 1
+    mkdir -p "$src" || exit 1
+    tar -xf "$tarball" --strip-components=1 -C "$src" || exit 1
+}
+
+pkg_build()
+{
+    make -C "$src" $MAKEOPTS PREFIX="$PREFIX"
+}
+
+pkg_install()
+{
+    make -C "$src" DESTDIR="$DESTDIR$PREFIX/bin" PREFIX="$PREFIX" MANDIR="$DESTDIR$PREFIX/share/man" install
+}

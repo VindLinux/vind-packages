@@ -1,0 +1,11 @@
+efibootmgr
+bison
+flex
+python3
+nls?gettext
+mkfont?freetype
+mount?fuse3
+device_mapper?lvm2
+liblzma?xz
+libzfs?zfs
+protect?libtasn1

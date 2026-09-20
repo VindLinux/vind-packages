@@ -1,0 +1,33 @@
+src="fontconfig-$PKG_VERSION"
+tarball="$src.tar.xz"
+
+pkg_download()
+{
+    curl -fL --retry 3 --retry-delay 2 -o "$tarball" \
+        "https://gitlab.freedesktop.org/api/v4/projects/890/packages/generic/fontconfig/$PKG_VERSION/$tarball" || exit 1
+    tar -xf "$tarball" || exit 1
+}
+
+pkg_build()
+{
+    cd "$src" || exit 1
+
+    set -- $XORG_CONFIG --disable-docs
+
+    if ! attr_on nls; then
+        set -- "$@" --disable-nls
+    fi
+
+    if attr_on iconv; then
+        set -- "$@" --enable-iconv
+    fi
+
+    ./configure "$@" || exit 1
+    make $MAKEOPTS
+}
+
+pkg_install()
+{
+    cd "$src" || exit 1
+    make DESTDIR="$DESTDIR" install
+}

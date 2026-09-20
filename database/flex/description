@@ -1,0 +1,1 @@
+Fast lexical analyzer generator, producing programs that recognize lexical patterns in text; used alongside Bison by Mesa's build to generate GLSL and shader language lexers/parsers.

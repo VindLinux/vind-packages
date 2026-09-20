@@ -1,0 +1,49 @@
+src="freetype-$PKG_VERSION"
+tarball="$src.tar.xz"
+
+pkg_download()
+{
+    curl -fL --retry 3 --retry-delay 2 -o "$tarball" \
+        "https://sourceforge.net/projects/freetype/files/freetype2/$PKG_VERSION/$tarball/download" || exit 1
+    tar -xf "$tarball" || exit 1
+}
+
+pkg_build()
+{
+    cd "$src" || exit 1
+
+    set -- $XORG_CONFIG
+
+    if attr_on bzip2; then
+        set -- "$@" --with-bzip2=yes
+    else
+        set -- "$@" --with-bzip2=no
+    fi
+
+    if attr_on png; then
+        set -- "$@" --with-png=yes
+    else
+        set -- "$@" --with-png=no
+    fi
+
+    if attr_on harfbuzz; then
+        set -- "$@" --with-harfbuzz=yes
+    else
+        set -- "$@" --with-harfbuzz=no
+    fi
+
+    if attr_on brotli; then
+        set -- "$@" --with-brotli=yes
+    else
+        set -- "$@" --with-brotli=no
+    fi
+
+    ./configure "$@" || exit 1
+    make $MAKEOPTS
+}
+
+pkg_install()
+{
+    cd "$src" || exit 1
+    make DESTDIR="$DESTDIR" install
+}

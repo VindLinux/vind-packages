@@ -1,0 +1,36 @@
+src="groff-$PKG_VERSION"
+tarball="$src.tar.gz"
+
+pkg_download()
+{
+    curl -fL --retry 3 --retry-delay 2 -o "$tarball" \
+        "https://ftp.gnu.org/gnu/groff/$tarball" || exit 1
+    tar -xf "$tarball" || exit 1
+}
+
+pkg_build()
+{
+    cd "$src" || exit 1
+
+    set -- --prefix="$PREFIX"
+
+    if attr_on x11; then
+        set -- "$@" --with-x
+    else
+        set -- "$@" --without-x
+    fi
+
+    if attr_on uchardet; then
+        set -- "$@" --with-uchardet=yes
+    else
+        set -- "$@" --with-uchardet=no
+    fi
+
+    PAGE=letter ./configure "$@" || exit 1
+    make $MAKEOPTS
+}
+
+pkg_install()
+{
+    make -C "$src" DESTDIR="$DESTDIR" install
+}

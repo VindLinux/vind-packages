@@ -1,0 +1,48 @@
+src="grub-$PKG_VERSION"
+tarball="$src.tar.xz"
+
+pkg_download()
+{
+    curl -fL --retry 3 --retry-delay 2 -o "$tarball" \
+        "https://ftp.gnu.org/gnu/grub/$tarball" || exit 1
+    tar -xf "$tarball" || exit 1
+}
+
+pkg_build()
+{
+    cd "$src" || exit 1
+
+    set -- --prefix="$PREFIX" \
+        --sysconfdir=/etc \
+        --disable-efiemu \
+        --with-platform=efi \
+        --target=x86_64 \
+        --disable-werror
+
+    if ! attr_on nls; then
+        set -- "$@" --disable-nls
+    fi
+
+    for opt in \
+        mkfont:grub-mkfont mount:grub-mount device_mapper:device-mapper \
+        liblzma:liblzma libzfs:libzfs protect:grub-protect
+    do
+        if attr_on "${opt%%:*}"; then
+            set -- "$@" "--enable-${opt#*:}"
+        else
+            set -- "$@" "--disable-${opt#*:}"
+        fi
+    done
+
+    env -u CFLAGS -u CPPFLAGS -u CXXFLAGS -u LDFLAGS ./configure "$@" || exit 1
+
+    sed -i 's/^#if 1$/#if 0/' grub-core/lib/gnulib/getopt-cdefs.h || exit 1
+
+    make $MAKEOPTS
+}
+
+pkg_install()
+{
+    cd "$src" || exit 1
+    make DESTDIR="$DESTDIR" install
+}

@@ -1,0 +1,54 @@
+src="htop-$PKG_VERSION"
+tarball="$src.tar.xz"
+
+pkg_download()
+{
+    curl -fL --retry 3 --retry-delay 2 -o "$tarball" \
+        "https://github.com/htop-dev/htop/releases/download/$PKG_VERSION/$tarball" || exit 1
+    tar -xf "$tarball" || exit 1
+}
+
+pkg_build()
+{
+    cd "$src" || exit 1
+
+    set -- --prefix="$PREFIX" --enable-unicode
+
+    if attr_on pcp; then
+        set -- "$@" --enable-pcp
+    fi
+
+    if attr_on backtrace; then
+        set -- "$@" --enable-backtrace=unwind-ptrace
+    fi
+
+    if attr_on hwloc; then
+        set -- "$@" --enable-hwloc
+    fi
+
+    if attr_on capabilities; then
+        set -- "$@" --enable-capabilities
+    else
+        set -- "$@" --disable-capabilities
+    fi
+
+    if attr_on delayacct; then
+        set -- "$@" --enable-delayacct
+    else
+        set -- "$@" --disable-delayacct
+    fi
+
+    if attr_on sensors; then
+        set -- "$@" --enable-sensors
+    else
+        set -- "$@" --disable-sensors
+    fi
+
+    ./configure "$@" || exit 1
+    make $MAKEOPTS
+}
+
+pkg_install()
+{
+    make -C "$src" DESTDIR="$DESTDIR" install
+}

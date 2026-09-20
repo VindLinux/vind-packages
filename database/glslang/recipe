@@ -1,0 +1,28 @@
+src="glslang-$PKG_VERSION"
+tarball="$src.tar.gz"
+
+pkg_download()
+{
+    curl -fL --retry 3 --retry-delay 2 -o "$tarball" \
+        "https://github.com/KhronosGroup/glslang/archive/$PKG_VERSION/$tarball" || exit 1
+    tar -xf "$tarball" || exit 1
+}
+
+pkg_build()
+{
+    cd "$src" || exit 1
+
+    cmake -S . -B build -G Ninja \
+        -DCMAKE_INSTALL_PREFIX="$PREFIX" \
+        -DCMAKE_BUILD_TYPE=Release \
+        -DALLOW_EXTERNAL_SPIRV_TOOLS=ON \
+        -DBUILD_SHARED_LIBS=ON \
+        -DGLSLANG_TESTS=OFF || exit 1
+
+    cmake --build build -- $MAKEOPTS
+}
+
+pkg_install()
+{
+    DESTDIR="$DESTDIR" cmake --install "$src/build"
+}

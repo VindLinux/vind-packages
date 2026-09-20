@@ -1,0 +1,1 @@
+GNU troff document formatting system (groff), implementing troff, pic, eqn, tbl, and the man/mdoc/ms/mom macro packages. Required by man-db to render manual pages.

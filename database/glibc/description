@@ -1,0 +1,1 @@
+GNU C Library, used exclusively as a bootstrap-only toolchain dependency (with GCC and binutils) to build the initial NullOS system before switching to musl. Not part of the final system.

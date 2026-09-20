@@ -1,0 +1,18 @@
+src="gfetch"
+
+pkg_download()
+{
+    git clone --depth 1 --branch "v$PKG_VERSION" https://github.com/Elgumi01/gfetch
+}
+
+pkg_build()
+{
+    cd "$src" || exit 1
+    make $MAKEOPTS
+}
+
+pkg_install()
+{
+    cd "$src" || exit 1
+    make DESTDIR="$DESTDIR" PREFIX="$PREFIX/bin" install
+}

@@ -1,0 +1,32 @@
+src="flex-$PKG_VERSION"
+tarball="$src.tar.gz"
+
+pkg_download()
+{
+    curl -fL --retry 3 --retry-delay 2 -o "$tarball" \
+        "https://github.com/westes/flex/releases/download/v$PKG_VERSION/$tarball" || exit 1
+    tar -xf "$tarball" || exit 1
+}
+
+pkg_build()
+{
+    cd "$src" || exit 1
+
+    set -- --prefix="$PREFIX" --disable-static --docdir="$PREFIX/share/doc/flex-$PKG_VERSION"
+
+    if ! attr_on nls; then
+        set -- "$@" --disable-nls
+    fi
+
+    ./configure "$@" || exit 1
+    make $MAKEOPTS
+}
+
+pkg_install()
+{
+    cd "$src" || exit 1
+    make DESTDIR="$DESTDIR" install || exit 1
+
+    ln -sv flex "$DESTDIR$PREFIX/bin/lex" || exit 1
+    ln -sv flex.1 "$DESTDIR$PREFIX/share/man/man1/lex.1"
+}

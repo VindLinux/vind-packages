@@ -1,0 +1,1 @@
+GNU dbm, a library of database functions using extensible hashing that stores key/value pairs in a flat file, similar to the classic UNIX dbm/ndbm. Required by man-db for its whatis/apropos index.

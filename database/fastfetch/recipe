@@ -1,0 +1,39 @@
+src="fastfetch"
+
+pkg_download()
+{
+    git clone --depth 1 --branch "$PKG_VERSION" https://github.com/fastfetch-cli/fastfetch
+}
+
+pkg_build()
+{
+    set -- -DCMAKE_INSTALL_PREFIX="$PREFIX" -DCMAKE_BUILD_TYPE=Release
+
+    for opt in \
+        vulkan:VULKAN wayland:WAYLAND xcb_randr:XCB_RANDR xrandr:XRANDR \
+        drm:DRM drm_amdgpu:DRM_AMDGPU gio:GIO dconf:DCONF dbus:DBUS \
+        xfconf:XFCONF sqlite3:SQLITE3 rpm:RPM chafa:CHAFA egl:EGL glx:GLX \
+        osmesa:OSMESA opencl:OPENCL pulse:PULSE ddcutil:DDCUTIL elf:ELF \
+        libzfs:LIBZFS
+    do
+        if attr_on "${opt%%:*}"; then
+            set -- "$@" "-DENABLE_${opt#*:}=ON"
+        else
+            set -- "$@" "-DENABLE_${opt#*:}=OFF"
+        fi
+    done
+
+    if attr_on imagemagick; then
+        set -- "$@" -DENABLE_IMAGEMAGICK7=ON -DENABLE_IMAGEMAGICK6=ON
+    else
+        set -- "$@" -DENABLE_IMAGEMAGICK7=OFF -DENABLE_IMAGEMAGICK6=OFF
+    fi
+
+    cmake -S "$src" -B "$src/build" "$@" || exit 1
+    cmake --build "$src/build" -- $MAKEOPTS
+}
+
+pkg_install()
+{
+    DESTDIR="$DESTDIR" cmake --install "$src/build"
+}

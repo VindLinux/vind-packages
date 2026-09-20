@@ -1,0 +1,1 @@
+Interactive process viewer for Unix systems, showing a scrollable, colorized list of processes with CPU/memory usage, load average, and support for killing/renicing without typing PIDs.

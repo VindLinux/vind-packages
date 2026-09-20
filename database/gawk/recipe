@@ -1,0 +1,43 @@
+src="gawk-$PKG_VERSION"
+tarball="$src.tar.xz"
+
+pkg_download()
+{
+    curl -fL --retry 3 --retry-delay 2 -o "$tarball" \
+        "https://ftp.gnu.org/gnu/gawk/$tarball" || exit 1
+    tar -xf "$tarball" || exit 1
+}
+
+pkg_build()
+{
+    cd "$src" || exit 1
+
+    set -- --prefix="$PREFIX" --disable-static
+
+    if ! attr_on nls; then
+        set -- "$@" --disable-nls
+    fi
+
+    if attr_on mpfr; then
+        set -- "$@" --enable-mpfr
+    else
+        set -- "$@" --disable-mpfr
+    fi
+
+    if ! attr_on readline; then
+        set -- "$@" --without-readline
+    fi
+
+    if attr_on intdiv0; then
+        set -- "$@" --enable-builtin-intdiv0
+    fi
+
+    ./configure "$@" || exit 1
+    make $MAKEOPTS
+}
+
+pkg_install()
+{
+    cd "$src" || exit 1
+    make DESTDIR="$DESTDIR" install
+}

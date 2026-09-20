@@ -1,0 +1,36 @@
+src="gdbm-$PKG_VERSION"
+tarball="$src.tar.gz"
+
+pkg_download()
+{
+    curl -fL --retry 3 --retry-delay 2 -o "$tarball" \
+        "https://ftp.gnu.org/gnu/gdbm/$tarball" || exit 1
+    tar -xf "$tarball" || exit 1
+}
+
+pkg_build()
+{
+    cd "$src" || exit 1
+
+    set -- --prefix="$PREFIX" --disable-static --enable-libgdbm-compat
+
+    if ! attr_on nls; then
+        set -- "$@" --disable-nls
+    fi
+
+    if ! attr_on readline; then
+        set -- "$@" --without-readline
+    fi
+
+    if attr_on crash_tolerance; then
+        set -- "$@" --enable-crash-tolerance
+    fi
+
+    ./configure "$@" || exit 1
+    make $MAKEOPTS
+}
+
+pkg_install()
+{
+    make -C "$src" DESTDIR="$DESTDIR" install
+}

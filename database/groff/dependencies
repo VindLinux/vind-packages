@@ -1,0 +1,6 @@
+perl
+x11?libx11
+x11?libxt
+x11?libxaw
+x11?libxmu
+uchardet?uchardet

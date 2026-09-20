@@ -1,0 +1,7 @@
+ncurses
+pcp?pcp
+backtrace?libunwind
+hwloc?hwloc
+capabilities?libcap
+delayacct?libnl
+sensors?lm-sensors
