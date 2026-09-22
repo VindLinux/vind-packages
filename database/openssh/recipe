@@ -1,0 +1,22 @@
+src="openssh-10.2p1"
+
+pkg_download()
+{
+    curl -fL --retry 3 --retry-delay 2 -o openssh-10.2p1.tar.gz https://cdn.openbsd.org/pub/OpenBSD/OpenSSH/portable/openssh-10.2p1.tar.gz
+    tar -xf openssh-10.2p1.tar.gz
+}
+
+pkg_build()
+{
+    cd "$src" || exit 1
+    ./configure --prefix="$PREFIX" --sysconfdir=/etc/ssh --with-privsep-path=/var/lib/sshd --with-pid-dir=/run
+    make $MAKEOPTS
+}
+
+pkg_install()
+{
+    groupadd -g 50 sshd 2>/dev/null || true
+    useradd -c 'sshd PrivSep' -d /var/lib/sshd -g sshd -s /bin/false -u 50 sshd 2>/dev/null || true
+    cd "$src" || exit 1
+    make DESTDIR="$DESTDIR" install
+}

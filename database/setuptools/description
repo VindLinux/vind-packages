@@ -1,0 +1,1 @@
+Python packaging and distribution library used to build and install Python modules, required by build tools such as Meson that still depend on the legacy setup.py interface.

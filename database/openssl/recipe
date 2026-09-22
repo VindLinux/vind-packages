@@ -1,0 +1,22 @@
+src="openssl-3.5.2"
+
+pkg_download()
+{
+    curl -fL --retry 3 --retry-delay 2 -o openssl-3.5.2.tar.gz https://github.com/openssl/openssl/releases/download/openssl-3.5.2/openssl-3.5.2.tar.gz
+    tar -xf openssl-3.5.2.tar.gz
+}
+
+pkg_build()
+{
+    cd "$src" || exit 1
+    ./config --prefix="$PREFIX" --openssldir=/etc/ssl --libdir=lib shared zlib-dynamic
+    make $MAKEOPTS
+}
+
+pkg_install()
+{
+    cd "$src" || exit 1
+    sed -i '/INSTALL_LIBS/s/libcrypto.a libssl.a//' Makefile
+    make DESTDIR="$DESTDIR" MANSUFFIX=ssl install
+    mv -v "$DESTDIR$PREFIX/share/doc/openssl" "$DESTDIR$PREFIX/share/doc/openssl-3.5.2"
+}

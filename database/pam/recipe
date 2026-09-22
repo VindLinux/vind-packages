@@ -1,0 +1,20 @@
+src="Linux-PAM-1.7.2"
+
+pkg_download()
+{
+    curl -fL --retry 3 --retry-delay 2 -o Linux-PAM-1.7.2.tar.xz https://github.com/linux-pam/linux-pam/releases/download/v1.7.2/Linux-PAM-1.7.2.tar.xz
+    tar -xf Linux-PAM-1.7.2.tar.xz
+}
+
+pkg_build()
+{
+    cd "$src" || exit 1
+    meson setup build --prefix="$PREFIX" --libdir="$PREFIX/lib" --buildtype=release -Ddocs=disabled -Daudit=disabled -Dselinux=disabled -Dlogind=disabled -Delogind=disabled -Dopenssl=disabled -Dnis=disabled -Dpam_lastlog=disabled
+    ninja -C build
+}
+
+pkg_install()
+{
+    cd "$src" || exit 1
+    DESTDIR="$DESTDIR" meson install -C build --no-rebuild
+}

@@ -1,0 +1,20 @@
+src="onig-6.9.10"
+
+pkg_download()
+{
+    curl -fL --retry 3 --retry-delay 2 -o onig-6.9.10.tar.gz https://github.com/kkos/oniguruma/releases/download/v6.9.10/onig-6.9.10.tar.gz
+    tar -xf onig-6.9.10.tar.gz
+}
+
+pkg_build()
+{
+    cd "$src" || exit 1
+    ./configure --prefix="$PREFIX" --disable-static --enable-shared
+    make $MAKEOPTS
+}
+
+pkg_install()
+{
+    cd "$src" || exit 1
+    make DESTDIR="$DESTDIR" install
+}

@@ -1,0 +1,44 @@
+src="rustc-1.93.1-src"
+
+pkg_download()
+{
+    curl -fL --retry 3 --retry-delay 2 -o rustc-1.93.1-src.tar.xz https://static.rust-lang.org/dist/rustc-1.93.1-src.tar.xz
+    tar -xf rustc-1.93.1-src.tar.xz
+}
+
+pkg_build()
+{
+    cd "$src" || exit 1
+    cat > bootstrap.toml <<BOOTSTRAP
+change-id = 148795
+
+[llvm]
+targets = "X86"
+
+[build]
+build = "x86_64-unknown-linux-musl"
+host = ["x86_64-unknown-linux-musl"]
+target = ["x86_64-unknown-linux-musl"]
+description = "for Vind Linux"
+docs = false
+locked-deps = true
+tools = ["cargo", "clippy", "rustdoc", "rustfmt", "src"]
+
+[install]
+prefix = "$PREFIX"
+docdir = "share/doc/rustc-1.93.1"
+
+[rust]
+channel = "stable"
+lto = "thin"
+codegen-units = 1
+llvm-bitcode-linker = false
+BOOTSTRAP
+    ./x.py build
+}
+
+pkg_install()
+{
+    cd "$src" || exit 1
+    DESTDIR="$DESTDIR" ./x.py install
+}

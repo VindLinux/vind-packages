@@ -1,0 +1,1 @@
+Low-level pixel manipulation library providing image compositing and trapezoid rasterization (Porter-Duff operators, affine/projective transforms), used as the rendering backbone for Cairo, X.Org, and wlroots' Pixman software renderer.

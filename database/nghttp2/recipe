@@ -1,0 +1,20 @@
+src="nghttp2-1.68.0"
+
+pkg_download()
+{
+    curl -fL --retry 3 --retry-delay 2 -o nghttp2-1.68.0.tar.xz https://github.com/nghttp2/nghttp2/releases/download/v1.68.0/nghttp2-1.68.0.tar.xz
+    tar -xf nghttp2-1.68.0.tar.xz
+}
+
+pkg_build()
+{
+    cd "$src" || exit 1
+    ./configure --prefix="$PREFIX" --disable-static --enable-lib-only --docdir="$PREFIX/share/doc/nghttp2-1.68.0"
+    make $MAKEOPTS
+}
+
+pkg_install()
+{
+    cd "$src" || exit 1
+    make DESTDIR="$DESTDIR" install
+}

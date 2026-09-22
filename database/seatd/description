@@ -1,0 +1,1 @@
+Minimal seat management daemon and library (libseat), mediating access to shared devices (GPU, input) without requiring compositor processes to run as root. Used by wlroots as a systemd-logind alternative, ideal for non-systemd distros.

@@ -1,0 +1,1 @@
+Collection of programs (lspci, setpci) and libpci library for inspecting and manipulating PCI devices, using hwdata's pci.ids database.

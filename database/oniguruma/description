@@ -1,0 +1,1 @@
+Regular expression library supporting multiple encodings and regex syntaxes (BRE, ERE, Perl, Python, Java, etc), used by jq, PHP mbstring, and Ruby's regex engine.

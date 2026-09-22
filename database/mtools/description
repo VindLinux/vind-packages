@@ -1,0 +1,1 @@
+Collection of utilities to access MS-DOS/FAT disk images without mounting them, used by bootloaders such as Limine to build UEFI CD/FAT images.

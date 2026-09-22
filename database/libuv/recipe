@@ -1,0 +1,21 @@
+src="libuv-v1.52.0"
+
+pkg_download()
+{
+    curl -fL --retry 3 --retry-delay 2 -o libuv-v1.52.0.tar.gz https://dist.libuv.org/dist/v1.52.0/libuv-v1.52.0.tar.gz
+    tar -xf libuv-v1.52.0.tar.gz
+}
+
+pkg_build()
+{
+    cd "$src" || exit 1
+    sh autogen.sh
+    ./configure --prefix="$PREFIX" --disable-static
+    make $MAKEOPTS
+}
+
+pkg_install()
+{
+    cd "$src" || exit 1
+    make DESTDIR="$DESTDIR" install
+}

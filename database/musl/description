@@ -1,0 +1,1 @@
+Lightweight, fast, and standards-conformant C standard library implementation, designed as a musl-libc alternative to glibc for static and dynamic linking.

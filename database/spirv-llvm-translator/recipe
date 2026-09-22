@@ -1,0 +1,30 @@
+src="SPIRV-LLVM-Translator-$PKG_VERSION"
+tarball="$src.tar.gz"
+
+pkg_download()
+{
+    curl -fL --retry 3 --retry-delay 2 -o "$tarball" \
+        "https://github.com/KhronosGroup/SPIRV-LLVM-Translator/archive/v$PKG_VERSION/$tarball" || exit 1
+    tar -xf "$tarball" || exit 1
+}
+
+pkg_build()
+{
+    set -- -DCMAKE_INSTALL_PREFIX="$PREFIX" \
+        -DCMAKE_BUILD_TYPE=Release \
+        -DBUILD_SHARED_LIBS=ON \
+        -DCMAKE_SKIP_INSTALL_RPATH=ON \
+        -DLLVM_EXTERNAL_SPIRV_HEADERS_SOURCE_DIR="$PREFIX/include"
+
+    if attr_on libspirv_dis; then
+        set -- "$@" -DLLVM_SPIRV_ENABLE_LIBSPIRV_DIS=ON
+    fi
+
+    cmake -S "$src" -B "$src/build" -G Ninja "$@" || exit 1
+    ninja -C "$src/build" $MAKEOPTS
+}
+
+pkg_install()
+{
+    DESTDIR="$DESTDIR" ninja -C "$src/build" install
+}

@@ -1,0 +1,11 @@
+xorg-libraries
+libdrm
+libelf
+mako
+pyyaml
+glslang
+rust-bindgen
+libclc
+meson
+ninja
+wayland-protocols

@@ -1,0 +1,25 @@
+src="llvm-project-$PKG_VERSION.src"
+tarball="$src.tar.xz"
+build="$src/lld/build"
+
+pkg_download()
+{
+    curl -fL --retry 3 --retry-delay 2 -o "$tarball" \
+        "https://github.com/llvm/llvm-project/releases/download/llvmorg-$PKG_VERSION/$tarball" || exit 1
+    tar -xf "$tarball" || exit 1
+}
+
+pkg_build()
+{
+    cmake -G Ninja -S "$src/lld" -B "$build" \
+        -D CMAKE_BUILD_TYPE=Release \
+        -D CMAKE_INSTALL_PREFIX="$PREFIX" \
+        -D LLVM_DIR="$PREFIX/lib/cmake/llvm" || exit 1
+
+    ninja -C "$build" $MAKEOPTS
+}
+
+pkg_install()
+{
+    DESTDIR="$DESTDIR" ninja -C "$build" install
+}

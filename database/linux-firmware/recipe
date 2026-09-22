@@ -1,0 +1,12 @@
+src="linux-firmware"
+
+pkg_download()
+{
+    git clone --depth 1 --branch "$PKG_VERSION" https://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git "$src"
+}
+
+pkg_install()
+{
+    cd "$src" || exit 1
+    make DESTDIR="$DESTDIR" FIRMWAREDIR="$PREFIX/lib/firmware" install-zst
+}

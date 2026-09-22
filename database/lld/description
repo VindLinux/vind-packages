@@ -1,0 +1,1 @@
+LLVM linker (lld), built as a standalone component against the already-installed LLVM 21.1.8, providing a modern non-GNU alternative to GNU ld.

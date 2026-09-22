@@ -1,0 +1,1 @@
+X-Resource extension client library, providing routines to query X server resource usage such as pixmap and window memory consumption.

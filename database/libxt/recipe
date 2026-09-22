@@ -1,0 +1,22 @@
+src="libXt-$PKG_VERSION"
+tarball="$src.tar.xz"
+
+pkg_download()
+{
+    curl -fL --retry 3 --retry-delay 2 -o "$tarball" \
+        "https://www.x.org/pub/individual/lib/$tarball" || exit 1
+    tar -xf "$tarball" || exit 1
+}
+
+pkg_build()
+{
+    cd "$src" || exit 1
+    ./configure $XORG_CONFIG --docdir="$XORG_PREFIX/share/doc/$src" --with-appdefaultdir=/etc/X11/app-defaults || exit 1
+    make $MAKEOPTS
+}
+
+pkg_install()
+{
+    cd "$src" || exit 1
+    make DESTDIR="$DESTDIR" install
+}

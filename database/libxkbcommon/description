@@ -1,0 +1,1 @@
+Keymap compiler and support library implementing the XKB (X Keyboard Extension) specification, used to translate raw key events into keysyms/characters. The standard keyboard-handling library on Wayland; also provides Compose/dead-key handling and a keyboard-layout registry.

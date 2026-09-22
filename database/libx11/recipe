@@ -1,0 +1,20 @@
+src="libX11-1.8.13"
+
+pkg_download()
+{
+    curl -fL --retry 3 --retry-delay 2 -o libX11-1.8.13.tar.xz https://www.x.org/pub/individual/lib/libX11-1.8.13.tar.xz
+    tar -xf libX11-1.8.13.tar.xz
+}
+
+pkg_build()
+{
+    cd "$src" || exit 1
+    ./configure $XORG_CONFIG --docdir="$XORG_PREFIX/share/doc/libX11-1.8.13"
+    make $MAKEOPTS
+}
+
+pkg_install()
+{
+    cd "$src" || exit 1
+    make DESTDIR="$DESTDIR" install
+}

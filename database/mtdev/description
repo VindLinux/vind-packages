@@ -1,0 +1,1 @@
+Multitouch Protocol Translation Library that normalizes all variants of kernel MT (multitouch) events, including type A without contact tracking, into the slotted type B protocol. Used by libinput to handle touchpads and touchscreens consistently.

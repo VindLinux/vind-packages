@@ -1,0 +1,20 @@
+src="libXcursor-1.2.3"
+
+pkg_download()
+{
+    curl -fL --retry 3 --retry-delay 2 -o libXcursor-1.2.3.tar.xz https://www.x.org/pub/individual/lib/libXcursor-1.2.3.tar.xz
+    tar -xf libXcursor-1.2.3.tar.xz
+}
+
+pkg_build()
+{
+    cd "$src" || exit 1
+    ./configure $XORG_CONFIG --docdir="$XORG_PREFIX/share/doc/libXcursor-1.2.3"
+    make $MAKEOPTS
+}
+
+pkg_install()
+{
+    cd "$src" || exit 1
+    make DESTDIR="$DESTDIR" install
+}

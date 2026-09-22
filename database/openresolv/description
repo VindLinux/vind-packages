@@ -1,0 +1,1 @@
+Framework for managing resolv.conf, allowing multiple sources such as DHCP clients and VPN software to update DNS resolver configuration safely.

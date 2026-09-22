@@ -1,0 +1,1 @@
+Suite of utilities for managing user accounts, passwords, and login authentication, including login, passwd, su, useradd, and the shadow password file format.

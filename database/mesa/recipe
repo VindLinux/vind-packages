@@ -1,0 +1,31 @@
+src="mesa-$PKG_VERSION"
+tarball="$src.tar.xz"
+
+pkg_download()
+{
+    curl -fL --retry 3 --retry-delay 2 -o "$tarball" \
+        "https://mesa.freedesktop.org/archive/$tarball" || exit 1
+    tar -xf "$tarball" || exit 1
+}
+
+pkg_build()
+{
+    meson setup "$src/build" "$src" \
+        --prefix="$XORG_PREFIX" \
+        --libdir="$XORG_PREFIX/lib" \
+        --buildtype=release \
+        -D platforms=x11,wayland \
+        -D gallium-drivers=llvmpipe,radeonsi,r300,r600,nouveau,zink \
+        -D vulkan-drivers=amd \
+        -D valgrind=disabled \
+        -D video-codecs=all \
+        -D libunwind=disabled \
+        --wrap-mode=nodownload || exit 1
+
+    ninja -C "$src/build" $MAKEOPTS
+}
+
+pkg_install()
+{
+    DESTDIR="$DESTDIR" ninja -C "$src/build" install
+}

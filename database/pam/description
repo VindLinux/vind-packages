@@ -1,0 +1,1 @@
+Linux-PAM (Pluggable Authentication Modules), a suite of shared libraries that enable local system administrators to choose how applications authenticate users, providing modules such as pam_unix, pam_faillock, pam_limits, and the /etc/pam.d configuration framework.

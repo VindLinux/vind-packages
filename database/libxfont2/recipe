@@ -1,0 +1,20 @@
+src="libXfont2-2.0.7"
+
+pkg_download()
+{
+    curl -fL --retry 3 --retry-delay 2 -o libXfont2-2.0.7.tar.xz https://www.x.org/pub/individual/lib/libXfont2-2.0.7.tar.xz
+    tar -xf libXfont2-2.0.7.tar.xz
+}
+
+pkg_build()
+{
+    cd "$src" || exit 1
+    ./configure $XORG_CONFIG --docdir="$XORG_PREFIX/share/doc/libXfont2-2.0.7" --disable-devel-docs
+    make $MAKEOPTS
+}
+
+pkg_install()
+{
+    cd "$src" || exit 1
+    make DESTDIR="$DESTDIR" install
+}

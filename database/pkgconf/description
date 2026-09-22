@@ -1,0 +1,1 @@
+Successor to pkg-config, providing a tool for passing include and library paths to build tools during the configure and make phases of package installations, along with a pkg-config compatibility symlink.

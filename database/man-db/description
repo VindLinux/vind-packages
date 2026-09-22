@@ -1,0 +1,1 @@
+Implementation of the man command with an on-disk database (whatis/apropos) for fast manual page lookup; provides man, mandb, manpath, whatis, and apropos.

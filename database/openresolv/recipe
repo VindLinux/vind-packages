@@ -1,0 +1,19 @@
+src="openresolv-3.13.4"
+
+pkg_download()
+{
+    curl -fL --retry 3 --retry-delay 2 -o openresolv-3.13.4.tar.xz https://roy.marples.name/downloads/openresolv/openresolv-3.13.4.tar.xz
+    tar -xf openresolv-3.13.4.tar.xz
+}
+
+pkg_build()
+{
+    cd "$src" || exit 1
+    ./configure --prefix="$PREFIX"
+}
+
+pkg_install()
+{
+    cd "$src" || exit 1
+    make DESTDIR="$DESTDIR" install
+}

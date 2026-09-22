@@ -1,0 +1,20 @@
+src="libXdmcp-1.1.5"
+
+pkg_download()
+{
+    curl -fL --retry 3 --retry-delay 2 -o libXdmcp-1.1.5.tar.xz https://www.x.org/pub/individual/lib/libXdmcp-1.1.5.tar.xz
+    tar -xf libXdmcp-1.1.5.tar.xz
+}
+
+pkg_build()
+{
+    cd "$src" || exit 1
+    ./configure $XORG_CONFIG --docdir="\${datadir}/doc/libXdmcp-1.1.5"
+    make $MAKEOPTS
+}
+
+pkg_install()
+{
+    cd "$src" || exit 1
+    make DESTDIR="$DESTDIR" install
+}

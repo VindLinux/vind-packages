@@ -1,0 +1,22 @@
+src="pkgconf-2.5.1"
+
+pkg_download()
+{
+    curl -fL --retry 3 --retry-delay 2 -o pkgconf-2.5.1.tar.xz https://distfiles.ariadne.space/pkgconf/pkgconf-2.5.1.tar.xz
+    tar -xf pkgconf-2.5.1.tar.xz
+}
+
+pkg_build()
+{
+    cd "$src" || exit 1
+    ./configure --prefix="$PREFIX" --disable-static --docdir="$PREFIX/share/doc/pkgconf-2.5.1" --with-system-libdir="$PREFIX/lib:$PREFIX/lib64" --with-system-includedir="$PREFIX/include"
+    make $MAKEOPTS
+}
+
+pkg_install()
+{
+    cd "$src" || exit 1
+    make DESTDIR="$DESTDIR" install
+    ln -sfv pkgconf "$DESTDIR$PREFIX/bin/pkg-config"
+    ln -sfv pkgconf.1 "$DESTDIR$PREFIX/share/man/man1/pkg-config.1"
+}

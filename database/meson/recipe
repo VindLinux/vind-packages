@@ -1,0 +1,21 @@
+src="meson-$PKG_VERSION"
+tarball="$src.tar.gz"
+
+pkg_download()
+{
+    curl -fL --retry 3 --retry-delay 2 -o "$tarball" \
+        "https://github.com/mesonbuild/meson/releases/download/$PKG_VERSION/$tarball" || exit 1
+    tar -xf "$tarball" || exit 1
+}
+
+pkg_build()
+{
+    cd "$src" || exit 1
+    python3 setup.py build
+}
+
+pkg_install()
+{
+    cd "$src" || exit 1
+    python3 -m pip install . --no-deps --root="$DESTDIR" --prefix="$PREFIX" --break-system-packages
+}

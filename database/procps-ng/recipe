@@ -1,0 +1,21 @@
+src="procps-v4.0.4"
+
+pkg_download()
+{
+    curl -fL --retry 3 --retry-delay 2 -o procps-ng-4.0.4.tar.xz https://gitlab.com/procps-ng/procps/-/archive/v4.0.4/procps-v4.0.4.tar.gz
+    tar -xf procps-ng-4.0.4.tar.xz
+}
+
+pkg_build()
+{
+    cd "$src" || exit 1
+    sh autogen.sh
+    ./configure --prefix="$PREFIX" --without-systemd --without-elogind --disable-libselinux
+    make $MAKEOPTS
+}
+
+pkg_install()
+{
+    cd "$src" || exit 1
+    make DESTDIR="$DESTDIR" install
+}

@@ -1,0 +1,20 @@
+src="libxcb-1.17.0"
+
+pkg_download()
+{
+    curl -fL --retry 3 --retry-delay 2 -o libxcb-1.17.0.tar.xz https://xorg.freedesktop.org/archive/individual/lib/libxcb-1.17.0.tar.xz
+    tar -xf libxcb-1.17.0.tar.xz
+}
+
+pkg_build()
+{
+    cd "$src" || exit 1
+    ./configure $XORG_CONFIG --without-doxygen --docdir="$XORG_PREFIX/share/doc/libxcb-1.17.0"
+    LC_ALL=en_US.UTF-8 make $MAKEOPTS
+}
+
+pkg_install()
+{
+    cd "$src" || exit 1
+    make DESTDIR="$DESTDIR" install
+}

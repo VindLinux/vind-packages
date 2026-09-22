@@ -1,0 +1,10 @@
+pkg_download()
+{
+    :
+}
+
+pkg_install()
+{
+    python3 -m ensurepip --default-pip
+    PYTHONPATH= python3 -m pip install --no-cache-dir --break-system-packages --no-deps --ignore-installed --target="$DESTDIR$PREFIX/lib/python3.13/site-packages" setuptools==84.0.0
+}

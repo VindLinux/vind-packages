@@ -1,0 +1,1 @@
+GNU Make utility for automatically determining which parts of a program need to be compiled or rebuilt and executing the required commands.

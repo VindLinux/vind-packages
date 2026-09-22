@@ -1,0 +1,19 @@
+src="pyyaml-6.0.3"
+
+pkg_download()
+{
+    curl -fL --retry 3 --retry-delay 2 -o pyyaml-6.0.3.tar.gz https://files.pythonhosted.org/packages/source/P/PyYAML/pyyaml-6.0.3.tar.gz
+    tar -xf pyyaml-6.0.3.tar.gz
+}
+
+pkg_build()
+{
+    cd "$src" || exit 1
+    pip3 wheel -w dist --no-build-isolation --no-deps --no-cache-dir "$PWD"
+}
+
+pkg_install()
+{
+    cd "$src" || exit 1
+    pip3 install --break-system-packages --no-index --find-links dist --no-user --root="$DESTDIR" --prefix="$PREFIX" PyYAML
+}

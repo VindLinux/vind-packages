@@ -1,0 +1,1 @@
+Provides libraries and drivers for graphics APIs like OpenGL and Vulkan, including libGL, libEGL, libgbm, and Gallium3D/VA-API drivers.

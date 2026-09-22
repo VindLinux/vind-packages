@@ -1,0 +1,20 @@
+src="coreutils-9.7"
+
+pkg_download()
+{
+    curl -fL --retry 3 --retry-delay 2 -o coreutils-9.7.tar.xz https://ftp.gnu.org/gnu/coreutils/coreutils-9.7.tar.xz
+    tar -xf coreutils-9.7.tar.xz
+}
+
+pkg_build()
+{
+    cd "$src" || exit 1
+    ./configure --prefix="$PREFIX" FORCE_UNSAFE_CONFIGURE=1
+    make $MAKEOPTS
+}
+
+pkg_install()
+{
+    mkdir -p "$DESTDIR$PREFIX/bin"
+    cp -v "$src/src/realpath" "$DESTDIR$PREFIX/bin/realpath"
+}

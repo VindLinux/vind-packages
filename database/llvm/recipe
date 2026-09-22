@@ -1,0 +1,115 @@
+src="llvm-project-$PKG_VERSION.src"
+tarball="$src.tar.xz"
+build="$src/llvm/build"
+
+pkg_download()
+{
+    curl -fL --retry 3 --retry-delay 2 -o "$tarball" \
+        "https://github.com/llvm/llvm-project/releases/download/llvmorg-$PKG_VERSION/$tarball" || exit 1
+    tar -xf "$tarball" || exit 1
+}
+
+pkg_build()
+{
+    mkdir -p "$build" || exit 1
+
+    targets="host"
+    if attr_on amdgpu; then
+        targets="$targets;AMDGPU"
+    fi
+    if attr_on bpf; then
+        targets="$targets;BPF"
+    fi
+    if attr_on nvptx; then
+        targets="$targets;NVPTX"
+    fi
+
+    rt_sanitizers="OFF"
+    if attr_on sanitizers; then
+        rt_sanitizers="ON"
+    fi
+    rt_xray="OFF"
+    if attr_on xray; then
+        rt_xray="ON"
+    fi
+    rt_memprof="OFF"
+    if attr_on memprof; then
+        rt_memprof="ON"
+    fi
+    rt_libfuzzer="OFF"
+    if attr_on libfuzzer; then
+        rt_libfuzzer="ON"
+    fi
+    rt_profile="OFF"
+    if attr_on profile; then
+        rt_profile="ON"
+    fi
+    rt_orc="OFF"
+    if attr_on orc; then
+        rt_orc="ON"
+    fi
+
+    (
+        cd "$build" || exit 1
+
+        cmake -G Ninja -S .. -B . \
+            -D CMAKE_INSTALL_PREFIX="$PREFIX" \
+            -D CMAKE_SKIP_INSTALL_RPATH=ON \
+            -D LLVM_ENABLE_FFI=ON \
+            -D CMAKE_BUILD_TYPE=Release \
+            -D LLVM_BUILD_LLVM_DYLIB=ON \
+            -D LLVM_LINK_LLVM_DYLIB=ON \
+            -D LLVM_ENABLE_RTTI=ON \
+            -D LLVM_STATIC_LINK_CXX_STDLIB=ON \
+            -D CMAKE_EXE_LINKER_FLAGS="-static-libgcc" \
+            -D CMAKE_SHARED_LINKER_FLAGS="-static-libgcc" \
+            -D LLVM_ENABLE_PROJECTS="clang;lld" \
+            -D LLVM_ENABLE_RUNTIMES="compiler-rt" \
+            -D LLVM_TARGETS_TO_BUILD="$targets" \
+            -D LLVM_DEFAULT_TARGET_TRIPLE="x86_64-unknown-linux-musl" \
+            -D LLVM_BINUTILS_INCDIR="$PREFIX/include" \
+            -D LLVM_INCLUDE_BENCHMARKS=OFF \
+            -D LLVM_INSTALL_TOOLCHAIN_ONLY=ON \
+            -D LLVM_INCLUDE_TESTS=OFF \
+            -D LLVM_INCLUDE_EXAMPLES=OFF \
+            -D LLVM_INCLUDE_DOCS=OFF \
+            -D LLVM_BUILD_TOOLS=ON \
+            -D CLANG_DEFAULT_PIE_ON_LINUX=ON \
+            -D CLANG_DEFAULT_TARGET_TRIPLE="x86_64-unknown-linux-musl" \
+            -D CLANG_DEFAULT_LINKER="lld" \
+            -D CLANG_DEFAULT_RTLIB="compiler-rt" \
+            -D CLANG_DEFAULT_UNWINDLIB="libunwind" \
+            -D CLANG_CONFIG_FILE_SYSTEM_DIR=/etc/clang \
+            -D LLVM_TOOL_GOLD_BUILD=OFF \
+            -D COMPILER_RT_BUILD_SANITIZERS="$rt_sanitizers" \
+            -D COMPILER_RT_BUILD_XRAY="$rt_xray" \
+            -D COMPILER_RT_BUILD_MEMPROF="$rt_memprof" \
+            -D COMPILER_RT_BUILD_LIBFUZZER="$rt_libfuzzer" \
+            -D COMPILER_RT_BUILD_PROFILE="$rt_profile" \
+            -D COMPILER_RT_BUILD_ORC="$rt_orc" \
+            -W no-dev
+    ) || exit 1
+
+    ninja -C "$build" $MAKEOPTS
+}
+
+pkg_install()
+{
+    DESTDIR="$DESTDIR" ninja -C "$build" install || exit 1
+
+    ln -sf clang "$DESTDIR$PREFIX/bin/cc" || exit 1
+    ln -sf clang++ "$DESTDIR$PREFIX/bin/c++" || exit 1
+    ln -sf clang "$DESTDIR$PREFIX/bin/gcc" || exit 1
+    ln -sf clang++ "$DESTDIR$PREFIX/bin/g++" || exit 1
+    ln -sf llvm-ar "$DESTDIR$PREFIX/bin/ar" || exit 1
+    ln -sf llvm-nm "$DESTDIR$PREFIX/bin/nm" || exit 1
+    ln -sf llvm-ranlib "$DESTDIR$PREFIX/bin/ranlib" || exit 1
+    ln -sf llvm-objcopy "$DESTDIR$PREFIX/bin/objcopy" || exit 1
+    ln -sf llvm-objdump "$DESTDIR$PREFIX/bin/objdump" || exit 1
+    ln -sf llvm-readelf "$DESTDIR$PREFIX/bin/readelf" || exit 1
+    ln -sf llvm-strip "$DESTDIR$PREFIX/bin/strip" || exit 1
+    ln -sf llvm-addr2line "$DESTDIR$PREFIX/bin/addr2line" || exit 1
+    ln -sf llvm-size "$DESTDIR$PREFIX/bin/size" || exit 1
+    ln -sf llvm-strings "$DESTDIR$PREFIX/bin/strings" || exit 1
+    ln -sf ld.lld "$DESTDIR$PREFIX/bin/ld"
+}

@@ -1,0 +1,1 @@
+Library interface to the X Present Extension, providing precise frame-timing control for presenting rendered content, used by compositors and DRI3.

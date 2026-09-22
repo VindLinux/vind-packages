@@ -1,0 +1,5 @@
+libxext
+libxfixes
+libxrandr
+libx11
+xorgproto

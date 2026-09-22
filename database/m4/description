@@ -1,0 +1,1 @@
+GNU M4 macro processor, copying input to output while expanding macros; used as a core dependency of the GNU Autotools build system (Autoconf, Automake, Libtool).

@@ -1,0 +1,18 @@
+src="seatd-0.9.3"
+
+pkg_download()
+{
+    curl -fL --retry 3 --retry-delay 2 -o seatd-0.9.3.tar.gz https://git.sr.ht/~kennylevinsen/seatd/archive/0.9.3.tar.gz
+    tar -xf seatd-0.9.3.tar.gz
+}
+
+pkg_build()
+{
+    meson setup "$src/build" "$src" --prefix="$PREFIX" --buildtype=release -Dlibseat-seatd=enabled -Dlibseat-logind=disabled -Dlibseat-builtin=enabled -Dserver=enabled -Dexamples=disabled -Dman-pages=disabled
+    ninja -C "$src/build" $MAKEOPTS
+}
+
+pkg_install()
+{
+    DESTDIR="$DESTDIR" ninja -C "$src/build" install
+}

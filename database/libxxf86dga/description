@@ -1,0 +1,1 @@
+Client library for the XFree86-DGA extension, providing direct graphics access for full-screen applications bypassing the normal X protocol path.

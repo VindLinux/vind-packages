@@ -1,0 +1,1 @@
+Python module that implements an XML/HTML/XHTML markup-safe string, escaping characters so that untrusted input can safely be displayed in markup. Required by Jinja2.

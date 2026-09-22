@@ -1,0 +1,20 @@
+src="libxkbcommon-xkbcommon-$PKG_VERSION"
+tarball="libxkbcommon-$PKG_VERSION.tar.gz"
+
+pkg_download()
+{
+    curl -fL --retry 3 --retry-delay 2 -o "$tarball" \
+        "https://github.com/xkbcommon/libxkbcommon/archive/refs/tags/xkbcommon-$PKG_VERSION.tar.gz" || exit 1
+    tar -xf "$tarball" || exit 1
+}
+
+pkg_build()
+{
+    meson setup "$src/build" "$src" --prefix="$PREFIX" --buildtype=release -Denable-docs=false || exit 1
+    ninja -C "$src/build" $MAKEOPTS
+}
+
+pkg_install()
+{
+    DESTDIR="$DESTDIR" ninja -C "$src/build" install
+}

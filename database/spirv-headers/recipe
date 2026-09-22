@@ -1,0 +1,20 @@
+src="SPIRV-Headers-vulkan-sdk-$PKG_VERSION"
+tarball="$src.tar.gz"
+
+pkg_download()
+{
+    curl -fL --retry 3 --retry-delay 2 -o "$tarball" \
+        "https://github.com/KhronosGroup/SPIRV-Headers/archive/vulkan-sdk-$PKG_VERSION/$tarball" || exit 1
+    tar -xf "$tarball" || exit 1
+}
+
+pkg_build()
+{
+    cmake -S "$src" -B "$src/build" -G Ninja -DCMAKE_INSTALL_PREFIX="$PREFIX" || exit 1
+    ninja -C "$src/build" $MAKEOPTS
+}
+
+pkg_install()
+{
+    DESTDIR="$DESTDIR" ninja -C "$src/build" install
+}

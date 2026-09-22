@@ -1,0 +1,43 @@
+src="SPIRV-Tools-vulkan-sdk-$PKG_VERSION"
+tarball="$src.tar.gz"
+
+pkg_download()
+{
+    curl -fL --retry 3 --retry-delay 2 -o "$tarball" \
+        "https://github.com/KhronosGroup/SPIRV-Tools/archive/vulkan-sdk-$PKG_VERSION/$tarball" || exit 1
+    tar -xf "$tarball" || exit 1
+}
+
+pkg_build()
+{
+    set -- -DCMAKE_INSTALL_PREFIX="$PREFIX" \
+        -DCMAKE_BUILD_TYPE=Release \
+        -DSPIRV_WERROR=OFF \
+        -DBUILD_SHARED_LIBS=ON \
+        -DSPIRV_TOOLS_BUILD_STATIC=OFF \
+        -DSPIRV-Headers_SOURCE_DIR="$PREFIX"
+
+    if attr_on compression; then
+        set -- "$@" -DSPIRV_BUILD_COMPRESSION=ON
+    fi
+
+    if attr_on fuzzer; then
+        set -- "$@" -DSPIRV_BUILD_FUZZER=ON
+    fi
+
+    if attr_on libfuzzer_targets; then
+        set -- "$@" -DSPIRV_BUILD_LIBFUZZER_TARGETS=ON
+    fi
+
+    if attr_on emacs_helpers; then
+        set -- "$@" -DSPIRV_TOOLS_INSTALL_EMACS_HELPERS=ON
+    fi
+
+    cmake -S "$src" -B "$src/build" -G Ninja "$@" || exit 1
+    ninja -C "$src/build" $MAKEOPTS
+}
+
+pkg_install()
+{
+    DESTDIR="$DESTDIR" ninja -C "$src/build" install
+}

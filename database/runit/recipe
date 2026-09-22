@@ -1,0 +1,32 @@
+src="admin/runit-2.3.1"
+
+pkg_download()
+{
+    curl -fL --retry 3 --retry-delay 2 -o runit-2.3.1.tar.gz https://smarden.org/runit/runit-2.3.1.tar.gz
+    tar -xf runit-2.3.1.tar.gz
+}
+
+pkg_build()
+{
+    sed -i 's|/service/|/etc/service/|' "$src/src/sv.c"
+    cd "$src" || exit 1
+    package/compile
+}
+
+pkg_install()
+{
+    cd "$src" || exit 1
+    install -D -m 0755 command/chpst "$DESTDIR$PREFIX/sbin/chpst"
+    install -D -m 0755 command/runit "$DESTDIR$PREFIX/sbin/runit"
+    install -D -m 0755 command/runit-init "$DESTDIR$PREFIX/sbin/runit-init"
+    install -D -m 0755 command/runsv "$DESTDIR$PREFIX/sbin/runsv"
+    install -D -m 0755 command/runsvchdir "$DESTDIR$PREFIX/sbin/runsvchdir"
+    install -D -m 0755 command/runsvdir "$DESTDIR$PREFIX/sbin/runsvdir"
+    install -D -m 0755 command/sv "$DESTDIR$PREFIX/sbin/sv"
+    install -D -m 0755 command/svlogd "$DESTDIR$PREFIX/sbin/svlogd"
+    install -D -m 0755 command/utmpset "$DESTDIR$PREFIX/sbin/utmpset"
+    mkdir -p "$DESTDIR/etc/runit/runsvdir/default"
+    mkdir -p "$DESTDIR/etc/service"
+    mkdir -p "$DESTDIR/sbin"
+    ln -sf "$PREFIX/sbin/runit-init" "$DESTDIR/sbin/init"
+}

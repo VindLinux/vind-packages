@@ -1,0 +1,36 @@
+src="man-db-$PKG_VERSION"
+tarball="$src.tar.xz"
+
+pkg_download()
+{
+    curl -fL --retry 3 --retry-delay 2 -o "$tarball" \
+        "https://download.savannah.nongnu.org/releases/man-db/$tarball" || exit 1
+    tar -xf "$tarball" || exit 1
+}
+
+pkg_build()
+{
+    cd "$src" || exit 1
+
+    set -- --prefix="$PREFIX" \
+        --docdir="$PREFIX/share/doc/$src" \
+        --sysconfdir=/etc \
+        --disable-setuid \
+        --enable-cache-owner=bin \
+        --with-browser=/usr/bin/lynx \
+        --with-vgrind=/usr/bin/vgrind \
+        --with-grap=/usr/bin/grap \
+        --without-systemdsystemunitdir
+
+    if ! attr_on nls; then
+        set -- "$@" --disable-nls
+    fi
+
+    ./configure "$@" || exit 1
+    make $MAKEOPTS
+}
+
+pkg_install()
+{
+    make -C "$src" DESTDIR="$DESTDIR" install
+}

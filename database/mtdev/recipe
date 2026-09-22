@@ -1,0 +1,21 @@
+src="mtdev-$PKG_VERSION"
+tarball="$src.tar.bz2"
+
+pkg_download()
+{
+    curl -fL --retry 3 --retry-delay 2 -o "$tarball" \
+        "https://bitmath.org/code/mtdev/$tarball" || exit 1
+    tar -xf "$tarball" || exit 1
+}
+
+pkg_build()
+{
+    cd "$src" || exit 1
+    ./configure --prefix="$PREFIX" --disable-static || exit 1
+    make $MAKEOPTS
+}
+
+pkg_install()
+{
+    make -C "$src" DESTDIR="$DESTDIR" install
+}

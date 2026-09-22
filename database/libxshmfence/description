@@ -1,0 +1,1 @@
+Library that exposes an event API on top of Linux futexes, used for synchronizing shared-memory buffer access between the X server and clients (e.g. DRI3).

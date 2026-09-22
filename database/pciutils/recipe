@@ -1,0 +1,19 @@
+src="pciutils-3.13.0"
+
+pkg_download()
+{
+    curl -fL --retry 3 --retry-delay 2 -o pciutils-3.13.0.tar.gz https://github.com/pciutils/pciutils/archive/refs/tags/v3.13.0.tar.gz
+    tar -xf pciutils-3.13.0.tar.gz
+}
+
+pkg_build()
+{
+    cd "$src" || exit 1
+    make $MAKEOPTS PREFIX="$PREFIX" SHAREDIR="$PREFIX/share/hwdata" ZLIB=no SHARED=yes
+}
+
+pkg_install()
+{
+    cd "$src" || exit 1
+    make install install-lib DESTDIR="$DESTDIR" PREFIX="$PREFIX" SHAREDIR="$PREFIX/share/hwdata"
+}
