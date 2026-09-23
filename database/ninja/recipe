@@ -11,7 +11,13 @@ pkg_download()
 pkg_build()
 {
     cd "$src" || exit 1
-    CXX="$CXX" CXXFLAGS="$CXXFLAGS -stdlib=libc++" LDFLAGS="$LDFLAGS -stdlib=libc++" python3 configure.py --bootstrap
+
+    stdlib_flag=""
+    case "$CXX" in
+        *clang*) stdlib_flag="-stdlib=libc++" ;;
+    esac
+
+    CXX="$CXX" CXXFLAGS="$CXXFLAGS $stdlib_flag" LDFLAGS="$LDFLAGS $stdlib_flag" python3 configure.py --bootstrap
 }
 
 pkg_install()
