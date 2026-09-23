@@ -1,0 +1,3 @@
+nls?gettext
+acl?libacl
+xattrs?libattr

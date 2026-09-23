@@ -1,0 +1,40 @@
+src="tmux-$PKG_VERSION"
+tarball="$src.tar.gz"
+
+pkg_download()
+{
+    curl -fL --retry 3 --retry-delay 2 -o "$tarball" \
+        "https://github.com/tmux/tmux/releases/download/$PKG_VERSION/$tarball" || exit 1
+    tar -xf "$tarball" || exit 1
+}
+
+pkg_build()
+{
+    cd "$src" || exit 1
+
+    set -- --prefix="$PREFIX" --sysconfdir=/etc --enable-utf8proc
+
+    if attr_on systemd; then
+        set -- "$@" --enable-systemd
+    fi
+
+    if attr_on sixel; then
+        set -- "$@" --enable-sixel
+    fi
+
+    if attr_on jemalloc; then
+        set -- "$@" --enable-jemalloc
+    fi
+
+    if attr_on utempter; then
+        set -- "$@" --enable-utempter
+    fi
+
+    ./configure "$@" || exit 1
+    make -C . $MAKEOPTS
+}
+
+pkg_install()
+{
+    make -C "$src" DESTDIR="$DESTDIR" install
+}

@@ -1,0 +1,33 @@
+src="toybox-0.8.12"
+
+pkg_download()
+{
+    curl -fL --retry 3 --retry-delay 2 -o toybox-0.8.12.tar.gz http://landley.net/toybox/downloads/toybox-0.8.12.tar.gz
+    rm -rf toybox-0.8.12
+    tar -xf toybox-0.8.12.tar.gz
+}
+
+pkg_build()
+{
+    cd "$src" || exit 1
+    make defconfig
+    sed -i -e 's/^# CONFIG_AWK is not set/CONFIG_AWK=y/' -e 's/^# CONFIG_EXPR is not set/CONFIG_EXPR=y/' -e 's/^# CONFIG_TR is not set/CONFIG_TR=y/' .config
+    make clean
+    CC="$CC" make $MAKEOPTS
+}
+
+pkg_install()
+{
+    mkdir -p "$DESTDIR$PREFIX/bin"
+    cp "$src/toybox" "$DESTDIR$PREFIX/bin/toybox"
+    chmod 755 "$DESTDIR$PREFIX/bin/toybox"
+    ln -sf toybox "$DESTDIR$PREFIX/bin/awk"
+    ln -sf toybox "$DESTDIR$PREFIX/bin/expr"
+    ln -sf toybox "$DESTDIR$PREFIX/bin/tr"
+    ln -sf toybox "$DESTDIR$PREFIX/bin/sed"
+    ln -sf toybox "$DESTDIR$PREFIX/bin/cut"
+    ln -sf toybox "$DESTDIR$PREFIX/bin/sort"
+    ln -sf toybox "$DESTDIR$PREFIX/bin/head"
+    ln -sf toybox "$DESTDIR$PREFIX/bin/tail"
+    ln -sf toybox "$DESTDIR$PREFIX/bin/wc"
+}
