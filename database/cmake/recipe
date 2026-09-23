@@ -27,12 +27,17 @@ pkg_build()
         set -- "$@" --qt-gui
     fi
 
+    stdlib_flag=""
+    case "$CXX" in
+        *clang*) stdlib_flag="-stdlib=libc++" ;;
+    esac
+
     LD_LIBRARY_PATH="$PREFIX/lib" \
     CC="$CC" \
     CXX="$CXX" \
     CFLAGS="-pthread $CFLAGS" \
-    CXXFLAGS="-pthread -stdlib=libc++ $CXXFLAGS" \
-    LDFLAGS="-stdlib=libc++ $LDFLAGS" \
+    CXXFLAGS="-pthread $stdlib_flag $CXXFLAGS" \
+    LDFLAGS="$stdlib_flag $LDFLAGS" \
     ./bootstrap "$@" || exit 1
 
     make $MAKEOPTS
