@@ -1,1 +1,1 @@
-Fast and versatile file synchronization and transfer utility.
+Fast, versatile file-copying and remote-sync tool using the delta-transfer algorithm to efficiently copy and synchronize files locally or across systems.

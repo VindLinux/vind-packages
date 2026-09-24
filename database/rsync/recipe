@@ -1,59 +1,73 @@
 src="rsync-$PKG_VERSION"
-tarball="$src.tar.gz"
 
 pkg_download()
 {
-    curl -fL --retry 3 --retry-delay 2 -o "$tarball" \
-        "https://rsync.samba.org/ftp/rsync/src/$tarball" || exit 1
-    tar -xf "$tarball" || exit 1
+    curl -fL --retry 3 --retry-delay 2 -o "$src.tar.gz" "https://rsync.samba.org/ftp/rsync/src/$src.tar.gz"
+    tar -xf "$src.tar.gz"
 }
 
 pkg_build()
 {
     cd "$src" || exit 1
 
-    set -- --prefix="$PREFIX"
+    ipv6_flag="--disable-ipv6"
+    if attr_on ipv6; then
+        ipv6_flag="--enable-ipv6"
+    fi
 
+    locale_flag="--disable-locale"
+    if attr_on locale; then
+        locale_flag="--enable-locale"
+    fi
+
+    openssl_flag="--disable-openssl"
     if attr_on openssl; then
-        set -- "$@" --enable-openssl
-    else
-        set -- "$@" --disable-openssl
+        openssl_flag="--enable-openssl"
     fi
 
+    xxhash_flag="--disable-xxhash"
     if attr_on xxhash; then
-        set -- "$@" --enable-xxhash
-    else
-        set -- "$@" --disable-xxhash
+        xxhash_flag="--enable-xxhash"
     fi
 
+    zstd_flag="--disable-zstd"
     if attr_on zstd; then
-        set -- "$@" --enable-zstd
-    else
-        set -- "$@" --disable-zstd
+        zstd_flag="--enable-zstd"
     fi
 
+    lz4_flag="--disable-lz4"
     if attr_on lz4; then
-        set -- "$@" --enable-lz4
-    else
-        set -- "$@" --disable-lz4
+        lz4_flag="--enable-lz4"
     fi
 
+    idn_flag="--disable-idn"
+    if attr_on idn; then
+        idn_flag="--enable-idn"
+    fi
+
+    iconv_flag="--disable-iconv"
+    if attr_on iconv; then
+        iconv_flag="--enable-iconv"
+    fi
+
+    acl_flag="--disable-acl-support"
     if attr_on acl; then
-        set -- "$@" --enable-acl-support
-    else
-        set -- "$@" --disable-acl-support
+        acl_flag="--enable-acl-support"
     fi
 
+    xattr_flag="--disable-xattr-support"
     if attr_on xattr; then
-        set -- "$@" --enable-xattr-support
-    else
-        set -- "$@" --disable-xattr-support
+        xattr_flag="--enable-xattr-support"
     fi
 
-    ./configure \
-        --with-included-popt=no \
-        --with-included-zlib=no \
-        "$@" || exit 1
+    rrsync_flag=""
+    if attr_on rrsync; then
+        rrsync_flag="--with-rrsync"
+    fi
+
+    ./configure --prefix="$PREFIX" \
+        $ipv6_flag $locale_flag $openssl_flag $xxhash_flag $zstd_flag $lz4_flag \
+        $idn_flag $iconv_flag $acl_flag $xattr_flag $rrsync_flag
 
     make $MAKEOPTS
 }

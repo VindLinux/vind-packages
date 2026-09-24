@@ -1,6 +1,11 @@
+ipv6
+locale
 openssl
 xxhash
 zstd
 lz4
+idn
+iconv
 acl
 xattr
+rrsync
