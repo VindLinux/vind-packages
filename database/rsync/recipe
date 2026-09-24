@@ -1,0 +1,65 @@
+src="rsync-$PKG_VERSION"
+tarball="$src.tar.gz"
+
+pkg_download()
+{
+    curl -fL --retry 3 --retry-delay 2 -o "$tarball" \
+        "https://rsync.samba.org/ftp/rsync/src/$tarball" || exit 1
+    tar -xf "$tarball" || exit 1
+}
+
+pkg_build()
+{
+    cd "$src" || exit 1
+
+    set -- --prefix="$PREFIX"
+
+    if attr_on openssl; then
+        set -- "$@" --enable-openssl
+    else
+        set -- "$@" --disable-openssl
+    fi
+
+    if attr_on xxhash; then
+        set -- "$@" --enable-xxhash
+    else
+        set -- "$@" --disable-xxhash
+    fi
+
+    if attr_on zstd; then
+        set -- "$@" --enable-zstd
+    else
+        set -- "$@" --disable-zstd
+    fi
+
+    if attr_on lz4; then
+        set -- "$@" --enable-lz4
+    else
+        set -- "$@" --disable-lz4
+    fi
+
+    if attr_on acl; then
+        set -- "$@" --enable-acl-support
+    else
+        set -- "$@" --disable-acl-support
+    fi
+
+    if attr_on xattr; then
+        set -- "$@" --enable-xattr-support
+    else
+        set -- "$@" --disable-xattr-support
+    fi
+
+    ./configure \
+        --with-included-popt=no \
+        --with-included-zlib=no \
+        "$@" || exit 1
+
+    make $MAKEOPTS
+}
+
+pkg_install()
+{
+    cd "$src" || exit 1
+    make DESTDIR="$DESTDIR" install
+}

@@ -1,0 +1,6 @@
+openssl
+xxhash
+zstd
+lz4
+acl
+xattr
