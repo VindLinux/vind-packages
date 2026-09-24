@@ -1,6 +1,7 @@
 # one dependency per line
 popt
 zlib
+gawk
 openssl?openssl
 xxhash?xxhash
 zstd?zstd
