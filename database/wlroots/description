@@ -1,0 +1,1 @@
+Modular library for building Wayland compositors, providing backends (KMS/DRM, libinput, X11, headless), renderers (GLES2, Vulkan, Pixman), and standalone implementations of many Wayland protocol interfaces. Used by Sway, Hyprland (fork), river, and others.

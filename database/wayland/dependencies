@@ -1,0 +1,5 @@
+meson
+ninja
+libffi
+expat
+libxml2

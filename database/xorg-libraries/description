@@ -1,0 +1,1 @@
+Meta-package that pulls in all Xorg client libraries (Xlib, extensions, toolkit, and utility libraries) required by X Window applications, plus their build prerequisites util-macros and xorgproto. This package has no build steps of its own; it only resolves and installs its listed dependencies.

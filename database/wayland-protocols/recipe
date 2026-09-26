@@ -1,0 +1,18 @@
+src="wayland-protocols-1.49"
+
+pkg_download()
+{
+    curl -fL --retry 3 --retry-delay 2 -o wayland-protocols-1.49.tar.xz https://gitlab.freedesktop.org/wayland/wayland-protocols/-/releases/1.49/downloads/wayland-protocols-1.49.tar.xz
+    tar -xf wayland-protocols-1.49.tar.xz
+}
+
+pkg_build()
+{
+    meson setup "$src/build" "$src" --prefix="$PREFIX" --buildtype=release -Dtests=false
+    ninja -C "$src/build" $MAKEOPTS
+}
+
+pkg_install()
+{
+    DESTDIR="$DESTDIR" ninja -C "$src/build" install
+}

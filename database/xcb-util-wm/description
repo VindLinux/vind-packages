@@ -1,0 +1,1 @@
+XCB utility libraries for window-manager-related protocols: ICCCM (icccm) and Extended Window Manager Hints (ewmh), used by X11 window managers and by Xwayland-facing code in wlroots.

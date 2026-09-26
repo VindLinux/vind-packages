@@ -1,0 +1,20 @@
+src="xcb-proto-1.17.0"
+
+pkg_download()
+{
+    curl -fL --retry 3 --retry-delay 2 -o xcb-proto-1.17.0.tar.xz https://xorg.freedesktop.org/archive/individual/proto/xcb-proto-1.17.0.tar.xz
+    tar -xf xcb-proto-1.17.0.tar.xz
+}
+
+pkg_build()
+{
+    cd "$src" || exit 1
+    PYTHON=python3 ./configure $XORG_CONFIG
+    make $MAKEOPTS
+}
+
+pkg_install()
+{
+    cd "$src" || exit 1
+    make DESTDIR="$DESTDIR" install
+}

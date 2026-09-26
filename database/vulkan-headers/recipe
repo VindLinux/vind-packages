@@ -1,0 +1,20 @@
+src="Vulkan-Headers-vulkan-sdk-$PKG_VERSION"
+tarball="vulkan-headers-$PKG_VERSION.tar.gz"
+
+pkg_download()
+{
+    curl -fL --retry 3 --retry-delay 2 -o "$tarball" \
+        "https://github.com/KhronosGroup/Vulkan-Headers/archive/refs/tags/vulkan-sdk-$PKG_VERSION.tar.gz" || exit 1
+    tar -xf "$tarball" || exit 1
+}
+
+pkg_build()
+{
+    cmake -G Ninja -S "$src" -B "$src/build" -D CMAKE_INSTALL_PREFIX="$PREFIX" -D CMAKE_BUILD_TYPE=Release || exit 1
+    ninja -C "$src/build" $MAKEOPTS
+}
+
+pkg_install()
+{
+    DESTDIR="$DESTDIR" ninja -C "$src/build" install
+}

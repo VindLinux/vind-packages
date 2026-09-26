@@ -1,0 +1,1 @@
+Core Wayland library: the client/server protocol implementation (libwayland-client, libwayland-server) and wayland-scanner, the code generator that turns protocol XML into C bindings.

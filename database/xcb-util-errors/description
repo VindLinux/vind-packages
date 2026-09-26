@@ -1,0 +1,1 @@
+XCB utility library that turns raw X11 error codes, event codes, and major/minor opcodes into human-readable names, used by compositors and debugging tools for diagnostics.

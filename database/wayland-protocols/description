@@ -1,0 +1,1 @@
+XML protocol definitions for standardized Wayland extensions beyond the core protocol (xdg-shell, xdg-decoration, presentation-time, tablet, etc), consumed by compositors and toolkits via wayland-scanner.

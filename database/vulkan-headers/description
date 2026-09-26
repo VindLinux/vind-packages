@@ -1,0 +1,1 @@
+Official Vulkan C/C++ header files and API registry (XML spec used to generate loaders/validation layers). Header-only, no compiled library; used at build time by Vulkan-consuming projects such as wlroots' experimental Vulkan renderer and glslang.

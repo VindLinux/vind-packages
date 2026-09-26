@@ -1,0 +1,1 @@
+Collection of USB inspection utilities (lsusb, usb-devices) that use hwdata's usb.ids database, built on top of libusb.

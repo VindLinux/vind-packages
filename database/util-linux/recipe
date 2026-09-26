@@ -1,0 +1,83 @@
+src="util-linux-$PKG_VERSION"
+series="${PKG_VERSION%.*}"
+tarball="$src.tar.gz"
+
+pkg_download()
+{
+    curl -fL --retry 3 --retry-delay 2 -o "$tarball" \
+        "https://mirrors.edge.kernel.org/pub/linux/utils/util-linux/v$series/$tarball" || exit 1
+    tar -xf "$tarball" || exit 1
+}
+
+pkg_build()
+{
+    set -- --prefix="$PREFIX" \
+        --libdir="$PREFIX/lib" \
+        --buildtype=release \
+        --wrap-mode=nodownload \
+        -D build-login=disabled \
+        -D build-su=disabled \
+        -D build-runuser=disabled
+
+    if attr_on nls; then
+        set -- "$@" -D nls=enabled
+    else
+        set -- "$@" -D nls=disabled
+    fi
+
+    if attr_on readline; then
+        set -- "$@" -D readline=enabled
+    else
+        set -- "$@" -D readline=disabled
+    fi
+
+    if attr_on systemd; then
+        set -- "$@" -D systemd=enabled
+    else
+        set -- "$@" -D systemd=disabled
+    fi
+
+    if attr_on selinux; then
+        set -- "$@" -D selinux=enabled
+    fi
+
+    if attr_on audit; then
+        set -- "$@" -D audit=enabled
+    fi
+
+    if attr_on smack; then
+        set -- "$@" -D smack=enabled
+    fi
+
+    if attr_on cryptsetup; then
+        set -- "$@" -D cryptsetup=enabled
+    else
+        set -- "$@" -D cryptsetup=disabled
+    fi
+
+    if attr_on zlib; then
+        set -- "$@" -D zlib=enabled
+    else
+        set -- "$@" -D zlib=disabled
+    fi
+
+    if attr_on utempter; then
+        set -- "$@" -D libutempter=enabled
+    else
+        set -- "$@" -D libutempter=disabled
+    fi
+
+    if attr_on magic; then
+        set -- "$@" -D magic=enabled
+    else
+        set -- "$@" -D magic=disabled
+    fi
+
+    meson setup "$src/build" "$src" "$@" || exit 1
+    ninja -C "$src/build" $MAKEOPTS
+}
+
+pkg_install()
+{
+    DESTDIR="$DESTDIR" ninja -C "$src/build" install
+}

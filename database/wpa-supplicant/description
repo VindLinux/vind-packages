@@ -1,0 +1,1 @@
+Cross-platform supplicant for WPA, WPA2/RSN, and IEEE 802.1X, implementing key negotiation with a WPA authenticator and IEEE 802.11i/WPA/WPA2/WPA3 network authentication. Also includes wpa_cli and wpa_passphrase.
