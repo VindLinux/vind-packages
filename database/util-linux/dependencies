@@ -6,6 +6,7 @@ bash
 pam
 sqlite3
 ln
+zlib
 nls?gettext
 readline?readline
 systemd?systemd
@@ -13,6 +14,5 @@ selinux?libselinux
 audit?audit
 smack?libsmack
 cryptsetup?cryptsetup
-zlib?zlib
 utempter?libutempter
 magic?file
