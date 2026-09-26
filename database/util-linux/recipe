@@ -17,7 +17,8 @@ pkg_build()
         --wrap-mode=nodownload \
         -D build-login=disabled \
         -D build-su=disabled \
-        -D build-runuser=disabled
+        -D build-runuser=disabled \
+		-D zlib=enabled
 
     if attr_on nls; then
         set -- "$@" -D nls=enabled
@@ -53,12 +54,6 @@ pkg_build()
         set -- "$@" -D cryptsetup=enabled
     else
         set -- "$@" -D cryptsetup=disabled
-    fi
-
-    if attr_on zlib; then
-        set -- "$@" -D zlib=enabled
-    else
-        set -- "$@" -D zlib=disabled
     fi
 
     if attr_on utempter; then
