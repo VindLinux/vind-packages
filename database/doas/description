@@ -1,0 +1,1 @@
+Port of OpenBSD's doas, a minimal and auditable alternative to sudo for running commands as another user, with a simple configuration syntax and PAM authentication.

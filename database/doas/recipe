@@ -1,0 +1,40 @@
+src="doas-${PKG_VERSION}"
+tarball="${PKG_VERSION}.tar.gz"
+
+pkg_download()
+{
+    curl -fL --retry 3 --retry-delay 2 -o "$tarball" \
+        "https://github.com/slicer69/doas/archive/refs/tags/$tarball" || exit 1
+    tar -xf "$tarball" || exit 1
+}
+
+pkg_build()
+{
+    cd "$src" || exit 1
+
+    # DESTDIR nao pode ser passado aqui: o Makefile embute ele em DOAS_CONF
+    set -- PREFIX="$PREFIX"
+
+    if attr_on bison; then
+        set -- "$@" YACC="bison -y"
+    fi
+
+    CPPFLAGS="-I$PREFIX/include" \
+    LDFLAGS="-L$PREFIX/lib" \
+    LD_LIBRARY_PATH="$PREFIX/lib${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}" \
+    make "$@" $MAKEOPTS || exit 1
+}
+
+pkg_install()
+{
+    cd "$src" || exit 1
+
+    make PREFIX="$PREFIX" \
+         MANDIR="$DESTDIR$PREFIX/share/man" \
+         DESTDIR="$DESTDIR" install || exit 1
+
+    if attr_on sample; then
+        install -Dm644 doas.conf.sample \
+            "$DESTDIR$PREFIX/etc/doas.conf.sample" || exit 1
+    fi
+}
