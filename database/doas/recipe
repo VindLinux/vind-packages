@@ -12,11 +12,12 @@ pkg_build()
 {
     cd "$src" || exit 1
 
-    # DESTDIR nao pode ser passado aqui: o Makefile embute ele em DOAS_CONF
-    set -- PREFIX="$PREFIX"
+    set -- PREFIX="$PREFIX" DESTDIR=
 
     if attr_on bison; then
         set -- "$@" YACC="bison -y"
+    else
+        set -- "$@" YACC=byacc
     fi
 
     CPPFLAGS="-I$PREFIX/include" \
@@ -30,8 +31,8 @@ pkg_install()
     cd "$src" || exit 1
 
     make PREFIX="$PREFIX" \
-         MANDIR="$DESTDIR$PREFIX/share/man" \
-         DESTDIR="$DESTDIR" install || exit 1
+        MANDIR="$DESTDIR$PREFIX/share/man" \
+        DESTDIR="$DESTDIR" install || exit 1
 
     if attr_on sample; then
         install -Dm644 doas.conf.sample \
