@@ -106,7 +106,7 @@ pkg_install()
     ln -sf llvm-ranlib "$DESTDIR$PREFIX/bin/ranlib" || exit 1
     ln -sf llvm-objcopy "$DESTDIR$PREFIX/bin/objcopy" || exit 1
     ln -sf llvm-objdump "$DESTDIR$PREFIX/bin/objdump" || exit 1
-    ln -sf llvm-readelf "$DESTDIR$PREFIX/bin/readelf" || exit 1
+    ln -sf llvm-readobj "$DESTDIR$PREFIX/bin/readelf" || exit 1
     ln -sf llvm-strip "$DESTDIR$PREFIX/bin/strip" || exit 1
     ln -sf llvm-addr2line "$DESTDIR$PREFIX/bin/addr2line" || exit 1
     ln -sf llvm-size "$DESTDIR$PREFIX/bin/size" || exit 1
