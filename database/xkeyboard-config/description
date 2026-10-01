@@ -1,0 +1,1 @@
+Database of keyboard layouts, models, and options for the X Keyboard Extension (XKB), consumed at runtime by libxkbcommon to resolve layout names (e.g. 'us', 'br-abnt2') into actual keymaps. Data-only package, no compiled binaries.

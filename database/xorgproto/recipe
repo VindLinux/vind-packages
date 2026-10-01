@@ -1,0 +1,19 @@
+src="xorgproto-2025.1"
+
+pkg_download()
+{
+    curl -fL --retry 3 --retry-delay 2 -o xorgproto-2025.1.tar.xz https://xorg.freedesktop.org/archive/individual/proto/xorgproto-2025.1.tar.xz
+    tar -xf xorgproto-2025.1.tar.xz
+}
+
+pkg_build()
+{
+    meson setup "$src/build" "$src" --prefix="$XORG_PREFIX" --libdir="$XORG_PREFIX/lib" --buildtype=release --wrap-mode=nodownload
+    ninja -C "$src/build" $MAKEOPTS
+}
+
+pkg_install()
+{
+    DESTDIR="$DESTDIR" ninja -C "$src/build" install
+    mv -v "$DESTDIR$XORG_PREFIX/share/doc/xorgproto" "$DESTDIR$XORG_PREFIX/share/doc/xorgproto-2025.1"
+}

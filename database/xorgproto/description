@@ -1,0 +1,1 @@
+Provides the X11 protocol header files required to build the X Window System and to allow other applications to build against an installed X Window System.
