@@ -10,7 +10,11 @@ pkg_build()
 {
     cd "$src" || exit 1
 
-    RAWCPP="clang -E -x c -" \
+    rawcpp="$PWD/rawcpp"
+    printf '#!/bin/sh\nexec clang -E -x c "$@" -\n' > "$rawcpp"
+    chmod 755 "$rawcpp"
+
+    RAWCPP="$rawcpp" \
     ./configure $XORG_CONFIG --docdir="$XORG_PREFIX/share/doc/libX11-1.8.13" || exit 1
 
     make $MAKEOPTS || exit 1
