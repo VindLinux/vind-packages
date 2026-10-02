@@ -2,15 +2,18 @@ src="libX11-1.8.13"
 
 pkg_download()
 {
-    curl -fL --retry 3 --retry-delay 2 -o libX11-1.8.13.tar.xz https://www.x.org/pub/individual/lib/libX11-1.8.13.tar.xz
-    tar -xf libX11-1.8.13.tar.xz
+    curl -fL --retry 3 --retry-delay 2 -o libX11-1.8.13.tar.xz https://www.x.org/pub/individual/lib/libX11-1.8.13.tar.xz || exit 1
+    tar -xf libX11-1.8.13.tar.xz || exit 1
 }
 
 pkg_build()
 {
     cd "$src" || exit 1
-    ./configure $XORG_CONFIG --docdir="$XORG_PREFIX/share/doc/libX11-1.8.13"
-    make $MAKEOPTS
+
+    RAWCPP="clang -E -x c -" \
+    ./configure $XORG_CONFIG --docdir="$XORG_PREFIX/share/doc/libX11-1.8.13" || exit 1
+
+    make $MAKEOPTS || exit 1
 }
 
 pkg_install()
