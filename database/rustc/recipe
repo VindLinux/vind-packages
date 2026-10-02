@@ -20,6 +20,7 @@ change-id = 148795
 
 [llvm]
 targets = "X86"
+ldflags = "-lc++abi -lunwind"
 
 [build]
 build = "x86_64-unknown-linux-musl"
