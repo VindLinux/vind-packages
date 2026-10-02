@@ -1,22 +1,23 @@
-src="wheel-${PKG_VERSION}"
-tarball="wheel-${PKG_VERSION}.tar.gz"
+whl="wheel-${PKG_VERSION}-py3-none-any.whl"
 
 pkg_download()
 {
-    curl -fL --retry 3 --retry-delay 2 -o "$tarball" \
-        "https://files.pythonhosted.org/packages/source/w/wheel/$tarball" || exit 1
-    tar -xf "$tarball" || exit 1
+    curl -fL --retry 3 --retry-delay 2 -o "$whl" \
+        "https://files.pythonhosted.org/packages/py3/w/wheel/$whl" || exit 1
 }
 
 pkg_build()
 {
-    cd "$src" || exit 1
-    python3 -m pip wheel --no-build-isolation --no-deps -w dist . || exit 1
+    :
 }
 
 pkg_install()
 {
-    cd "$src" || exit 1
-    python3 -m pip install --no-index --no-deps --no-build-isolation \
-        --root "$DESTDIR" --prefix "$PREFIX" dist/*.whl
+    site=$(python3 -c "import sysconfig; print(sysconfig.get_path('purelib', vars={'base': '$PREFIX', 'platbase': '$PREFIX'}))") || exit 1
+
+    mkdir -p "$DESTDIR$site" "$DESTDIR$PREFIX/bin"
+    python3 -m zipfile -e "$whl" "$DESTDIR$site" || exit 1
+
+    printf '#!/bin/sh\nexec python3 -m wheel "$@"\n' > "$DESTDIR$PREFIX/bin/wheel"
+    chmod 755 "$DESTDIR$PREFIX/bin/wheel"
 }
