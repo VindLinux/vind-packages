@@ -12,14 +12,14 @@ pkg_build()
 {
     cd "$src" || exit 1
 
-    set -- --prefix="$PREFIX" --disable-static
+    set -- --prefix="$PREFIX"
 
     if ! attr_on nls; then
         set -- "$@" --disable-nls
     fi
 
     ./configure "$@" || exit 1
-    make $MAKEOPTS
+    make $MAKEOPTS || exit 1
 }
 
 pkg_install()
