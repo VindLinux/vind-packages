@@ -11,6 +11,10 @@ pkg_download()
 pkg_build()
 {
     cd "$src" || exit 1
+
+    ln -sf libunwind.so.1 "$PREFIX/lib/libgcc_s.so.1" || exit 1
+    ln -sf libgcc_s.so.1 "$PREFIX/lib/libgcc_s.so" || exit 1
+
     cat > bootstrap.toml <<BOOTSTRAP
 change-id = 148795
 
@@ -36,11 +40,15 @@ lto = "thin"
 codegen-units = 1
 llvm-bitcode-linker = false
 BOOTSTRAP
-    ./x.py build
+    ./x.py build || exit 1
 }
 
 pkg_install()
 {
     cd "$src" || exit 1
-    DESTDIR="$DESTDIR" ./x.py install
+    DESTDIR="$DESTDIR" ./x.py install || exit 1
+
+    mkdir -p "$DESTDIR$PREFIX/lib" || exit 1
+    ln -sf libunwind.so.1 "$DESTDIR$PREFIX/lib/libgcc_s.so.1" || exit 1
+    ln -sf libgcc_s.so.1 "$DESTDIR$PREFIX/lib/libgcc_s.so" || exit 1
 }
