@@ -1,0 +1,22 @@
+src="wheel-${PKG_VERSION}"
+tarball="wheel-${PKG_VERSION}.tar.gz"
+
+pkg_download()
+{
+    curl -fL --retry 3 --retry-delay 2 -o "$tarball" \
+        "https://files.pythonhosted.org/packages/source/w/wheel/$tarball" || exit 1
+    tar -xf "$tarball" || exit 1
+}
+
+pkg_build()
+{
+    cd "$src" || exit 1
+    python3 -m pip wheel --no-build-isolation --no-deps -w dist . || exit 1
+}
+
+pkg_install()
+{
+    cd "$src" || exit 1
+    python3 -m pip install --no-index --no-deps --no-build-isolation \
+        --root "$DESTDIR" --prefix "$PREFIX" dist/*.whl
+}
