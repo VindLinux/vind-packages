@@ -12,15 +12,11 @@ pkg_build()
 {
     cd "$src" || exit 1
 
-    ln -sf libunwind.so.1 "$PREFIX/lib/libgcc_s.so.1" || exit 1
-    ln -sf libgcc_s.so.1 "$PREFIX/lib/libgcc_s.so" || exit 1
-
     cat > bootstrap.toml <<BOOTSTRAP
 change-id = 148795
 
 [llvm]
-targets = "X86"
-ldflags = "-lc++abi -lunwind"
+link-shared = true
 
 [build]
 build = "x86_64-unknown-linux-musl"
@@ -29,7 +25,11 @@ target = ["x86_64-unknown-linux-musl"]
 description = "for Vind Linux"
 docs = false
 locked-deps = true
+jobs = 2
 tools = ["cargo", "clippy", "rustdoc", "rustfmt", "src"]
+
+[target.x86_64-unknown-linux-musl]
+llvm-config = "$PREFIX/bin/llvm-config"
 
 [install]
 prefix = "$PREFIX"
@@ -48,8 +48,4 @@ pkg_install()
 {
     cd "$src" || exit 1
     DESTDIR="$DESTDIR" ./x.py install || exit 1
-
-    mkdir -p "$DESTDIR$PREFIX/lib" || exit 1
-    ln -sf libunwind.so.1 "$DESTDIR$PREFIX/lib/libgcc_s.so.1" || exit 1
-    ln -sf libgcc_s.so.1 "$DESTDIR$PREFIX/lib/libgcc_s.so" || exit 1
 }
