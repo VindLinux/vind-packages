@@ -1,4 +1,4 @@
-src="Vulkan-Headers-vulkan-sdk-$PKG_VERSION"
+src="Vulkan-Headers-$PKG_VERSION"
 tarball="vulkan-headers-$PKG_VERSION.tar.gz"
 
 pkg_download()
