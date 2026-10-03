@@ -8,7 +8,7 @@ pkg_download()
 
 pkg_build()
 {
-    meson setup "$src/build" "$src" --prefix="$PREFIX" --buildtype=release -Dlibseat-seatd=enabled -Dlibseat-logind=disabled -Dlibseat-builtin=enabled -Dserver=enabled -Dexamples=disabled -Dman-pages=disabled
+    meson setup "$src/build" "$src" --prefix="$PREFIX" --buildtype=release -Dlibseat-seatd=enabled -Dlibseat-logind=disabled -Dlibseat-builtin=enabled -Dserver=enabled -Dexamples=disabled -Dman-pages=disabled -Dwerror=false || exit 1
     ninja -C "$src/build" $MAKEOPTS
 }
 
