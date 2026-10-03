@@ -30,6 +30,7 @@ tools = ["cargo", "clippy", "rustdoc", "rustfmt", "src"]
 
 [target.x86_64-unknown-linux-musl]
 llvm-config = "$PREFIX/bin/llvm-config"
+crt-static = false
 
 [install]
 prefix = "$PREFIX"
