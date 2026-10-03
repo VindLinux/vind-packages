@@ -1,0 +1,21 @@
+src="dejavu-fonts-ttf-${PKG_VERSION}"
+tarball="${src}.tar.bz2"
+
+pkg_download()
+{
+    curl -fL --retry 3 --retry-delay 2 -o "$tarball" \
+        "https://github.com/dejavu-fonts/dejavu-fonts/releases/download/version_${PKG_VERSION//./_}/$tarball" || exit 1
+    tar -xf "$tarball" || exit 1
+}
+
+pkg_build()
+{
+    :
+}
+
+pkg_install()
+{
+    cd "$src" || exit 1
+    mkdir -p "$DESTDIR$PREFIX/share/fonts/TTF"
+    cp ttf/*.ttf "$DESTDIR$PREFIX/share/fonts/TTF/"
+}

@@ -1,0 +1,19 @@
+tarball="JetBrainsMono-${PKG_VERSION}.zip"
+
+pkg_download()
+{
+    curl -fL --retry 3 --retry-delay 2 -o "$tarball" \
+        "https://github.com/JetBrains/JetBrainsMono/releases/download/v${PKG_VERSION}/$tarball" || exit 1
+    mkdir -p src && unzip -oq "$tarball" -d src || exit 1
+}
+
+pkg_build()
+{
+    :
+}
+
+pkg_install()
+{
+    mkdir -p "$DESTDIR$PREFIX/share/fonts/TTF"
+    cp src/fonts/ttf/*.ttf "$DESTDIR$PREFIX/share/fonts/TTF/"
+}
