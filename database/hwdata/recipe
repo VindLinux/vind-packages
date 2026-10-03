@@ -24,5 +24,10 @@ pkg_install()
         install -m644 "$f" "$DESTDIR$PREFIX/share/hwdata/$f" || exit 1
     done
 
-    install -m644 hwdata.pc "$DESTDIR$PREFIX/share/pkgconfig/hwdata.pc" || exit 1
+    sed -e "s|@prefix@|$PREFIX|g" \
+        -e 's|@datadir@|${prefix}/share|g' \
+        -e 's|@pkgdatadir@|${datadir}/hwdata|g' \
+        -e "s|@VERSION@|$PKG_VERSION|g" \
+        -e 's|@NAME@|hwdata|g' \
+        hwdata.pc.in > "$DESTDIR$PREFIX/share/pkgconfig/hwdata.pc" || exit 1
 }
