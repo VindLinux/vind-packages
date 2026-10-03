@@ -8,7 +8,13 @@ pkg_download()
 
 pkg_build()
 {
-    meson setup "$src/build" "$src" --prefix="$PREFIX" --buildtype=release -Dexamples=false -Dxwayland=enabled
+    xwayland="disabled"
+    
+	if attr_on xwayland; then
+        xwayland="enabled"
+    fi
+
+    meson setup "$src/build" "$src" --prefix="$PREFIX" --buildtype=release -Dexamples=false -Dxwayland="$xwayland" || exit 1
     ninja -C "$src/build" $MAKEOPTS
 }
 

@@ -18,3 +18,4 @@ libliftoff
 lcms2
 meson
 ninja
+xwayland?xwayland
