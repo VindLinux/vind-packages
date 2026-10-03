@@ -1,20 +1,68 @@
-src="libxkbcommon-xkbcommon-$PKG_VERSION"
-tarball="libxkbcommon-$PKG_VERSION.tar.gz"
+src="libxkbcommon-xkbcommon-${PKG_VERSION}"
+tarball="xkbcommon-${PKG_VERSION}.tar.gz"
 
 pkg_download()
 {
     curl -fL --retry 3 --retry-delay 2 -o "$tarball" \
-        "https://github.com/xkbcommon/libxkbcommon/archive/refs/tags/xkbcommon-$PKG_VERSION.tar.gz" || exit 1
+        "https://github.com/xkbcommon/libxkbcommon/archive/refs/tags/$tarball" || exit 1
     tar -xf "$tarball" || exit 1
 }
 
 pkg_build()
 {
-    meson setup "$src/build" "$src" --prefix="$PREFIX" --buildtype=release -Denable-docs=false || exit 1
-    ninja -C "$src/build" $MAKEOPTS
+    cd "$src" || exit 1
+
+    set -- --prefix="$PREFIX" --libdir=lib --buildtype=release \
+        -Dxkb-config-root="$PREFIX/share/X11/xkb"
+
+    if attr_on tools; then
+        set -- "$@" -Denable-tools=true
+    else
+        set -- "$@" -Denable-tools=false
+    fi
+
+    if attr_on x11; then
+        set -- "$@" -Denable-x11=true
+    else
+        set -- "$@" -Denable-x11=false
+    fi
+
+    # wayland exige tools
+    if attr_on wayland && attr_on tools; then
+        set -- "$@" -Denable-wayland=true
+    else
+        set -- "$@" -Denable-wayland=false
+    fi
+
+    if attr_on xkbregistry; then
+        set -- "$@" -Denable-xkbregistry=true
+    else
+        set -- "$@" -Denable-xkbregistry=false
+    fi
+
+    if attr_on docs; then
+        set -- "$@" -Denable-docs=true
+    else
+        set -- "$@" -Denable-docs=false
+    fi
+
+    if attr_on bash-completion; then
+        set -- "$@" -Denable-bash-completion=true
+    else
+        set -- "$@" -Denable-bash-completion=false
+    fi
+
+    PKG_CONFIG_PATH="$PREFIX/lib/pkgconfig:$PREFIX/share/pkgconfig${PKG_CONFIG_PATH:+:$PKG_CONFIG_PATH}" \
+    CPPFLAGS="-I$PREFIX/include" \
+    LDFLAGS="-L$PREFIX/lib" \
+    LD_LIBRARY_PATH="$PREFIX/lib${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}" \
+    meson setup build "$@" || exit 1
+
+    ninja -C build $MAKEOPTS || exit 1
 }
 
 pkg_install()
 {
-    DESTDIR="$DESTDIR" ninja -C "$src/build" install
+    cd "$src" || exit 1
+    DESTDIR="$DESTDIR" meson install -C build || exit 1
 }

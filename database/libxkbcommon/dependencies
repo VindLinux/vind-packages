@@ -1,4 +1,12 @@
 meson
 ninja
-libxcb
+bison
+pkgconf
 xkeyboard-config
+x11?libxcb
+x11?xcb-util-keysyms
+xkbregistry?libxml2
+wayland?wayland
+wayland?wayland-protocols
+docs?doxygen
+bash-completion?bash-completion
