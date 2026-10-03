@@ -4,7 +4,7 @@ tarball="vulkan-headers-$PKG_VERSION.tar.gz"
 pkg_download()
 {
     curl -fL --retry 3 --retry-delay 2 -o "$tarball" \
-        "https://github.com/KhronosGroup/Vulkan-Headers/archive/refs/tags/vulkan-sdk-$PKG_VERSION.tar.gz" || exit 1
+        "https://github.com/KhronosGroup/Vulkan-Headers/archive/refs/tags/v$PKG_VERSION.tar.gz" || exit 1
     tar -xf "$tarball" || exit 1
 }
 
