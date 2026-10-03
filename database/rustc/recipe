@@ -17,6 +17,7 @@ change-id = 148795
 
 [llvm]
 link-shared = true
+use-libcxx = true
 
 [build]
 build = "x86_64-unknown-linux-musl"
