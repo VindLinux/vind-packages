@@ -10,22 +10,30 @@ pkg_download()
 
 pkg_build()
 {
+    gallium="llvmpipe,r300,nouveau,zink"
+    vulkan=""
+
+    if attr_on amdgpu; then
+        gallium="$gallium,radeonsi,r600"
+        vulkan="amd"
+    fi
+
     meson setup "$src/build" "$src" \
         --prefix="$XORG_PREFIX" \
         --libdir="$XORG_PREFIX/lib" \
         --buildtype=release \
         -D platforms=x11,wayland \
-        -D gallium-drivers=llvmpipe,radeonsi,r300,r600,nouveau,zink \
-        -D vulkan-drivers=amd \
+        -D gallium-drivers="$gallium" \
+        -D vulkan-drivers="$vulkan" \
         -D valgrind=disabled \
         -D video-codecs=all \
         -D libunwind=disabled \
         --wrap-mode=nodownload || exit 1
 
-    ninja -C "$src/build" $MAKEOPTS
+    ninja -C "$src/build" $MAKEOPTS || exit 1
 }
 
 pkg_install()
 {
-    DESTDIR="$DESTDIR" ninja -C "$src/build" install
+    DESTDIR="$DESTDIR" ninja -C "$src/build" install || exit 1
 }
