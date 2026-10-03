@@ -41,6 +41,7 @@ channel = "stable"
 lto = "thin"
 codegen-units = 1
 llvm-bitcode-linker = false
+codegen-tests = false
 BOOTSTRAP
     ./x.py build || exit 1
 }
