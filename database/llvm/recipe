@@ -60,7 +60,7 @@ pkg_build()
             -D LLVM_BUILD_LLVM_DYLIB=ON \
             -D LLVM_LINK_LLVM_DYLIB=ON \
             -D LLVM_ENABLE_RTTI=ON \
-            -D LLVM_STATIC_LINK_CXX_STDLIB=ON \
+            -D LLVM_ENABLE_LIBCXX=ON \
             -D CMAKE_EXE_LINKER_FLAGS="-static-libgcc" \
             -D CMAKE_SHARED_LINKER_FLAGS="-static-libgcc" \
             -D LLVM_ENABLE_PROJECTS="clang;lld" \
@@ -78,6 +78,7 @@ pkg_build()
             -D CLANG_DEFAULT_LINKER="lld" \
             -D CLANG_DEFAULT_RTLIB="compiler-rt" \
             -D CLANG_DEFAULT_UNWINDLIB="libunwind" \
+            -D CLANG_DEFAULT_CXX_STDLIB="libc++" \
             -D CLANG_CONFIG_FILE_SYSTEM_DIR=/etc/clang \
             -D LLVM_TOOL_GOLD_BUILD=OFF \
             -D COMPILER_RT_BUILD_SANITIZERS="$rt_sanitizers" \
