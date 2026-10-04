@@ -2,6 +2,7 @@
 missing-packages.sh
 adapt-recipe
 logs
+vind-newpkg
 
 # Legacy package database
 packages
