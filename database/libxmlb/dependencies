@@ -1,0 +1,7 @@
+meson
+ninja
+pkgconf
+python3
+glib
+xz
+zstd
