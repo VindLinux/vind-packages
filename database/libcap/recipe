@@ -1,0 +1,35 @@
+src="libcap-${PKG_VERSION}"
+tarball="${src}.tar.xz"
+
+pkg_download()
+{
+    curl -fL --retry 3 --retry-delay 2 -o "$tarball" \
+        "https://mirrors.edge.kernel.org/pub/linux/libs/security/linux-privs/libcap2/$tarball" || exit 1
+    tar -xf "$tarball" || exit 1
+}
+
+pkg_build()
+{
+    cd "$src" || exit 1
+
+    if attr_on pam; then
+        pam_opt="PAM_CAP=yes"
+    else
+        pam_opt="PAM_CAP=no"
+    fi
+
+    make $MAKEOPTS CC="${CC:-cc}" prefix="$PREFIX" lib=lib $pam_opt GOLANG=no USE_GPERF=no
+}
+
+pkg_install()
+{
+    cd "$src" || exit 1
+
+    if attr_on pam; then
+        pam_opt="PAM_CAP=yes"
+    else
+        pam_opt="PAM_CAP=no"
+    fi
+
+    make DESTDIR="$DESTDIR" CC="${CC:-cc}" prefix="$PREFIX" lib=lib $pam_opt GOLANG=no USE_GPERF=no install
+}

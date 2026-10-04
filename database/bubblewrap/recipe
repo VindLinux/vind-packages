@@ -1,0 +1,27 @@
+src="bubblewrap-$PKG_VERSION"
+tarball="$src.tar.xz"
+
+pkg_download()
+{
+    curl -fL --retry 3 --retry-delay 2 -o "$tarball" \
+        "https://github.com/containers/bubblewrap/releases/download/v$PKG_VERSION/$tarball" || exit 1
+    tar -xf "$tarball" || exit 1
+}
+
+pkg_build()
+{
+    cd "$src" || exit 1
+
+    meson setup build --prefix="$PREFIX" --libdir=lib --buildtype=release \
+        --wrap-mode=nodownload \
+        -Dtests=false -Dman=disabled -Dselinux=disabled \
+        -Dbash_completion=disabled -Dzsh_completion=disabled || exit 1
+
+    ninja -C build $MAKEOPTS || exit 1
+}
+
+pkg_install()
+{
+    cd "$src" || exit 1
+    DESTDIR="$DESTDIR" meson install -C build || exit 1
+}

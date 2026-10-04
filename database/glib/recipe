@@ -1,0 +1,44 @@
+src="glib-$PKG_VERSION"
+tarball="$src.tar.xz"
+series="${PKG_VERSION%.*}"
+
+pkg_download()
+{
+    curl -fL --retry 3 --retry-delay 2 -o "$tarball" \
+        "https://download.gnome.org/sources/glib/$series/$tarball" || exit 1
+    tar -xf "$tarball" || exit 1
+}
+
+pkg_build()
+{
+    cd "$src" || exit 1
+
+    set -- --prefix="$PREFIX" --libdir=lib --buildtype=release \
+           --wrap-mode=nodownload \
+           -Dtests=false -Dinstalled_tests=false \
+           -Dman-pages=disabled -Ddocumentation=false \
+           -Dintrospection=disabled -Dselinux=disabled \
+           -Dsysprof=disabled -Ddtrace=disabled -Dsystemtap=disabled \
+           -Dlibelf=disabled -Dglib_debug=disabled
+
+    if attr_on nls; then
+        set -- "$@" -Dnls=enabled
+    else
+        set -- "$@" -Dnls=disabled
+    fi
+
+    if attr_on libmount; then
+        set -- "$@" -Dlibmount=enabled
+    else
+        set -- "$@" -Dlibmount=disabled
+    fi
+
+    meson setup build "$@" || exit 1
+    ninja -C build $MAKEOPTS || exit 1
+}
+
+pkg_install()
+{
+    cd "$src" || exit 1
+    DESTDIR="$DESTDIR" meson install -C build || exit 1
+}

@@ -1,0 +1,13 @@
+meson
+ninja
+pkgconf
+pixman
+fontconfig
+freetype
+libpng
+zlib
+xlib?libx11
+xlib?libxext
+xlib?libxrender
+xcb?libxcb
+glib?glib

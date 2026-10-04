@@ -1,0 +1,10 @@
+bzip2
+zlib
+sqlite3
+libgpg-error
+libgcrypt
+libksba
+libassuan
+npth
+nls?gettext
+dirmngr?gnutls

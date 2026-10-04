@@ -1,0 +1,9 @@
+meson
+ninja
+pkgconf
+python3
+zlib
+libffi
+pcre2
+nls?gettext
+libmount?util-linux

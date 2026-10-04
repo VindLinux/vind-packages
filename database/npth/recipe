@@ -1,0 +1,27 @@
+src="npth-$PKG_VERSION"
+tarball="$src.tar.bz2"
+
+pkg_download()
+{
+    curl -fL --retry 3 --retry-delay 2 -o "$tarball" \
+        "https://gnupg.org/ftp/gcrypt/npth/$tarball" || exit 1
+
+    bzip2 -t "$tarball" || { rm -f "$tarball"; exit 1; }
+    bzip2 -dc "$tarball" | tar -xf - || exit 1
+}
+
+pkg_build()
+{
+    cd "$src" || exit 1
+
+    ./configure --prefix="$PREFIX" --disable-tests \
+                --enable-install-npth-config || exit 1
+
+    make $MAKEOPTS || exit 1
+}
+
+pkg_install()
+{
+    cd "$src" || exit 1
+    make DESTDIR="$DESTDIR" install || exit 1
+}

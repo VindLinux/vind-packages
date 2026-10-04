@@ -1,0 +1,8 @@
+meson
+ninja
+pkgconf
+wayland
+wayland-protocols
+cairo
+pixbuf?gdk-pixbuf
+man?scdoc

@@ -1,0 +1,49 @@
+src="cairo-$PKG_VERSION"
+tarball="$src.tar.xz"
+
+pkg_download()
+{
+    curl -fL --retry 3 --retry-delay 2 -o "$tarball" \
+        "https://www.cairographics.org/releases/$tarball" || exit 1
+    tar -xf "$tarball" || exit 1
+}
+
+pkg_build()
+{
+    cd "$src" || exit 1
+
+    set -- --prefix="$PREFIX" --libdir=lib --buildtype=release \
+           -Dtests=disabled -Dgtk_doc=false \
+           -Dfreetype=enabled -Dfontconfig=enabled \
+           -Dpng=enabled -Dzlib=enabled \
+           -Dlzo=disabled -Dspectre=disabled \
+           -Dsymbol-lookup=disabled -Dgtk2-utils=disabled \
+           -Dxlib-xcb=disabled
+
+    if attr_on xlib; then
+        set -- "$@" -Dxlib=enabled
+    else
+        set -- "$@" -Dxlib=disabled
+    fi
+
+    if attr_on xcb; then
+        set -- "$@" -Dxcb=enabled
+    else
+        set -- "$@" -Dxcb=disabled
+    fi
+
+    if attr_on glib; then
+        set -- "$@" -Dglib=enabled
+    else
+        set -- "$@" -Dglib=disabled
+    fi
+
+    meson setup build "$@" || exit 1
+    meson compile -C build || exit 1
+}
+
+pkg_install()
+{
+    cd "$src" || exit 1
+    DESTDIR="$DESTDIR" meson install -C build || exit 1
+}

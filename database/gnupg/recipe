@@ -1,0 +1,42 @@
+src="gnupg-$PKG_VERSION"
+tarball="$src.tar.bz2"
+
+pkg_download()
+{
+    curl -fL --retry 3 --retry-delay 2 -o "$tarball" \
+        "https://www.gnupg.org/ftp/gcrypt/gnupg/$tarball" || exit 1
+
+    bzip2 -t "$tarball" || { rm -f "$tarball"; exit 1; }
+    bzip2 -dc "$tarball" | tar -xf - || exit 1
+}
+
+pkg_build()
+{
+    cd "$src" || exit 1
+
+    set -- --prefix="$PREFIX" --disable-doc --disable-tests \
+           --disable-scdaemon --disable-tpm2d --disable-ldap \
+           --disable-ntbtls
+
+    if attr_on dirmngr; then
+        :
+    else
+        set -- "$@" --disable-dirmngr --disable-gnutls
+    fi
+
+    if ! attr_on nls; then
+        set -- "$@" --disable-nls
+    fi
+
+    CPPFLAGS="-I$PREFIX/include" \
+    LDFLAGS="-L$PREFIX/lib" \
+    ./configure "$@" || exit 1
+
+    make $MAKEOPTS || exit 1
+}
+
+pkg_install()
+{
+    cd "$src" || exit 1
+    make DESTDIR="$DESTDIR" install || exit 1
+}

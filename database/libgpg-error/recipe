@@ -1,0 +1,37 @@
+src="libgpg-error-${PKG_VERSION}"
+tarball="${src}.tar.bz2"
+
+pkg_download()
+{
+    curl -fL --retry 3 --retry-delay 2 -o "$tarball" \
+        "https://gnupg.org/ftp/gcrypt/libgpg-error/$tarball" || exit 1
+    tar -xf "$tarball" || exit 1
+}
+
+pkg_build()
+{
+    cd "$src" || exit 1
+
+    set -- --prefix="$PREFIX" --disable-doc --disable-tests
+
+    if attr_on legacyconfig; then
+        set -- "$@" --enable-install-gpg-error-config
+    fi
+
+    if ! attr_on languages; then
+        set -- "$@" --disable-languages
+    fi
+
+    if ! attr_on nls; then
+        set -- "$@" --disable-nls
+    fi
+
+    ./configure "$@" || exit 1
+    make $MAKEOPTS
+}
+
+pkg_install()
+{
+    cd "$src" || exit 1
+    make DESTDIR="$DESTDIR" install
+}

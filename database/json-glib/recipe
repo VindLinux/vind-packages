@@ -1,0 +1,35 @@
+src="json-glib-$PKG_VERSION"
+tarball="$src.tar.xz"
+series="${PKG_VERSION%.*}"
+
+pkg_download()
+{
+    curl -fL --retry 3 --retry-delay 2 -o "$tarball" \
+        "https://download.gnome.org/sources/json-glib/$series/$tarball" || exit 1
+    tar -xf "$tarball" || exit 1
+}
+
+pkg_build()
+{
+    cd "$src" || exit 1
+
+    set -- --prefix="$PREFIX" --libdir=lib --buildtype=release \
+           --wrap-mode=nodownload \
+           -Dtests=false -Dconformance=false -Dinstalled_tests=false \
+           -Dman=false -Ddocumentation=disabled -Dintrospection=disabled
+
+    if attr_on nls; then
+        set -- "$@" -Dnls=enabled
+    else
+        set -- "$@" -Dnls=disabled
+    fi
+
+    meson setup build "$@" || exit 1
+    ninja -C build $MAKEOPTS || exit 1
+}
+
+pkg_install()
+{
+    cd "$src" || exit 1
+    DESTDIR="$DESTDIR" meson install -C build || exit 1
+}

@@ -1,0 +1,6 @@
+meson
+ninja
+pkgconf
+python3
+glib
+nls?gettext
