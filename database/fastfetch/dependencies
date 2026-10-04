@@ -8,7 +8,7 @@ gio?glib
 dconf?dconf
 dbus?dbus
 xfconf?xfconf
-sqlite3?sqlite
+sqlite3?sqlite3
 rpm?rpm
 imagemagick?imagemagick
 chafa?chafa

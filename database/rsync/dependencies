@@ -7,4 +7,4 @@ xxhash?xxhash
 zstd?zstd
 lz4?lz4
 idn?libidn2
-acl?acl
+acl?libacl

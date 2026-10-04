@@ -1,7 +1,7 @@
 autoconf
 readline
 nls?gettext
-vlock?linux-pam
+vlock?pam
 zlib?zlib
 bzip2?bzip2
 lzma?xz

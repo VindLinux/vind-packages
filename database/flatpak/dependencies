@@ -11,7 +11,7 @@ libarchive
 curl
 libxml2
 json-glib
-fuse
+fuse3
 libostree
 appstream
 gdk-pixbuf

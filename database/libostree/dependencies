@@ -9,5 +9,5 @@ libgpg-error
 libarchive
 e2fsprogs
 util-linux
-fuse
+fuse3
 openssl?openssl
