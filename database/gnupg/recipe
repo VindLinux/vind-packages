@@ -28,8 +28,8 @@ pkg_build()
         set -- "$@" --disable-nls
     fi
 
-    CPPFLAGS="-I$PREFIX/include" \
-    LDFLAGS="-L$PREFIX/lib" \
+    CPPFLAGS="$CPPFLAGS -I$PREFIX/include" \
+    LDFLAGS="$LDFLAGS -L$PREFIX/lib" \
     ./configure "$@" || exit 1
 
     make $MAKEOPTS || exit 1

@@ -12,8 +12,8 @@ pkg_build()
 {
     cd "$src" || exit 1
 
-    CPPFLAGS="-I$PREFIX/include" \
-    LDFLAGS="-L$PREFIX/lib" \
+    CPPFLAGS="$CPPFLAGS -I$PREFIX/include" \
+    LDFLAGS="$LDFLAGS -L$PREFIX/lib" \
     LD_LIBRARY_PATH="$PREFIX/lib${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}" \
     ./configure --prefix="$PREFIX" --disable-static || exit 1
 

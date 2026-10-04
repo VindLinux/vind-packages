@@ -15,7 +15,7 @@ pkg_build()
         mt_flag="--enable-mt"
     fi
 
-    ./configure --prefix="$PREFIX" CFLAGS="-std=gnu17 -O2" $mt_flag
+    CFLAGS="-std=gnu17 $CFLAGS" ./configure --prefix="$PREFIX" $mt_flag
     make $MAKEOPTS
 }
 

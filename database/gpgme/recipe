@@ -14,8 +14,9 @@ pkg_build()
 {
     cd "$src" || exit 1
 
-    CPPFLAGS="-I$PREFIX/include" \
-    LDFLAGS="-L$PREFIX/lib" \
+    CFLAGS="${CFLAGS} -D_LARGEFILE64_SOURCE"
+    CPPFLAGS="$CPPFLAGS -I$PREFIX/include" \
+    LDFLAGS="$LDFLAGS -L$PREFIX/lib" \
     ./configure --prefix="$PREFIX" --disable-languages || exit 1
 
     make $MAKEOPTS || exit 1

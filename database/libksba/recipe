@@ -14,8 +14,8 @@ pkg_build()
 {
     cd "$src" || exit 1
 
-    CPPFLAGS="-I$PREFIX/include" \
-    LDFLAGS="-L$PREFIX/lib" \
+    CPPFLAGS="$CPPFLAGS -I$PREFIX/include" \
+    LDFLAGS="$LDFLAGS -L$PREFIX/lib" \
     ./configure --prefix="$PREFIX" --disable-doc || exit 1
 
     make $MAKEOPTS || exit 1
