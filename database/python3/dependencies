@@ -3,6 +3,8 @@ zlib
 openssl
 libffi
 readline?readline
+ncurses?ncurses
+sqlite?sqlite3
 jit?llvm
 dtrace?systemtap
-sqlite_extensions?sqlite
+sqlite_extensions?sqlite3

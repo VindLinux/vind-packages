@@ -25,6 +25,14 @@ pkg_build()
         set -- "$@" --without-readline
     fi
 
+    if ! attr_on ncurses; then
+        set -- "$@" py_cv_module__curses=n/a py_cv_module__curses_panel=n/a
+    fi
+
+    if ! attr_on sqlite; then
+        set -- "$@" py_cv_module__sqlite3=n/a
+    fi
+
     if attr_on jit; then
         set -- "$@" --enable-experimental-jit=yes
     fi
@@ -38,11 +46,11 @@ pkg_build()
     fi
 
     ./configure "$@" || exit 1
-    make $MAKEOPTS
+    make $MAKEOPTS || exit 1
 }
 
 pkg_install()
 {
     cd "$src" || exit 1
-    make DESTDIR="$DESTDIR" install
+    make DESTDIR="$DESTDIR" install || exit 1
 }

@@ -1,4 +1,6 @@
 readline
+ncurses
+sqlite
 jit
 dtrace
 sqlite_extensions
