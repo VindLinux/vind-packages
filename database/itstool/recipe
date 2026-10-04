@@ -18,7 +18,7 @@ pkg_build()
 {
     cd "$src" || exit 1
 
-    patch -Np1 -i "../$src.patch" || exit 1
+    git apply -p1 "../$src.patch" || exit 1
 
     PYTHON="$(command -v python3)" ./autogen.sh --prefix="$PREFIX" || exit 1
 
