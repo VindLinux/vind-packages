@@ -1,2 +1,4 @@
 python3
-libxml2
+lxml
+autoconf
+automake
