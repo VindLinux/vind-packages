@@ -9,7 +9,6 @@ ln
 zlib
 nls?gettext
 readline?readline
-systemd?systemd
 selinux?libselinux
 audit?audit
 smack?libsmack

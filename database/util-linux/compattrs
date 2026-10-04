@@ -1,6 +1,5 @@
 nls
 readline
-systemd
 selinux
 audit
 smack

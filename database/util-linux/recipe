@@ -32,12 +32,6 @@ pkg_build()
         set -- "$@" -D readline=disabled
     fi
 
-    if attr_on systemd; then
-        set -- "$@" -D systemd=enabled
-    else
-        set -- "$@" -D systemd=disabled
-    fi
-
     if attr_on selinux; then
         set -- "$@" -D selinux=enabled
     fi

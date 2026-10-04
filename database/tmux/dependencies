@@ -1,6 +1,5 @@
 libevent
 ncurses
-systemd?systemd
 sixel?libsixel
 jemalloc?jemalloc
 utempter?libutempter

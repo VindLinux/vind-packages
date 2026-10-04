@@ -14,10 +14,6 @@ pkg_build()
 
     set -- --prefix="$PREFIX" --sysconfdir=/etc --enable-utf8proc
 
-    if attr_on systemd; then
-        set -- "$@" --enable-systemd
-    fi
-
     if attr_on sixel; then
         set -- "$@" --enable-sixel
     fi
