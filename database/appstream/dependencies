@@ -1,0 +1,10 @@
+meson
+ninja
+pkgconf
+gettext
+glib
+curl
+libxml2
+libxmlb
+libfyaml
+zstd

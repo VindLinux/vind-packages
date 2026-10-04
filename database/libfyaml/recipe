@@ -1,0 +1,38 @@
+src="libfyaml-$PKG_VERSION"
+tarball="$src.tar.gz"
+
+pkg_download()
+{
+    curl -fL --retry 3 --retry-delay 2 -o "$tarball" \
+        "https://github.com/pantoniou/libfyaml/releases/download/v$PKG_VERSION/$tarball" || exit 1
+    tar -xf "$tarball" || exit 1
+}
+
+pkg_build()
+{
+    cd "$src" || exit 1
+
+    # BUILD_TYPE=None: nao acrescenta -O3/-DNDEBUG por cima do CFLAGS do make.conf
+    # ENABLE_PORTABLE_TARGET=ON: sem otimizacao por CPU (-march=native), respeita o make.conf
+    # ENABLE_LIBCLANG=OFF: evita ligar o llvm e colocar libclang no libfyaml.pc
+    # ENABLE_PYTHON_BINDINGS=OFF e BUILD_TESTING=OFF: sem extensao Python nem testes
+    cmake -G Ninja -S . -B build \
+        -D CMAKE_INSTALL_PREFIX="$PREFIX" \
+        -D CMAKE_INSTALL_LIBDIR=lib \
+        -D CMAKE_BUILD_TYPE=None \
+        -D BUILD_SHARED_LIBS=ON \
+        -D BUILD_TESTING=OFF \
+        -D ENABLE_PORTABLE_TARGET=ON \
+        -D ENABLE_LIBCLANG=OFF \
+        -D ENABLE_PYTHON_BINDINGS=OFF \
+        -D LIBFYAML_ENABLE_TAGS=OFF \
+        -W no-dev || exit 1
+
+    ninja -C build $MAKEOPTS || exit 1
+}
+
+pkg_install()
+{
+    cd "$src" || exit 1
+    DESTDIR="$DESTDIR" ninja -C build install || exit 1
+}

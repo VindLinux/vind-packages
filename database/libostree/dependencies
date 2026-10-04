@@ -1,0 +1,13 @@
+pkgconf
+bison
+glib
+xz
+zlib
+curl
+gpgme
+libgpg-error
+libarchive
+e2fsprogs
+util-linux
+fuse
+openssl?openssl

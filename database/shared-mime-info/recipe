@@ -1,0 +1,43 @@
+src="shared-mime-info-$PKG_VERSION"
+tarball="$src.tar.gz"
+
+pkg_download()
+{
+    curl -fL --retry 3 --retry-delay 2 -o "$tarball" \
+        "https://gitlab.freedesktop.org/xdg/shared-mime-info/-/archive/$PKG_VERSION/$tarball" || exit 1
+    tar -xf "$tarball" || exit 1
+}
+
+pkg_build()
+{
+    cd "$src" || exit 1
+
+    # build-tests desligado: so ele puxa o xdgmime (subproject) e o xmllint
+    # build-spec desligado: exigiria xmlto e docbook-xsl
+    # update-mimedb desligado: o banco e gerado em pkg_install, dentro do DESTDIR
+    set -- --prefix="$PREFIX" --libdir=lib --buildtype=release \
+        -Dbuild-tools=true -Dbuild-tests=false -Dbuild-spec=false \
+        -Dupdate-mimedb=false
+
+    if attr_on nls; then
+        set -- "$@" -Dbuild-translations=true
+    else
+        set -- "$@" -Dbuild-translations=false
+    fi
+
+    CPPFLAGS="$CPPFLAGS -I$PREFIX/include" \
+    LDFLAGS="$LDFLAGS -L$PREFIX/lib" \
+    meson setup build "$@" || exit 1
+
+    ninja -C build $MAKEOPTS || exit 1
+}
+
+pkg_install()
+{
+    cd "$src" || exit 1
+    DESTDIR="$DESTDIR" meson install -C build || exit 1
+
+    # gera mime.cache e demais arquivos do banco dentro do DESTDIR,
+    # assim eles entram no manifesto do pacote
+    "$DESTDIR$PREFIX/bin/update-mime-database" "$DESTDIR$PREFIX/share/mime" || exit 1
+}

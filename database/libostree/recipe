@@ -1,0 +1,42 @@
+src="libostree-$PKG_VERSION"
+tarball="$src.tar.xz"
+
+pkg_download()
+{
+    curl -fL --retry 3 --retry-delay 2 -o "$tarball" \
+        "https://github.com/ostreedev/ostree/releases/download/v$PKG_VERSION/$tarball" || exit 1
+    tar -xf "$tarball" || exit 1
+}
+
+pkg_build()
+{
+    cd "$src" || exit 1
+
+    # curl no lugar do libsoup (que e o padrao do configure)
+    # desligados, cada um puxaria uma sub-arvore: composefs, libsodium, selinux, avahi,
+    #   libsystemd, introspection, gtk-doc, man
+    set -- --prefix="$PREFIX" --libdir="$PREFIX/lib" --sysconfdir=/etc --localstatedir=/var \
+        --with-curl --without-soup --without-soup3 \
+        --with-gpgme --with-libarchive --with-libmount \
+        --without-composefs --without-selinux --without-avahi --without-libsystemd \
+        --enable-rofiles-fuse --enable-introspection=no \
+        --disable-gtk-doc --disable-man
+
+    if attr_on openssl; then
+        set -- "$@" --with-openssl
+    fi
+
+    PKG_CONFIG_PATH="$PREFIX/lib/pkgconfig:$PREFIX/share/pkgconfig${PKG_CONFIG_PATH:+:$PKG_CONFIG_PATH}" \
+    CPPFLAGS="$CPPFLAGS -I$PREFIX/include" \
+    LDFLAGS="$LDFLAGS -L$PREFIX/lib" \
+    LD_LIBRARY_PATH="$PREFIX/lib${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}" \
+    ./configure "$@" || exit 1
+
+    make $MAKEOPTS || exit 1
+}
+
+pkg_install()
+{
+    cd "$src" || exit 1
+    make DESTDIR="$DESTDIR" install || exit 1
+}

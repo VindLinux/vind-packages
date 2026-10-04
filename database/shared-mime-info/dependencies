@@ -1,0 +1,6 @@
+meson
+ninja
+pkgconf
+gettext
+glib
+libxml2

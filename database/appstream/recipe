@@ -1,0 +1,39 @@
+src="AppStream-$PKG_VERSION"
+tarball="$src.tar.xz"
+
+pkg_download()
+{
+    curl -fL --retry 3 --retry-delay 2 -o "$tarball" \
+        "https://www.freedesktop.org/software/appstream/releases/$tarball" || exit 1
+    tar -xf "$tarball" || exit 1
+}
+
+pkg_build()
+{
+    cd "$src" || exit 1
+
+    # so a biblioteca e o appstreamcli. Desligados porque cada um puxaria uma sub-arvore:
+    #   compose (cairo, pango, vips, freetype, fontconfig, blake3), gir, vapi, qt,
+    #   stemming (libstemmer), systemd, bash-completion, docs/apidocs/man
+    set -- --prefix="$PREFIX" --libdir=lib --sysconfdir=/etc --localstatedir=/var \
+        --buildtype=release \
+        -Dtools=true -Dzstd-support=true -Dblake3-support=false \
+        -Dcompose=false -Dgir=false -Dvapi=false -Dqt=false \
+        -Dstemming=false -Dsystemd=false -Dbash-completion=false \
+        -Ddisplay-detection=none -Dapt-support=false \
+        -Ddocs=false -Dapidocs=false -Dinstall-docs=false -Dman=false
+
+    PKG_CONFIG_PATH="$PREFIX/lib/pkgconfig:$PREFIX/share/pkgconfig${PKG_CONFIG_PATH:+:$PKG_CONFIG_PATH}" \
+    CPPFLAGS="$CPPFLAGS -I$PREFIX/include" \
+    LDFLAGS="$LDFLAGS -L$PREFIX/lib" \
+    LD_LIBRARY_PATH="$PREFIX/lib${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}" \
+    meson setup build "$@" || exit 1
+
+    ninja -C build $MAKEOPTS || exit 1
+}
+
+pkg_install()
+{
+    cd "$src" || exit 1
+    DESTDIR="$DESTDIR" meson install -C build || exit 1
+}

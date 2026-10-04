@@ -1,0 +1,9 @@
+meson
+ninja
+pkgconf
+gettext
+glib
+libpng
+shared-mime-info
+jpeg?libjpeg-turbo
+tiff?libtiff

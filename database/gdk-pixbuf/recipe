@@ -1,0 +1,48 @@
+src="gdk-pixbuf-$PKG_VERSION"
+tarball="$src.tar.xz"
+
+pkg_download()
+{
+    curl -fL --retry 3 --retry-delay 2 -o "$tarball" \
+        "https://download.gnome.org/sources/gdk-pixbuf/${PKG_VERSION%.*}/$tarball" || exit 1
+    tar -xf "$tarball" || exit 1
+}
+
+pkg_build()
+{
+    cd "$src" || exit 1
+
+    # glycin desligado: se fosse encontrado, ele desativaria os loaders png/jpeg/tiff
+    # introspection, docs, man, tests e thumbnailer desligados: cada um puxaria uma sub-arvore
+    set -- --prefix="$PREFIX" --libdir=lib --buildtype=release \
+        -Dpng=enabled -Dgif=enabled -Dglycin=disabled -Dandroid=disabled \
+        -Dothers=disabled -Dintrospection=disabled \
+        -Ddocumentation=false -Dgtk_doc=false -Dman=false \
+        -Dtests=false -Dinstalled_tests=false -Dthumbnailer=disabled
+
+    if attr_on jpeg; then
+        set -- "$@" -Djpeg=enabled
+    else
+        set -- "$@" -Djpeg=disabled
+    fi
+
+    if attr_on tiff; then
+        set -- "$@" -Dtiff=enabled
+    else
+        set -- "$@" -Dtiff=disabled
+    fi
+
+    PKG_CONFIG_PATH="$PREFIX/lib/pkgconfig:$PREFIX/share/pkgconfig${PKG_CONFIG_PATH:+:$PKG_CONFIG_PATH}" \
+    CPPFLAGS="$CPPFLAGS -I$PREFIX/include" \
+    LDFLAGS="$LDFLAGS -L$PREFIX/lib" \
+    LD_LIBRARY_PATH="$PREFIX/lib${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}" \
+    meson setup build "$@" || exit 1
+
+    ninja -C build $MAKEOPTS || exit 1
+}
+
+pkg_install()
+{
+    cd "$src" || exit 1
+    DESTDIR="$DESTDIR" meson install -C build || exit 1
+}

@@ -1,0 +1,56 @@
+src="flatpak-$PKG_VERSION"
+tarball="$src.tar.xz"
+
+pkg_download()
+{
+    curl -fL --retry 3 --retry-delay 2 -o "$tarball" \
+        "https://github.com/flatpak/flatpak/releases/download/$PKG_VERSION/$tarball" || exit 1
+    tar -xf "$tarball" || exit 1
+}
+
+pkg_build()
+{
+    cd "$src" || exit 1
+
+    # bubblewrap e xdg-dbus-proxy ja existem no database: usa os do sistema
+    # em vez de compilar os subprojects embutidos
+    bwrap=$(command -v bwrap) || { echo "bwrap nao encontrado (instale bubblewrap)" >&2; exit 1; }
+    dbusproxy=$(command -v xdg-dbus-proxy) || { echo "xdg-dbus-proxy nao encontrado" >&2; exit 1; }
+
+    # desligados, cada um puxaria uma sub-arvore: dconf, systemd, malcontent,
+    #   gir, gtk-doc, man, docbook, selinux, testes
+    # ligados: seccomp, xauth (obrigatorios por padrao) e zstd
+    set -- --prefix="$PREFIX" --libdir=lib --sysconfdir=/etc --localstatedir=/var \
+        --buildtype=release \
+        -Dsystem_bubblewrap="$bwrap" -Dsystem_dbus_proxy="$dbusproxy" \
+        -Dtests=false -Dgir=disabled -Dgtkdoc=disabled -Dman=disabled \
+        -Ddocbook_docs=disabled -Dselinux_module=disabled \
+        -Ddconf=disabled -Dsystemd=disabled -Dmalcontent=disabled \
+        -Dseccomp=enabled -Dxauth=enabled -Dlibzstd=enabled
+
+    if attr_on system-helper; then
+        set -- "$@" -Dsystem_helper=enabled
+    else
+        set -- "$@" -Dsystem_helper=disabled
+    fi
+
+    if attr_on wayland; then
+        set -- "$@" -Dwayland_security_context=enabled
+    else
+        set -- "$@" -Dwayland_security_context=disabled
+    fi
+
+    PKG_CONFIG_PATH="$PREFIX/lib/pkgconfig:$PREFIX/share/pkgconfig${PKG_CONFIG_PATH:+:$PKG_CONFIG_PATH}" \
+    CPPFLAGS="$CPPFLAGS -I$PREFIX/include" \
+    LDFLAGS="$LDFLAGS -L$PREFIX/lib" \
+    LD_LIBRARY_PATH="$PREFIX/lib${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}" \
+    meson setup build "$@" || exit 1
+
+    ninja -C build $MAKEOPTS || exit 1
+}
+
+pkg_install()
+{
+    cd "$src" || exit 1
+    DESTDIR="$DESTDIR" meson install -C build || exit 1
+}
