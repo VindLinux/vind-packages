@@ -1,0 +1,86 @@
+src="docbook-xml-${PKG_VERSION}"
+tarball="docbook-xml-${PKG_VERSION}.zip"
+
+pkg_download()
+{
+    curl -fL --retry 3 --retry-delay 2 -o "$tarball" \
+        "https://www.oasis-open.org/docbook/xml/${PKG_VERSION}/$tarball" || exit 1
+
+    # o zip nao tem diretorio raiz, entao extrai dentro de $src
+    mkdir -p "$src" || exit 1
+    unzip -q -o "$tarball" -d "$src" || exit 1
+}
+
+pkg_build()
+{
+    # nada a compilar
+    :
+}
+
+pkg_install()
+{
+    cd "$src" || exit 1
+
+    export PATH="$PREFIX/bin:$PATH"
+    export LD_LIBRARY_PATH="$PREFIX/lib${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}"
+
+    dtddir="$PREFIX/share/xml/docbook/xml-dtd-${PKG_VERSION}"
+    xmletc="$PREFIX/etc/xml"
+    pkgcat="$DESTDIR$xmletc/docbook"
+    master="$DESTDIR$xmletc/catalog"
+
+    install -d -m755 "$DESTDIR$dtddir" "$DESTDIR$xmletc" || exit 1
+    cp -af docbook.cat *.dtd ent *.mod "$DESTDIR$dtddir" || exit 1
+    find "$DESTDIR$dtddir" -type d -exec chmod 755 {} + || exit 1
+    find "$DESTDIR$dtddir" -type f -exec chmod 644 {} + || exit 1
+
+    # catalogo do pacote: /etc/xml/docbook
+    # as entradas apontam para o caminho final, nunca para o DESTDIR
+    xmlcatalog --noout --create "$pkgcat" || exit 1
+
+    add()
+    {
+        xmlcatalog --noout --add "$1" "$2" "$3" "$pkgcat" || exit 1
+    }
+
+    add public "-//OASIS//DTD DocBook XML V4.5//EN" \
+        "file://$dtddir/docbookx.dtd"
+    add public "-//OASIS//DTD DocBook XML CALS Table Model V4.5//EN" \
+        "file://$dtddir/calstblx.dtd"
+    add public "-//OASIS//DTD XML Exchange Table Model 19990315//EN" \
+        "file://$dtddir/soextblx.dtd"
+    add public "-//OASIS//ELEMENTS DocBook XML Information Pool V4.5//EN" \
+        "file://$dtddir/dbpoolx.mod"
+    add public "-//OASIS//ELEMENTS DocBook XML Document Hierarchy V4.5//EN" \
+        "file://$dtddir/dbhierx.mod"
+    add public "-//OASIS//ELEMENTS DocBook XML HTML Tables V4.5//EN" \
+        "file://$dtddir/htmltblx.mod"
+    add public "-//OASIS//ENTITIES DocBook XML Notations V4.5//EN" \
+        "file://$dtddir/dbnotnx.mod"
+    add public "-//OASIS//ENTITIES DocBook XML Character Entities V4.5//EN" \
+        "file://$dtddir/dbcentx.mod"
+    add public "-//OASIS//ENTITIES DocBook XML Additional General Entities V4.5//EN" \
+        "file://$dtddir/dbgenent.mod"
+    add rewriteSystem "http://www.oasis-open.org/docbook/xml/${PKG_VERSION}" \
+        "file://$dtddir"
+    add rewriteURI "http://www.oasis-open.org/docbook/xml/${PKG_VERSION}" \
+        "file://$dtddir"
+
+    # catalogo mestre: /etc/xml/catalog (compartilhado com o docbook-xsl)
+    # se ja existe um instalado, parte dele para nao perder as entradas
+    if [ -f "$PREFIX/etc/xml/catalog" ]; then
+        cp -f "$PREFIX/etc/xml/catalog" "$master" || exit 1
+    else
+        xmlcatalog --noout --create "$master" || exit 1
+    fi
+
+    addm()
+    {
+        xmlcatalog --noout --add "$1" "$2" "$3" "$master" || exit 1
+    }
+
+    addm delegatePublic "-//OASIS//ENTITIES DocBook XML" "file://$xmletc/docbook"
+    addm delegatePublic "-//OASIS//DTD DocBook XML"      "file://$xmletc/docbook"
+    addm delegateSystem "http://www.oasis-open.org/docbook/" "file://$xmletc/docbook"
+    addm delegateURI    "http://www.oasis-open.org/docbook/" "file://$xmletc/docbook"
+}

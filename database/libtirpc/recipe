@@ -1,0 +1,50 @@
+src="libtirpc-${PKG_VERSION}"
+tarball="libtirpc-${PKG_VERSION}.tar.bz2"
+
+pkg_download()
+{
+    curl -fL --retry 3 --retry-delay 2 -o "$tarball" \
+        "https://sourceforge.net/projects/libtirpc/files/libtirpc/${PKG_VERSION}/$tarball/download" || exit 1
+    tar -xf "$tarball" || exit 1
+}
+
+pkg_build()
+{
+    cd "$src" || exit 1
+
+    set -- --prefix="$PREFIX"
+
+    # gssapi, ipv6 e symvers vem ligados por padrao no upstream
+    if ! attr_on gssapi; then
+        set -- "$@" --disable-gssapi
+    fi
+
+    if attr_on authdes; then
+        set -- "$@" --enable-authdes
+    fi
+
+    if ! attr_on ipv6; then
+        set -- "$@" --disable-ipv6
+    fi
+
+    if attr_on rpcdb; then
+        set -- "$@" --enable-rpcdb
+    fi
+
+    if ! attr_on symvers; then
+        set -- "$@" --disable-symvers
+    fi
+
+    CPPFLAGS="-I$PREFIX/include" \
+    LDFLAGS="-L$PREFIX/lib" \
+    LD_LIBRARY_PATH="$PREFIX/lib${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}" \
+    ./configure "$@" || exit 1
+
+    make $MAKEOPTS
+}
+
+pkg_install()
+{
+    cd "$src" || exit 1
+    make DESTDIR="$DESTDIR" install
+}

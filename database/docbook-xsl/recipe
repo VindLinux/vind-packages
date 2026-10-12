@@ -1,0 +1,59 @@
+src="docbook-xsl-${PKG_VERSION}"
+tarball="docbook-xsl-${PKG_VERSION}.zip"
+
+pkg_download()
+{
+    curl -fL --retry 3 --retry-delay 2 -o "$tarball" \
+        "https://github.com/docbook/xslt10-stylesheets/releases/download/release/${PKG_VERSION}/$tarball" || exit 1
+    unzip -q -o "$tarball" || exit 1
+}
+
+pkg_build()
+{
+    # o Makefile do upstream so tem alvos de teste, nada a compilar
+    :
+}
+
+pkg_install()
+{
+    cd "$src" || exit 1
+
+    export PATH="$PREFIX/bin:$PATH"
+    export LD_LIBRARY_PATH="$PREFIX/lib${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}"
+
+    xsldir="$PREFIX/share/xml/docbook/xsl-stylesheets-${PKG_VERSION}"
+    docdir="$PREFIX/share/doc/docbook-xsl-${PKG_VERSION}"
+    xmletc="$PREFIX/etc/xml"
+    master="$DESTDIR$xmletc/catalog"
+
+    install -d -m755 "$DESTDIR$xsldir" "$DESTDIR$docdir" "$DESTDIR$xmletc" || exit 1
+
+    # VERSION.xsl ja vem no tarball, entao e copiado (sem symlink)
+    cp -R VERSION VERSION.xsl catalog.xml \
+        assembly common eclipse epub epub3 extensions fo highlighting \
+        html htmlhelp images javahelp lib manpages params profiling \
+        roundtrip slides template tests tools webhelp website \
+        xhtml xhtml-1_1 xhtml5 \
+        "$DESTDIR$xsldir" || exit 1
+
+    find "$DESTDIR$xsldir" -type d -exec chmod 755 {} + || exit 1
+    find "$DESTDIR$xsldir" -type f -exec chmod 644 {} + || exit 1
+
+    install -m644 README "$DESTDIR$docdir/README.txt" || exit 1
+    install -m644 RELEASE-NOTES* NEWS* "$DESTDIR$docdir/" || exit 1
+
+    # catalogo mestre: /etc/xml/catalog (compartilhado com o docbook-xml)
+    if [ -f "$PREFIX/etc/xml/catalog" ]; then
+        cp -f "$PREFIX/etc/xml/catalog" "$master" || exit 1
+    else
+        xmlcatalog --noout --create "$master" || exit 1
+    fi
+
+    for base in "https://cdn.docbook.org/release/xsl" \
+                "http://docbook.sourceforge.net/release/xsl"; do
+        for ver in "${PKG_VERSION}" current; do
+            xmlcatalog --noout --add rewriteSystem "$base/$ver" "$xsldir" "$master" || exit 1
+            xmlcatalog --noout --add rewriteURI    "$base/$ver" "$xsldir" "$master" || exit 1
+        done
+    done
+}
