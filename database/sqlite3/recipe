@@ -15,9 +15,12 @@ pkg_build()
 
     set -- --prefix="$PREFIX" --enable-readline --disable-static
 
-    if attr_on icu; then
-        set -- "$@" --with-icu-config=auto
-    fi
+	if attr_on icu; then
+		set -- "$@" \
+			--with-icu-ldflags="$(icu-config --ldflags)" \
+			--with-icu-cflags="$(icu-config --cppflags)" \
+			--icu-collations
+	fi
 
     CPPFLAGS="$CPPFLAGS -DSQLITE_ENABLE_FTS5 -DSQLITE_ENABLE_FTS4 -DSQLITE_ENABLE_RTREE -DSQLITE_ENABLE_JSON1 -DSQLITE_ENABLE_COLUMN_METADATA -DSQLITE_ENABLE_UNLOCK_NOTIFY -DSQLITE_ENABLE_DBSTAT_VTAB -DSQLITE_SECURE_DELETE" ./configure "$@" || exit 1
     make $MAKEOPTS
