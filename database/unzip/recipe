@@ -1,0 +1,53 @@
+# 6.0 -> 60 (o tarball e o diretorio se chamam unzip60)
+ver="$(printf '%s' "$PKG_VERSION" | tr -d .)"
+src="unzip${ver}"
+tarball="unzip${ver}.tar.gz"
+
+pkg_download()
+{
+    curl -fL --retry 3 --retry-delay 2 -o "$tarball" \
+        "https://downloads.sourceforge.net/project/infozip/UnZip%206.x%20%28latest%29/UnZip%20${PKG_VERSION}/$tarball" || exit 1
+    tar -xf "$tarball" || exit 1
+}
+
+pkg_build()
+{
+    cd "$src" || exit 1
+
+    # NO_LCHMOD: lchmod nao existe no Linux/musl
+    defs="-DACORN_FTYPE_NFS -DWILD_STOP_AT_DIR -DLARGE_FILE_SUPPORT -DNO_LCHMOD -DNOMEMCPY"
+    bz2_def=""
+    bz2_lib=""
+
+    if attr_on unicode; then
+        defs="$defs -DUNICODE_SUPPORT -DUNICODE_WCHAR -DUTF8_MAYBE_NATIVE -DNO_WORKING_ISPRINT"
+    fi
+
+    if attr_on bzip2; then
+        defs="$defs -DUSE_BZIP2"
+        bz2_def="-DUSE_BZIP2"
+        bz2_lib="-lbz2"
+    fi
+
+    LD_LIBRARY_PATH="$PREFIX/lib${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}" \
+    make -f unix/Makefile \
+        prefix="$PREFIX" \
+        D_USE_BZ2="$bz2_def" \
+        L_BZ2="$bz2_lib" \
+        LF2="-L$PREFIX/lib" \
+        CF="-O2 -I. -I$PREFIX/include $defs" \
+        $MAKEOPTS unzips
+}
+
+pkg_install()
+{
+    cd "$src" || exit 1
+
+    # o Makefile do unzip nao tem DESTDIR: o destino vai dentro do prefix
+    mkdir -p "$DESTDIR$PREFIX/bin" "$DESTDIR$PREFIX/share/man/man1" || exit 1
+
+    make -f unix/Makefile \
+        prefix="$DESTDIR$PREFIX" \
+        MANDIR="$DESTDIR$PREFIX/share/man/man1" \
+        install
+}
