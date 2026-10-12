@@ -1,0 +1,6 @@
+cmake
+ninja
+python3
+flex
+bison
+sqlite3

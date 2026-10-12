@@ -1,0 +1,11 @@
+meson
+ninja
+pkgconf
+libsndfile
+libcap
+glib
+daemon?libtool
+daemon?gdbm
+daemon?dbus
+daemon?eudev
+alsa?alsa-lib

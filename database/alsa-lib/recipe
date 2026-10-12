@@ -1,0 +1,59 @@
+src="alsa-lib-${PKG_VERSION}"
+tarball="${src}.tar.bz2"
+
+pkg_download()
+{
+    curl -fL --retry 3 --retry-delay 2 -o "$tarball" \
+        "https://www.alsa-project.org/files/pub/lib/$tarball" || exit 1
+
+    bzip2 -t "$tarball" || { rm -f "$tarball"; exit 1; }
+    bzip2 -dc "$tarball" | tar -xf - || exit 1
+}
+
+pkg_build()
+{
+    cd "$src" || exit 1
+
+    set -- --prefix="$PREFIX" --disable-maintainer-mode
+
+    if ! attr_on python; then
+        set -- "$@" --disable-python
+    fi
+
+    if attr_on mixermodules; then
+        set -- "$@" --enable-mixer-modules
+    fi
+
+    if attr_on mixerpymods; then
+        set -- "$@" --enable-mixer-pymods
+    fi
+
+    if ! attr_on topology; then
+        set -- "$@" --disable-topology
+    fi
+
+    if attr_on debug; then
+        set -- "$@" --enable-debug
+    fi
+
+    if attr_on static; then
+        set -- "$@" --enable-static
+    fi
+
+    if attr_on symbolic; then
+        set -- "$@" --enable-symbolic-functions
+    fi
+
+    if attr_on lockless; then
+        set -- "$@" --enable-lockless-dmix
+    fi
+
+    ./configure "$@" || exit 1
+    make $MAKEOPTS
+}
+
+pkg_install()
+{
+    cd "$src" || exit 1
+    make DESTDIR="$DESTDIR" install
+}

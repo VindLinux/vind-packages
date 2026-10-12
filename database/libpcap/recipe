@@ -1,0 +1,31 @@
+src="libpcap-$PKG_VERSION"
+tarball="$src.tar.xz"
+
+pkg_download()
+{
+    curl -fL --retry 3 --retry-delay 2 -o "$tarball" \
+        "https://www.tcpdump.org/release/$tarball" || exit 1
+    tar -xf "$tarball" || exit 1
+}
+
+pkg_build()
+{
+    cd "$src" || exit 1
+
+    set -- --prefix="$PREFIX" \
+           --disable-bluetooth --disable-dbus --disable-rdma \
+           --disable-netmap --without-dag --without-snf
+
+    if ! attr_on libnl; then
+        set -- "$@" --without-libnl
+    fi
+
+    ./configure "$@" || exit 1
+    make $MAKEOPTS || exit 1
+}
+
+pkg_install()
+{
+    cd "$src" || exit 1
+    make DESTDIR="$DESTDIR" install || exit 1
+}

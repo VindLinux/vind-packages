@@ -1,0 +1,87 @@
+src="pipewire-${PKG_VERSION}"
+tarball="${src}.tar.gz"
+
+feature()
+{
+    if attr_on "$1"; then
+        opts="$opts -D$2=enabled"
+    else
+        opts="$opts -D$2=disabled"
+    fi
+}
+
+pkg_download()
+{
+    curl -fL --retry 3 --retry-delay 2 -o "$tarball" \
+        "https://gitlab.freedesktop.org/pipewire/pipewire/-/archive/${PKG_VERSION}/$tarball" || exit 1
+    tar -xf "$tarball" || exit 1
+}
+
+pkg_build()
+{
+    cd "$src" || exit 1
+
+    opts="--prefix=$PREFIX --libdir=lib --sysconfdir=/etc --localstatedir=/var --buildtype=release"
+    opts="$opts -Dlibsystemd=disabled -Dlogind=disabled -Dsystemd-user-service=disabled -Dsystemd-system-service=disabled"
+    opts="$opts -Dselinux=disabled -Dsnap=disabled -Dgsettings=disabled -Dgsettings-pulse-schema=disabled"
+    opts="$opts -Dcompress-offload=disabled -Dlegacy-rtkit=false -Dtests=disabled -Dbluez5-codec-lc3plus=disabled"
+
+    feature alsa alsa
+    feature alsa pipewire-alsa
+    feature udev udev
+    feature jack jack
+    feature jacklib pipewire-jack
+    feature pulse libpulse
+    feature sndfile sndfile
+    feature sndfile pw-cat
+    feature bluez bluez5
+    feature aac bluez5-codec-aac
+    feature aptx bluez5-codec-aptx
+    feature ldac bluez5-codec-ldac
+    feature ldac bluez5-codec-ldac-dec
+    feature lc3 bluez5-codec-lc3
+    feature spandsp bluez5-plc-spandsp
+    feature opus opus
+    feature opus bluez5-codec-opus
+    feature v4l2 v4l2
+    feature v4l2 pipewire-v4l2
+    feature libcamera libcamera
+    feature usb libusb
+    feature avahi avahi
+    feature raop raop
+    feature lv2 lv2
+    feature mysofa libmysofa
+    feature ebur128 ebur128
+    feature fftw fftw
+    feature webrtc echo-cancel-webrtc
+    feature sdl2 sdl2
+    feature ffmpeg ffmpeg
+    feature ffmpeg pw-cat-ffmpeg
+    feature vulkan vulkan
+    feature roc roc
+    feature ffado libffado
+    feature onnx onnxruntime
+    feature gstreamer gstreamer
+    feature gstreamer gstreamer-device-provider
+    feature x11 x11
+    feature x11 x11-xfixes
+    feature canberra libcanberra
+    feature readline readline
+    feature examples examples
+    feature docs docs
+    feature man man
+
+    PKG_CONFIG_PATH="$PREFIX/lib/pkgconfig:$PREFIX/share/pkgconfig${PKG_CONFIG_PATH:+:$PKG_CONFIG_PATH}" \
+    CPPFLAGS="$CPPFLAGS -I$PREFIX/include" \
+    LDFLAGS="$LDFLAGS -L$PREFIX/lib" \
+    LD_LIBRARY_PATH="$PREFIX/lib${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}" \
+    meson setup build $opts || exit 1
+
+    ninja -C build $MAKEOPTS || exit 1
+}
+
+pkg_install()
+{
+    cd "$src" || exit 1
+    DESTDIR="$DESTDIR" meson install -C build || exit 1
+}

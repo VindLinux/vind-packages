@@ -1,0 +1,37 @@
+src="portaudio"
+tarball="pa_stable_v190700_20210406.tgz"
+
+pkg_download()
+{
+    curl -fL --retry 3 --retry-delay 2 -o "$tarball" \
+        "https://files.portaudio.com/archives/$tarball" || exit 1
+    tar -xf "$tarball" || exit 1
+}
+
+pkg_build()
+{
+    cd "$src" || exit 1
+
+    set -- --prefix="$PREFIX" --without-asihpi
+
+    if attr_on alsa; then
+        set -- "$@" --with-alsa
+    else
+        set -- "$@" --without-alsa
+    fi
+
+    if attr_on jack; then
+        set -- "$@" --with-jack
+    else
+        set -- "$@" --without-jack
+    fi
+
+    ./configure "$@" || exit 1
+    make $MAKEOPTS || exit 1
+}
+
+pkg_install()
+{
+    cd "$src" || exit 1
+    make DESTDIR="$DESTDIR" install || exit 1
+}

@@ -1,0 +1,10 @@
+pkgconf
+ncurses
+gmp
+zlib
+libxml2
+sqlite3
+gzip
+gpm?gpm
+gnutls?gnutls
+tree-sitter?tree-sitter

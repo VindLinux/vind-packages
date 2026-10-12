@@ -1,0 +1,64 @@
+src="gpm-${PKG_VERSION}"
+tarball="${src}.tar.bz2"
+
+pkg_download()
+{
+    curl -fL --retry 3 --retry-delay 2 -o "$tarball" \
+        "https://anduin.linuxfromscratch.org/BLFS/gpm/$tarball" || exit 1
+
+    bzip2 -t "$tarball" || { rm -f "$tarball"; exit 1; }
+    bzip2 -dc "$tarball" | tar -xf - || exit 1
+}
+
+pkg_build()
+{
+    cd "$src" || exit 1
+
+    sed -i 's/__sigemptyset/sigemptyset/g' src/prog/gpm-root.y || exit 1
+
+    { printf '#include <sys/sysmacros.h>\n'; cat src/daemon/open_console.c; } > src/daemon/open_console.c.new || exit 1
+    mv src/daemon/open_console.c.new src/daemon/open_console.c || exit 1
+
+    sh ./autogen.sh || exit 1
+
+    set -- --prefix="$PREFIX" --sysconfdir=/etc
+
+    if ! attr_on curses; then
+        set -- "$@" --without-curses
+    fi
+
+    if attr_on static; then
+        set -- "$@" --enable-static
+    fi
+
+    if ! attr_on emacs; then
+        set -- "$@" ac_cv_path_emacs=no
+    fi
+
+    CFLAGS="${CFLAGS:--g -O2} -fcommon" \
+    CPPFLAGS="$CPPFLAGS -I$PWD/src/headers" \
+    ./configure "$@" || exit 1
+
+    make $MAKEOPTS || exit 1
+}
+
+pkg_install()
+{
+    cd "$src" || exit 1
+
+    touch doc/gpm.info
+
+    make DESTDIR="$DESTDIR" install || exit 1
+
+    rm -f "$DESTDIR$PREFIX/share/info/gpm.info"
+    rmdir "$DESTDIR$PREFIX/share/info" 2>/dev/null || true
+
+    if ! attr_on static; then
+        rm -f "$DESTDIR$PREFIX/lib/libgpm.a"
+    fi
+
+    ln -sf libgpm.so.2.1.0 "$DESTDIR$PREFIX/lib/libgpm.so" || exit 1
+
+    mkdir -p "$DESTDIR/etc" || exit 1
+    install -m 644 conf/gpm-root.conf "$DESTDIR/etc/gpm-root.conf" || exit 1
+}

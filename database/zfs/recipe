@@ -1,0 +1,44 @@
+src="zfs-$PKG_VERSION"
+tarball="$src.tar.gz"
+kernel_src="/source/vind-kernel"
+
+pkg_download()
+{
+    curl -fL --retry 3 --retry-delay 2 -o "$tarball" \
+        "https://github.com/openzfs/zfs/releases/download/zfs-$PKG_VERSION/$tarball" || exit 1
+    tar -xf "$tarball" || exit 1
+}
+
+pkg_build()
+{
+    cd "$src" || exit 1
+
+    set -- --prefix="$PREFIX" --libdir="$PREFIX/lib" \
+           --sysconfdir=/etc --localstatedir=/var \
+           --with-pkgconfigdir="$PREFIX/lib/pkgconfig" \
+           --with-udevdir="$PREFIX/lib/udev" \
+           --with-tirpc --disable-systemd --disable-sysvinit \
+           --disable-pam --disable-pyzfs --disable-rpath
+
+    if attr_on module; then
+        set -- "$@" --with-config=all \
+               --with-linux="$kernel_src" --with-linux-obj="$kernel_src"
+        KERNEL_LLVM=1
+        export KERNEL_LLVM
+    else
+        set -- "$@" --with-config=user
+    fi
+
+    if ! attr_on nls; then
+        set -- "$@" --disable-nls
+    fi
+
+    ./configure "$@" || exit 1
+    make $MAKEOPTS || exit 1
+}
+
+pkg_install()
+{
+    cd "$src" || exit 1
+    make DESTDIR="$DESTDIR" install || exit 1
+}

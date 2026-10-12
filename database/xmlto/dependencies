@@ -1,0 +1,12 @@
+bzip2
+autoconf
+automake
+m4
+perl
+bash
+util-linux
+findutils
+libxml2
+libxslt
+docbook-xml
+docbook-xsl

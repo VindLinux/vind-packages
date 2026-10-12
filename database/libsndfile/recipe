@@ -1,0 +1,57 @@
+src="libsndfile-${PKG_VERSION}"
+tarball="${src}.tar.xz"
+
+pkg_download()
+{
+    curl -fL --retry 3 --retry-delay 2 -o "$tarball" \
+        "https://github.com/libsndfile/libsndfile/releases/download/${PKG_VERSION}/$tarball" || exit 1
+    tar -xf "$tarball" || exit 1
+}
+
+pkg_build()
+{
+    cd "$src" || exit 1
+
+    set -- --prefix="$PREFIX"
+
+    if attr_on experimental; then
+        set -- "$@" --enable-experimental
+    fi
+
+    if ! attr_on cpuclip; then
+        set -- "$@" --disable-cpu-clip
+    fi
+
+    if ! attr_on sqlite; then
+        set -- "$@" --disable-sqlite
+    fi
+
+    if ! attr_on alsa; then
+        set -- "$@" --disable-alsa
+    fi
+
+    if ! attr_on external; then
+        set -- "$@" --disable-external-libs
+    fi
+
+    if ! attr_on mpeg; then
+        set -- "$@" --disable-mpeg
+    fi
+
+    if ! attr_on programs; then
+        set -- "$@" --disable-full-suite
+    fi
+
+    if attr_on static; then
+        set -- "$@" --enable-static
+    fi
+
+    ./configure "$@" || exit 1
+    make $MAKEOPTS
+}
+
+pkg_install()
+{
+    cd "$src" || exit 1
+    make DESTDIR="$DESTDIR" install
+}

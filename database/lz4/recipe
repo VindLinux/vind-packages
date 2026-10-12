@@ -1,0 +1,32 @@
+src="lz4-${PKG_VERSION}"
+tarball="${src}.tar.gz"
+
+lz4_flags()
+{
+    if ! attr_on static; then
+        echo "BUILD_STATIC=no"
+    fi
+
+    if ! attr_on multithread; then
+        echo "HAVE_MULTITHREAD=0"
+    fi
+}
+
+pkg_download()
+{
+    curl -fL --retry 3 --retry-delay 2 -o "$tarball" \
+        "https://github.com/lz4/lz4/releases/download/v${PKG_VERSION}/$tarball" || exit 1
+    tar -xf "$tarball" || exit 1
+}
+
+pkg_build()
+{
+    cd "$src" || exit 1
+    make $MAKEOPTS PREFIX="$PREFIX" $(lz4_flags)
+}
+
+pkg_install()
+{
+    cd "$src" || exit 1
+    make DESTDIR="$DESTDIR" PREFIX="$PREFIX" $(lz4_flags) install
+}

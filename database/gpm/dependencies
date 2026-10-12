@@ -1,0 +1,7 @@
+autoconf
+automake
+libtool
+m4
+byacc
+curses?ncurses
+emacs?emacs

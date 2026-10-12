@@ -1,0 +1,105 @@
+src="fftw-${PKG_VERSION}"
+tarball="${src}.tar.gz"
+
+fftw_passes()
+{
+    echo double
+
+    if attr_on single; then
+        echo single
+    fi
+
+    if attr_on longdouble; then
+        echo longdouble
+    fi
+}
+
+pkg_download()
+{
+    curl -fL --retry 3 --retry-delay 2 -o "$tarball" \
+        "http://www.fftw.org/$tarball" || exit 1
+    tar -xf "$tarball" || exit 1
+}
+
+pkg_build()
+{
+    cd "$src" || exit 1
+
+    for precision in $(fftw_passes); do
+        mkdir -p "build-$precision" || exit 1
+        cd "build-$precision" || exit 1
+
+        set -- --prefix="$PREFIX" --enable-shared
+
+        if attr_on static; then
+            set -- "$@" --enable-static
+        else
+            set -- "$@" --disable-static
+        fi
+
+        if attr_on threads; then
+            set -- "$@" --enable-threads
+        fi
+
+        if attr_on openmp; then
+            set -- "$@" --enable-openmp
+        fi
+
+        if attr_on mpi; then
+            set -- "$@" --enable-mpi
+        fi
+
+        if ! attr_on fortran; then
+            set -- "$@" --disable-fortran
+        fi
+
+        if ! attr_on doc; then
+            set -- "$@" --disable-doc
+        fi
+
+        case $precision in
+            single)
+                set -- "$@" --enable-single
+                if attr_on sse2; then
+                    set -- "$@" --enable-sse --enable-sse2
+                fi
+                ;;
+            longdouble)
+                set -- "$@" --enable-long-double
+                ;;
+            double)
+                if attr_on sse2; then
+                    set -- "$@" --enable-sse2
+                fi
+                ;;
+        esac
+
+        if [ "$precision" != longdouble ]; then
+            if attr_on avx; then
+                set -- "$@" --enable-avx
+            fi
+
+            if attr_on avx2; then
+                set -- "$@" --enable-avx2
+            fi
+
+            if attr_on avx512; then
+                set -- "$@" --enable-avx512
+            fi
+        fi
+
+        ../configure "$@" || exit 1
+        make $MAKEOPTS || exit 1
+
+        cd .. || exit 1
+    done
+}
+
+pkg_install()
+{
+    cd "$src" || exit 1
+
+    for precision in $(fftw_passes); do
+        make -C "build-$precision" DESTDIR="$DESTDIR" install || exit 1
+    done
+}

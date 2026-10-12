@@ -1,0 +1,1 @@
+Library for talking to the ALSA sound drivers in the Linux kernel, with PCM, mixer, MIDI, sequencer and UCM support.

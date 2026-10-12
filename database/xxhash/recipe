@@ -1,0 +1,34 @@
+src="xxHash-${PKG_VERSION}"
+tarball="v${PKG_VERSION}.tar.gz"
+
+xxh_flags()
+{
+    if attr_on dispatch; then
+        echo "DISPATCH=1"
+    else
+        echo "DISPATCH=0"
+    fi
+
+    if attr_on libdispatch; then
+        echo "LIBXXH_DISPATCH=1"
+    fi
+}
+
+pkg_download()
+{
+    curl -fL --retry 3 --retry-delay 2 -o "$tarball" \
+        "https://github.com/Cyan4973/xxHash/archive/refs/tags/$tarball" || exit 1
+    tar -xf "$tarball" || exit 1
+}
+
+pkg_build()
+{
+    cd "$src" || exit 1
+    make $MAKEOPTS PREFIX="$PREFIX" LIBDIR="$PREFIX/lib" $(xxh_flags)
+}
+
+pkg_install()
+{
+    cd "$src" || exit 1
+    make DESTDIR="$DESTDIR" PREFIX="$PREFIX" LIBDIR="$PREFIX/lib" $(xxh_flags) install
+}

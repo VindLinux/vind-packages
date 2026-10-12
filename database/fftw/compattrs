@@ -1,0 +1,12 @@
+single
+longdouble
+threads
+openmp
+mpi
+fortran
+static
+doc
+sse2
+avx
+avx2
+avx512

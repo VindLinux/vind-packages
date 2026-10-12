@@ -1,0 +1,10 @@
+pkgconf
+sqlite?sqlite3
+alsa?alsa-lib
+external?flac
+external?libogg
+external?libvorbis
+external?opus
+external?speex
+mpeg?lame
+mpeg?mpg123

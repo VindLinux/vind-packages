@@ -1,0 +1,37 @@
+src="cmatrix"
+tarball="cmatrix-v${PKG_VERSION}-Butterscotch.tar"
+
+pkg_download()
+{
+    curl -fL --retry 3 --retry-delay 2 -o "$tarball" \
+        "https://github.com/abishekvashok/cmatrix/releases/download/v${PKG_VERSION}/$tarball" || exit 1
+    tar -xf "$tarball" || exit 1
+}
+
+pkg_build()
+{
+    cd "$src" || exit 1
+
+    touch aclocal.m4 configure config.h.in Makefile.in
+
+    set -- --prefix="$PREFIX" --without-fonts
+
+    if attr_on debug; then
+        set -- "$@" --enable-debug
+    fi
+
+    ./configure "$@" || exit 1
+    make clean
+    make $MAKEOPTS
+}
+
+pkg_install()
+{
+    cd "$src" || exit 1
+    make DESTDIR="$DESTDIR" install
+
+    if attr_on fonts; then
+        mkdir -p "$DESTDIR$PREFIX/share/consolefonts"
+        install -m 644 matrix.fnt matrix.psf.gz "$DESTDIR$PREFIX/share/consolefonts/"
+    fi
+}

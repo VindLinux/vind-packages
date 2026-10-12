@@ -1,0 +1,9 @@
+cmake
+ninja
+pkgconf
+python3
+vulkan-headers
+wayland
+x11?libxcb
+x11?libx11
+x11?libxrandr

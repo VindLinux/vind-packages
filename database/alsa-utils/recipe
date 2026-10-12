@@ -1,0 +1,68 @@
+src="alsa-utils-${PKG_VERSION}"
+tarball="${src}.tar.bz2"
+
+pkg_download()
+{
+    curl -fL --retry 3 --retry-delay 2 -o "$tarball" \
+        "https://www.alsa-project.org/files/pub/utils/$tarball" || exit 1
+
+    bzip2 -t "$tarball" || { rm -f "$tarball"; exit 1; }
+    bzip2 -dc "$tarball" | tar -xf - || exit 1
+}
+
+pkg_build()
+{
+    cd "$src" || exit 1
+
+    set -- --prefix="$PREFIX" --disable-maintainer-mode --disable-rpath \
+        --with-udev-rules-dir=/lib/udev/rules.d --with-systemdsystemunitdir=no
+
+    if ! attr_on nls; then
+        set -- "$@" --disable-nls
+    fi
+
+    if attr_on topology; then
+        set -- "$@" --enable-alsatopology
+    fi
+
+    if attr_on tinyalsa; then
+        set -- "$@" --enable-alsabat-backend-tiny
+    fi
+
+    if ! attr_on bat; then
+        set -- "$@" --disable-bat
+    fi
+
+    if ! attr_on alsamixer; then
+        set -- "$@" --disable-alsamixer
+    fi
+
+    if ! attr_on alsaconf; then
+        set -- "$@" --disable-alsaconf
+    fi
+
+    if ! attr_on alsaloop; then
+        set -- "$@" --disable-alsaloop
+    fi
+
+    if ! attr_on nhlt; then
+        set -- "$@" --disable-nhlt
+    fi
+
+    if ! attr_on xmlto; then
+        set -- "$@" --disable-xmlto
+    fi
+
+    if ! attr_on rst2man; then
+        set -- "$@" --disable-rst2man
+    fi
+
+    ./configure "$@" || exit 1
+    make $MAKEOPTS
+}
+
+pkg_install()
+{
+    cd "$src" || exit 1
+    make DESTDIR="$DESTDIR" install
+}

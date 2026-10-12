@@ -1,0 +1,11 @@
+alsa
+pipewire
+pulse
+portaudio
+sndio
+oss
+jack
+sdl
+glsl
+ncurses
+font

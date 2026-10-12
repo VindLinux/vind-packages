@@ -1,0 +1,9 @@
+meson
+ninja
+pkgconf
+gettext
+glib
+lua
+pipewire
+introspection?gobject-introspection
+docs?doxygen

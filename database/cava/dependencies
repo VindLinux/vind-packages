@@ -1,0 +1,13 @@
+pkgconf
+fftw
+iniparser
+alsa?alsa-lib
+pipewire?pipewire
+pulse?pulseaudio
+portaudio?portaudio
+sndio?sndio
+jack?jack2
+sdl?SDL2
+glsl?mesa
+ncurses?ncurses
+font?kbd

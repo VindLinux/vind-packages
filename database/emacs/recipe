@@ -1,0 +1,42 @@
+src="emacs-$PKG_VERSION"
+tarball="$src.tar.xz"
+
+pkg_download()
+{
+    curl -fL --retry 3 --retry-delay 2 -o "$tarball" \
+        "https://mirrors.kernel.org/gnu/emacs/$tarball" || exit 1
+    tar -xf "$tarball" || exit 1
+}
+
+pkg_build()
+{
+    cd "$src" || exit 1
+
+    set -- --prefix="$PREFIX" --without-x --without-sound \
+           --without-lcms2 --without-libsystemd --without-selinux \
+           --without-native-compilation --with-modules \
+           --with-file-notification=inotify
+
+    if ! attr_on gpm; then
+        set -- "$@" --without-gpm
+    fi
+
+    if ! attr_on gnutls; then
+        set -- "$@" --without-gnutls
+    fi
+
+    if attr_on tree-sitter; then
+        set -- "$@" --with-tree-sitter
+    else
+        set -- "$@" --without-tree-sitter
+    fi
+
+    ./configure "$@" || exit 1
+    make $MAKEOPTS || exit 1
+}
+
+pkg_install()
+{
+    cd "$src" || exit 1
+    make DESTDIR="$DESTDIR" install || exit 1
+}

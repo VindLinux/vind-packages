@@ -1,0 +1,71 @@
+src="cava-${PKG_VERSION}"
+tarball="${src}.tar.gz"
+
+pkg_download()
+{
+    curl -fL --retry 3 --retry-delay 2 -o "$tarball" \
+        "https://github.com/karlstav/cava/releases/download/${PKG_VERSION}/$tarball" || exit 1
+    tar -xf "$tarball" || exit 1
+}
+
+pkg_build()
+{
+    cd "$src" || exit 1
+
+    touch aclocal.m4 configure Makefile.in
+
+    set -- --prefix="$PREFIX"
+
+    if ! attr_on alsa; then
+        set -- "$@" --disable-input-alsa
+    fi
+
+    if ! attr_on pipewire; then
+        set -- "$@" --disable-input-pipewire
+    fi
+
+    if ! attr_on pulse; then
+        set -- "$@" --disable-input-pulse
+    fi
+
+    if ! attr_on portaudio; then
+        set -- "$@" --disable-input-portaudio
+    fi
+
+    if ! attr_on sndio; then
+        set -- "$@" --disable-input-sndio
+    fi
+
+    if ! attr_on oss; then
+        set -- "$@" --disable-input-oss
+    fi
+
+    if ! attr_on jack; then
+        set -- "$@" --disable-input-jack
+    fi
+
+    if ! attr_on sdl; then
+        set -- "$@" --disable-output-sdl
+    fi
+
+    if ! attr_on glsl; then
+        set -- "$@" --disable-output-sdl-glsl
+    fi
+
+    if ! attr_on ncurses; then
+        set -- "$@" --disable-output-ncurses
+    fi
+
+    if ! attr_on font; then
+        set -- "$@" --disable-cava-font
+    fi
+
+    ./configure "$@" || exit 1
+    make $MAKEOPTS
+}
+
+pkg_install()
+{
+    cd "$src" || exit 1
+    make DESTDIR="$DESTDIR" install
+}

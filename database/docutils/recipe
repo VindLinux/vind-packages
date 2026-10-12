@@ -1,0 +1,39 @@
+src="docutils-$PKG_VERSION"
+tarball="$src.tar.gz"
+
+pkg_download()
+{
+    curl -fL --retry 3 --retry-delay 2 -o "$tarball" \
+        "https://files.pythonhosted.org/packages/source/d/docutils/$tarball" || exit 1
+    tar -xf "$tarball" || exit 1
+}
+
+pkg_build()
+{
+    :
+}
+
+pkg_install()
+{
+    cd "$src" || exit 1
+
+    site=$(python3 -c "import sysconfig; print(sysconfig.get_path('purelib', vars={'base': '$PREFIX', 'platbase': '$PREFIX'}))") || exit 1
+
+    mkdir -p "$DESTDIR$site" "$DESTDIR$PREFIX/bin" || exit 1
+    cp -R docutils "$DESTDIR$site/" || exit 1
+
+    python3 -m compileall -q -d "$site/docutils" "$DESTDIR$site/docutils" || :
+
+    for f in tools/rst*.py tools/buildhtml.py tools/docutils-cli.py; do
+        [ -f "$f" ] || continue
+        name=${f##*/}
+        install -m 755 "$f" "$DESTDIR$PREFIX/bin/$name" || exit 1
+        case "$name" in
+            rst*.py) ln -sf "$name" "$DESTDIR$PREFIX/bin/${name%.py}" || exit 1 ;;
+        esac
+    done
+
+    if [ -f "$DESTDIR$PREFIX/bin/docutils-cli.py" ]; then
+        ln -sf docutils-cli.py "$DESTDIR$PREFIX/bin/docutils" || exit 1
+    fi
+}

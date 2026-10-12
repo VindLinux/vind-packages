@@ -1,0 +1,24 @@
+src="rank-amateur-cowsay-cowsay-${PKG_VERSION}"
+tarball="cowsay-${PKG_VERSION}.tar.gz"
+
+pkg_download()
+{
+    curl -fL --retry 3 --retry-delay 2 -o "$tarball" \
+		"https://github.com/tnalpgge/rank-amateur-cowsay/archive/refs/tags/$tarball" || exit 1
+    tar -xf "$tarball" || exit 1
+}
+
+pkg_build()
+{
+    cd "$src" || exit 1
+	sed -i '/echo Now I need an installation prefix/,/PREFIX=${prefix:-\/usr\/local}/c\
+PREFIX="$PREFIX"
+' install.sh || exit 1
+}
+
+pkg_install()
+{
+    cd "$src" || exit 1
+	
+	./install.sh || exit 1
+}

@@ -1,0 +1,9 @@
+pkgconf
+alsa-lib
+nls?gettext
+tinyalsa?tinyalsa
+bat?fftw
+alsamixer?ncurses
+alsaloop?libsamplerate
+xmlto?xmlto
+rst2man?docutils

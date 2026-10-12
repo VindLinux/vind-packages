@@ -1,0 +1,8 @@
+pkgconf
+zlib
+openssl
+eudev
+util-linux
+libtirpc
+python3
+nls?gettext

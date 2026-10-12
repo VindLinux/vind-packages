@@ -1,0 +1,19 @@
+src="alsa-ucm-conf-${PKG_VERSION}"
+tarball="${src}.tar.bz2"
+
+pkg_download()
+{
+    curl -fL --retry 3 --retry-delay 2 -o "$tarball" \
+        "https://www.alsa-project.org/files/pub/lib/$tarball" || exit 1
+
+    bzip2 -t "$tarball" || { rm -f "$tarball"; exit 1; }
+    bzip2 -dc "$tarball" | tar -xf - || exit 1
+}
+
+pkg_install()
+{
+    cd "$src" || exit 1
+
+    mkdir -p "$DESTDIR$PREFIX/share/alsa" || exit 1
+    cp -a ucm ucm2 "$DESTDIR$PREFIX/share/alsa/" || exit 1
+}

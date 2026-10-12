@@ -1,0 +1,44 @@
+src="SDL2-$PKG_VERSION"
+tarball="$src.tar.gz"
+
+pkg_download()
+{
+    curl -fL --retry 3 --retry-delay 2 -o "$tarball" \
+        "https://www.libsdl.org/release/$tarball" || exit 1
+    tar -xf "$tarball" || exit 1
+}
+
+pkg_build()
+{
+    cd "$src" || exit 1
+
+    set -- --prefix="$PREFIX" --disable-rpath --disable-sse3 \
+           --disable-oss --disable-esd --disable-arts --disable-nas \
+           --disable-sndio --disable-fusionsound \
+           --disable-libdecor --disable-ibus --disable-video-rpi \
+           --enable-video-wayland --enable-libudev --enable-dbus \
+           --enable-libsamplerate --enable-hidapi-libusb
+
+    for a in alsa jack pipewire pulseaudio; do
+        if attr_on "$a"; then
+            set -- "$@" "--enable-$a"
+        else
+            set -- "$@" "--disable-$a"
+        fi
+    done
+
+    if attr_on x11; then
+        set -- "$@" --enable-video-x11
+    else
+        set -- "$@" --disable-video-x11 --without-x
+    fi
+
+    ./configure "$@" || exit 1
+    make $MAKEOPTS || exit 1
+}
+
+pkg_install()
+{
+    cd "$src" || exit 1
+    make DESTDIR="$DESTDIR" install || exit 1
+}

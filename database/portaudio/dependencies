@@ -1,0 +1,3 @@
+pkgconf
+alsa?alsa-lib
+jack?jack2

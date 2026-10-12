@@ -1,0 +1,44 @@
+src="iniparser-v${PKG_VERSION}"
+tarball="${src}.tar.gz"
+
+pkg_download()
+{
+    curl -fL --retry 3 --retry-delay 2 -o "$tarball" \
+        "https://gitlab.com/iniparser/iniparser/-/archive/v${PKG_VERSION}/$tarball" || exit 1
+    tar -xf "$tarball" || exit 1
+}
+
+pkg_build()
+{
+    cd "$src" || exit 1
+
+    set -- -DCMAKE_INSTALL_PREFIX="$PREFIX" -DCMAKE_INSTALL_LIBDIR=lib \
+        -DCMAKE_BUILD_TYPE=Release -DBUILD_TESTING=OFF
+
+    if attr_on examples; then
+        set -- "$@" -DBUILD_EXAMPLES=ON
+    else
+        set -- "$@" -DBUILD_EXAMPLES=OFF
+    fi
+
+    if attr_on docs; then
+        set -- "$@" -DBUILD_DOCS=ON
+    else
+        set -- "$@" -DBUILD_DOCS=OFF
+    fi
+
+    if attr_on static; then
+        set -- "$@" -DBUILD_STATIC_LIBS=ON
+    else
+        set -- "$@" -DBUILD_STATIC_LIBS=OFF
+    fi
+
+    cmake -B build "$@" || exit 1
+    cmake --build build -- $MAKEOPTS
+}
+
+pkg_install()
+{
+    cd "$src" || exit 1
+    DESTDIR="$DESTDIR" cmake --install build
+}
