@@ -49,6 +49,7 @@ pkg_build()
     fi
 
     ./configure "$@" || exit 1
+    [ -e src/conf/smixer.conf ] || : > src/conf/smixer.conf
     make $MAKEOPTS
 }
 
