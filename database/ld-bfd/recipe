@@ -31,7 +31,7 @@ pkg_build()
         --enable-new-dtags \
         --enable-default-hash-style=gnu
 
-    "../$src/configure" "$@" || exit 1
+    acx_cv_cc_gcc_supports_ada=no "../$src/configure" "$@" || exit 1
     make $MAKEOPTS
 }
 
