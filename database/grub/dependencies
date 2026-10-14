@@ -2,6 +2,7 @@ efibootmgr
 bison
 flex
 python3
+ld-bfd
 nls?gettext
 mkfont?freetype
 mount?fuse3
