@@ -34,9 +34,16 @@ pkg_build()
         fi
     done
 
-    env -u CFLAGS -u CPPFLAGS -u CXXFLAGS -u LDFLAGS ./configure "$@" || exit 1
+    env -u CFLAGS -u CPPFLAGS -u CXXFLAGS -u LDFLAGS ./configure "$@" \
+        TARGET_LDFLAGS="${TARGET_LDFLAGS:+$TARGET_LDFLAGS }-Wl,--image-base=0" || exit 1
 
-    sed -i 's/^#if 1$/#if 0/' grub-core/lib/gnulib/getopt-cdefs.h || exit 1
+    for f in grub-core/lib/gnulib/getopt-cdefs.in.h grub-core/lib/gnulib/getopt-cdefs.h; do
+        [ -f "$f" ] || continue
+        sed -i -e 's/^#if 1$/#if 0/' \
+               -e 's/^#if @HAVE_SYS_CDEFS_H@$/#if 0/' "$f" || exit 1
+    done
+
+    echo "depends bli part_gpt" > grub-core/extra_deps.lst || exit 1
 
     make $MAKEOPTS
 }
