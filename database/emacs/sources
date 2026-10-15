@@ -1,0 +1,2 @@
+# tried in order, the first one that works wins
+https://mirrors.kernel.org/gnu/emacs/emacs-${PKG_VERSION}.tar.xz

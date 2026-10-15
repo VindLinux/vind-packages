@@ -1,0 +1,2 @@
+# tried in order, the first one that works wins
+https://github.com/libsndfile/libsamplerate/releases/download/${PKG_VERSION}/libsamplerate-${PKG_VERSION}.tar.xz

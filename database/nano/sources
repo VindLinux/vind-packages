@@ -1,0 +1,2 @@
+# tried in order, the first one that works wins
+https://www.nano-editor.org/dist/v${PKG_VERSION}/nano-${PKG_VERSION}.tar.xz

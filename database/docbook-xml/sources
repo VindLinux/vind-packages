@@ -1,0 +1,2 @@
+# tried in order, the first one that works wins
+https://www.oasis-open.org/docbook/xml/${PKG_VERSION}/docbook-xml-${PKG_VERSION}.zip

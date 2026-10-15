@@ -1,0 +1,2 @@
+# tried in order, the first one that works wins
+https://gitlab.freedesktop.org/libinput/libinput/-/archive/${PKG_VERSION}/libinput-${PKG_VERSION}.tar.gz

@@ -2,7 +2,7 @@ src="diffutils-$PKG_VERSION"
 
 pkg_download()
 {
-    curl -fL --retry 3 --retry-delay 2 -o "diffutils-$PKG_VERSION.tar.xz" "https://ftp.gnu.org/gnu/diffutils/diffutils-$PKG_VERSION.tar.xz"
+    fetch_source "diffutils-$PKG_VERSION.tar.xz" || exit 1
     tar -xf "diffutils-$PKG_VERSION.tar.xz"
 }
 

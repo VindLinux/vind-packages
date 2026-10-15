@@ -1,0 +1,2 @@
+# tried in order, the first one that works wins
+https://github.com/dejavu-fonts/dejavu-fonts/releases/download/version_${PKG_VERSION}/dejavu-fonts-ttf-${PKG_VERSION}.tar.bz2

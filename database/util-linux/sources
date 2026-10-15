@@ -1,0 +1,2 @@
+# tried in order, the first one that works wins
+https://mirrors.edge.kernel.org/pub/linux/utils/util-linux/v${PKG_VERSION}/util-linux-${PKG_VERSION}.tar.gz

@@ -1,0 +1,2 @@
+# tried in order, the first one that works wins
+https://gitlab.freedesktop.org/wayland/wayland/-/releases/${PKG_VERSION}/downloads/wayland-${PKG_VERSION}.tar.xz

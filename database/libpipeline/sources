@@ -1,0 +1,2 @@
+# tried in order, the first one that works wins
+https://download.savannah.gnu.org/releases/libpipeline/libpipeline-${PKG_VERSION}.tar.gz

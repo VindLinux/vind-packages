@@ -1,0 +1,2 @@
+# tried in order, the first one that works wins
+https://www.lua.org/ftp/lua-${PKG_VERSION}.tar.gz

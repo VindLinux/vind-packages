@@ -1,0 +1,2 @@
+# tried in order, the first one that works wins
+https://github.com/facebook/zstd/releases/download/v${PKG_VERSION}/zstd-${PKG_VERSION}.tar.gz

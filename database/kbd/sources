@@ -1,0 +1,2 @@
+# tried in order, the first one that works wins
+https://mirrors.edge.kernel.org/pub/linux/utils/kbd/kbd-${PKG_VERSION}.tar.xz

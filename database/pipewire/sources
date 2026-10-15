@@ -1,0 +1,2 @@
+# tried in order, the first one that works wins
+https://gitlab.freedesktop.org/pipewire/pipewire/-/archive/${PKG_VERSION}/pipewire-${PKG_VERSION}.tar.gz

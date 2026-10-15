@@ -1,0 +1,2 @@
+# tried in order, the first one that works wins
+https://github.com/nghttp2/nghttp2/releases/download/v${PKG_VERSION}/nghttp2-${PKG_VERSION}.tar.xz

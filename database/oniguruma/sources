@@ -1,0 +1,2 @@
+# tried in order, the first one that works wins
+https://github.com/kkos/oniguruma/releases/download/v${PKG_VERSION}/onig-${PKG_VERSION}.tar.gz

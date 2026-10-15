@@ -2,7 +2,7 @@ src="curl-$PKG_VERSION"
 
 pkg_download()
 {
-    curl -fL --retry 3 --retry-delay 2 -o "curl-$PKG_VERSION.tar.xz" "https://curl.se/download/curl-$PKG_VERSION.tar.xz"
+    fetch_source "curl-$PKG_VERSION.tar.xz" || exit 1
     tar -xf "curl-$PKG_VERSION.tar.xz"
 }
 

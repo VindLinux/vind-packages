@@ -2,7 +2,7 @@ src="dosfstools-$PKG_VERSION"
 
 pkg_download()
 {
-    curl -fL --retry 3 --retry-delay 2 -o "dosfstools-$PKG_VERSION.tar.gz" "https://github.com/dosfstools/dosfstools/releases/download/v$PKG_VERSION/dosfstools-$PKG_VERSION.tar.gz"
+    fetch_source "dosfstools-$PKG_VERSION.tar.gz" || exit 1
     tar -xf "dosfstools-$PKG_VERSION.tar.gz"
 }
 

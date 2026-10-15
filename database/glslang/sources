@@ -1,0 +1,2 @@
+# tried in order, the first one that works wins
+https://github.com/KhronosGroup/glslang/archive/${PKG_VERSION}/glslang-${PKG_VERSION}.tar.gz

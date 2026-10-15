@@ -1,0 +1,2 @@
+# tried in order, the first one that works wins
+https://download.gnome.org/sources/libxslt/1.1/libxslt-${PKG_VERSION}.tar.xz

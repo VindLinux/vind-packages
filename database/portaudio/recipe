@@ -3,8 +3,7 @@ tarball="pa_stable_v190700_20210406.tgz"
 
 pkg_download()
 {
-    curl -fL --retry 3 --retry-delay 2 -o "$tarball" \
-        "https://files.portaudio.com/archives/$tarball" || exit 1
+    fetch_source "$tarball" || exit 1
     tar -xf "$tarball" || exit 1
 }
 

@@ -1,0 +1,2 @@
+# tried in order, the first one that works wins
+https://github.com/vim/vim/archive/refs/tags/v${PKG_VERSION}.0000.tar.gz

@@ -1,0 +1,2 @@
+# tried in order, the first one that works wins
+https://gitlab.freedesktop.org/glvnd/libglvnd/-/archive/v${PKG_VERSION}/libglvnd-v${PKG_VERSION}.tar.gz

@@ -2,7 +2,7 @@ src="dash-$PKG_VERSION"
 
 pkg_download()
 {
-    curl -fL --retry 3 --retry-delay 2 -o "dash-$PKG_VERSION.tar.gz" "http://gondor.apana.org.au/~herbert/dash/files/dash-$PKG_VERSION.tar.gz"
+    fetch_source "dash-$PKG_VERSION.tar.gz" || exit 1
     tar -xf "dash-$PKG_VERSION.tar.gz"
 }
 

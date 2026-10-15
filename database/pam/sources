@@ -1,0 +1,2 @@
+# tried in order, the first one that works wins
+https://github.com/linux-pam/linux-pam/releases/download/v${PKG_VERSION}/Linux-PAM-${PKG_VERSION}.tar.xz

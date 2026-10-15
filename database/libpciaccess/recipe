@@ -2,7 +2,7 @@ src="libpciaccess-0.18.1"
 
 pkg_download()
 {
-    curl -fL --retry 3 --retry-delay 2 -o libpciaccess-0.18.1.tar.xz https://www.x.org/pub/individual/lib/libpciaccess-0.18.1.tar.xz
+    fetch_source libpciaccess-0.18.1.tar.xz || exit 1
     tar -xf libpciaccess-0.18.1.tar.xz
 }
 

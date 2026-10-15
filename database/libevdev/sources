@@ -1,0 +1,2 @@
+# tried in order, the first one that works wins
+https://www.freedesktop.org/software/libevdev/libevdev-${PKG_VERSION}.tar.xz

@@ -1,0 +1,2 @@
+# tried in order, the first one that works wins
+https://freedesktop.org/software/pulseaudio/releases/pulseaudio-${PKG_VERSION}.tar.xz

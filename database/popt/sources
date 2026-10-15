@@ -1,0 +1,2 @@
+# tried in order, the first one that works wins
+https://ftp.osuosl.org/pub/rpm/popt/releases/popt-1.x/popt-${PKG_VERSION}.tar.gz

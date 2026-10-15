@@ -1,0 +1,2 @@
+# tried in order, the first one that works wins
+https://mesa.freedesktop.org/archive/mesa-${PKG_VERSION}.tar.xz

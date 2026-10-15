@@ -2,7 +2,7 @@ src="libXcomposite-0.4.7"
 
 pkg_download()
 {
-    curl -fL --retry 3 --retry-delay 2 -o libXcomposite-0.4.7.tar.xz https://www.x.org/pub/individual/lib/libXcomposite-0.4.7.tar.xz
+    fetch_source libXcomposite-0.4.7.tar.xz || exit 1
     tar -xf libXcomposite-0.4.7.tar.xz
 }
 

@@ -2,8 +2,7 @@ whl="wheel-${PKG_VERSION}-py3-none-any.whl"
 
 pkg_download()
 {
-    curl -fL --retry 3 --retry-delay 2 -o "$whl" \
-        "https://files.pythonhosted.org/packages/py3/w/wheel/$whl" || exit 1
+    fetch_source "$whl" || exit 1
 }
 
 pkg_build()

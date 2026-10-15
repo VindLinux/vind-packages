@@ -1,0 +1,2 @@
+# tried in order, the first one that works wins
+https://www.kernel.org/pub/linux/kernel/people/kdave/btrfs-progs/btrfs-progs-v${PKG_VERSION}.tar.xz

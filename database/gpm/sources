@@ -1,0 +1,2 @@
+# tried in order, the first one that works wins
+https://anduin.linuxfromscratch.org/BLFS/gpm/gpm-${PKG_VERSION}.tar.bz2

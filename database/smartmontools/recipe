@@ -2,7 +2,7 @@ src="smartmontools-7.4"
 
 pkg_download()
 {
-    curl -fL --retry 3 --retry-delay 2 -o smartmontools-7.4.tar.gz https://downloads.sourceforge.net/project/smartmontools/smartmontools/7.4/smartmontools-7.4.tar.gz
+    fetch_source smartmontools-7.4.tar.gz || exit 1
     tar -xf smartmontools-7.4.tar.gz
 }
 

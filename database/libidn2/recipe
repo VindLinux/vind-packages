@@ -2,7 +2,7 @@ src="libidn2-2.3.8"
 
 pkg_download()
 {
-    curl -fL --retry 3 --retry-delay 2 -o libidn2-2.3.8.tar.gz https://ftp.gnu.org/gnu/libidn/libidn2-2.3.8.tar.gz
+    fetch_source libidn2-2.3.8.tar.gz || exit 1
     tar -xf libidn2-2.3.8.tar.gz
 }
 

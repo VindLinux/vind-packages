@@ -1,0 +1,2 @@
+# tried in order, the first one that works wins
+https://download.savannah.nongnu.org/releases/man-db/man-db-${PKG_VERSION}.tar.xz

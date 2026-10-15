@@ -3,8 +3,7 @@ tarball="$src.tar.bz2"
 
 pkg_download()
 {
-    curl -fL --retry 3 --retry-delay 2 -o "$tarball" \
-        "https://gnupg.org/ftp/gcrypt/libassuan/$tarball" || exit 1
+    fetch_source "$tarball" || exit 1
 
     bzip2 -t "$tarball" || { rm -f "$tarball"; exit 1; }
     bzip2 -dc "$tarball" | tar -xf - || exit 1

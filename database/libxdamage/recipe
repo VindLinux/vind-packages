@@ -2,7 +2,7 @@ src="libXdamage-1.1.7"
 
 pkg_download()
 {
-    curl -fL --retry 3 --retry-delay 2 -o libXdamage-1.1.7.tar.xz https://www.x.org/pub/individual/lib/libXdamage-1.1.7.tar.xz
+    fetch_source libXdamage-1.1.7.tar.xz || exit 1
     tar -xf libXdamage-1.1.7.tar.xz
 }
 

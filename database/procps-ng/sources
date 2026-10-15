@@ -1,0 +1,2 @@
+# tried in order, the first one that works wins
+https://gitlab.com/procps-ng/procps/-/archive/v${PKG_VERSION}/procps-v${PKG_VERSION}.tar.gz

@@ -2,7 +2,7 @@ src="libICE-1.1.2"
 
 pkg_download()
 {
-    curl -fL --retry 3 --retry-delay 2 -o libICE-1.1.2.tar.xz https://www.x.org/pub/individual/lib/libICE-1.1.2.tar.xz
+    fetch_source libICE-1.1.2.tar.xz || exit 1
     tar -xf libICE-1.1.2.tar.xz
 }
 

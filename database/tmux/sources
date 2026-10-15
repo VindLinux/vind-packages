@@ -1,0 +1,2 @@
+# tried in order, the first one that works wins
+https://github.com/tmux/tmux/releases/download/${PKG_VERSION}/tmux-${PKG_VERSION}.tar.gz

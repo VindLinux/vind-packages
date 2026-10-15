@@ -3,8 +3,7 @@ tarball="docbook-xml-${PKG_VERSION}.zip"
 
 pkg_download()
 {
-    curl -fL --retry 3 --retry-delay 2 -o "$tarball" \
-        "https://www.oasis-open.org/docbook/xml/${PKG_VERSION}/$tarball" || exit 1
+    fetch_source "$tarball" || exit 1
 
     mkdir -p "$src" || exit 1
     unzip -q -o "$tarball" -d "$src" || exit 1

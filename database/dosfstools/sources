@@ -1,0 +1,2 @@
+# tried in order, the first one that works wins
+https://github.com/dosfstools/dosfstools/releases/download/v${PKG_VERSION}/dosfstools-${PKG_VERSION}.tar.gz

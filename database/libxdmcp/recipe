@@ -2,7 +2,7 @@ src="libXdmcp-1.1.5"
 
 pkg_download()
 {
-    curl -fL --retry 3 --retry-delay 2 -o libXdmcp-1.1.5.tar.xz https://www.x.org/pub/individual/lib/libXdmcp-1.1.5.tar.xz
+    fetch_source libXdmcp-1.1.5.tar.xz || exit 1
     tar -xf libXdmcp-1.1.5.tar.xz
 }
 

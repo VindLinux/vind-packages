@@ -1,0 +1,2 @@
+# tried in order, the first one that works wins
+https://github.com/KhronosGroup/SPIRV-LLVM-Translator/archive/v${PKG_VERSION}/SPIRV-LLVM-Translator-${PKG_VERSION}.tar.gz

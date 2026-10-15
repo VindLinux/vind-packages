@@ -2,7 +2,7 @@ src="e2fsprogs-$PKG_VERSION"
 
 pkg_download()
 {
-    curl -fL --retry 3 --retry-delay 2 -o "e2fsprogs-$PKG_VERSION.tar.gz" "https://downloads.sourceforge.net/project/e2fsprogs/e2fsprogs/v$PKG_VERSION/e2fsprogs-$PKG_VERSION.tar.gz"
+    fetch_source "e2fsprogs-$PKG_VERSION.tar.gz" || exit 1
     tar -xf "e2fsprogs-$PKG_VERSION.tar.gz"
 }
 

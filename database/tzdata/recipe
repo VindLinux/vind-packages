@@ -2,8 +2,8 @@ src="tzdata-2025b"
 
 pkg_download()
 {
-    curl -fL --retry 3 --retry-delay 2 -o tzdata2025b.tar.gz https://data.iana.org/time-zones/releases/tzdata2025b.tar.gz
-    curl -fL --retry 3 --retry-delay 2 -o tzcode2025b.tar.gz https://data.iana.org/time-zones/releases/tzcode2025b.tar.gz
+    fetch_source tzdata2025b.tar.gz || exit 1
+    curl -fL --retry 3 --retry-delay 2 -o tzcode2025b.tar.gz https://data.iana.org/time-zones/releases/tzcode2025b.tar.gz || exit 1
     mkdir -p tzdata-2025b
     tar -xf tzcode2025b.tar.gz -C tzdata-2025b
     tar -xf tzdata2025b.tar.gz -C tzdata-2025b

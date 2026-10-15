@@ -1,0 +1,2 @@
+# tried in order, the first one that works wins
+https://github.com/libfuse/libfuse/releases/download/fuse-${PKG_VERSION}/fuse-${PKG_VERSION}.tar.gz

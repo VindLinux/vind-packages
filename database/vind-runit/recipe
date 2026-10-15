@@ -2,7 +2,7 @@ src="vind-runit"
 
 pkg_download()
 {
-    git clone https://github.com/VindLinux/vind-runit "$src"
+    git clone --depth 1 --branch "v$PKG_VERSION" https://github.com/VindLinux/vind-runit "$src" || exit 1
 }
 
 pkg_install()

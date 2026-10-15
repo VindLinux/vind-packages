@@ -3,8 +3,7 @@ tarball="cmatrix-v${PKG_VERSION}-Butterscotch.tar"
 
 pkg_download()
 {
-    curl -fL --retry 3 --retry-delay 2 -o "$tarball" \
-        "https://github.com/abishekvashok/cmatrix/releases/download/v${PKG_VERSION}/$tarball" || exit 1
+    fetch_source "$tarball" || exit 1
     tar -xf "$tarball" || exit 1
 }
 

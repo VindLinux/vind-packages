@@ -1,0 +1,2 @@
+# tried in order, the first one that works wins
+https://dbus.freedesktop.org/releases/dbus/dbus-${PKG_VERSION}.tar.xz

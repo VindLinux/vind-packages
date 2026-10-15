@@ -1,0 +1,2 @@
+# tried in order, the first one that works wins
+https://github.com/lz4/lz4/releases/download/v${PKG_VERSION}/lz4-${PKG_VERSION}.tar.gz

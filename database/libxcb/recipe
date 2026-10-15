@@ -2,7 +2,7 @@ src="libxcb-1.17.0"
 
 pkg_download()
 {
-    curl -fL --retry 3 --retry-delay 2 -o libxcb-1.17.0.tar.xz https://xorg.freedesktop.org/archive/individual/lib/libxcb-1.17.0.tar.xz
+    fetch_source libxcb-1.17.0.tar.xz || exit 1
     tar -xf libxcb-1.17.0.tar.xz
 }
 

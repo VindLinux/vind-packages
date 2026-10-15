@@ -1,0 +1,2 @@
+# tried in order, the first one that works wins
+https://github.com/llvm/llvm-project/releases/download/llvmorg-${PKG_VERSION}/libclc-${PKG_VERSION}.src.tar.xz

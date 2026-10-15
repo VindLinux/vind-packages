@@ -4,8 +4,7 @@ patchfile="$src-upstream_fixes-1.patch"
 
 pkg_download()
 {
-    curl -fL --retry 3 --retry-delay 2 -o "$tarball" \
-        "https://github.com/rhboot/efivar/archive/$PKG_VERSION/$tarball" || exit 1
+    fetch_source "$tarball" || exit 1
     curl -fL --retry 3 --retry-delay 2 -o "$patchfile" \
         "https://www.linuxfromscratch.org/patches/blfs/13.0/$patchfile" || exit 1
     tar -xf "$tarball" || exit 1

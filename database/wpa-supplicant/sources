@@ -1,0 +1,2 @@
+# tried in order, the first one that works wins
+https://w1.fi/releases/wpa_supplicant-${PKG_VERSION}.tar.gz

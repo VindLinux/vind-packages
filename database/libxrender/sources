@@ -1,0 +1,2 @@
+# tried in order, the first one that works wins
+https://www.x.org/pub/individual/lib/libXrender-${PKG_VERSION}.tar.xz

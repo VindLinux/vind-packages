@@ -16,8 +16,7 @@ fftw_passes()
 
 pkg_download()
 {
-    curl -fL --retry 3 --retry-delay 2 -o "$tarball" \
-        "http://www.fftw.org/$tarball" || exit 1
+    fetch_source "$tarball" || exit 1
     tar -xf "$tarball" || exit 1
 }
 

@@ -1,0 +1,2 @@
+# tried in order, the first one that works wins
+https://gitlab.freedesktop.org/wlroots/wlroots/-/releases/${PKG_VERSION}/downloads/wlroots-${PKG_VERSION}.tar.gz

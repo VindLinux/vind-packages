@@ -2,7 +2,7 @@ src="nasm-3.01"
 
 pkg_download()
 {
-    curl -fL --retry 3 --retry-delay 2 -o nasm-3.01.tar.xz https://www.nasm.us/pub/nasm/releasebuilds/3.01/nasm-3.01.tar.xz
+    fetch_source nasm-3.01.tar.xz || exit 1
     tar -xf nasm-3.01.tar.xz
 }
 

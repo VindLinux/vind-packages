@@ -1,0 +1,2 @@
+# tried in order, the first one that works wins
+https://gitlab.freedesktop.org/pipewire/wireplumber/-/archive/${PKG_VERSION}/wireplumber-${PKG_VERSION}.tar.gz

@@ -1,0 +1,2 @@
+# tried in order, the first one that works wins
+https://downloads.sourceforge.net/project/e2fsprogs/e2fsprogs/v${PKG_VERSION}/e2fsprogs-${PKG_VERSION}.tar.gz

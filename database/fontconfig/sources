@@ -1,0 +1,2 @@
+# tried in order, the first one that works wins
+https://gitlab.freedesktop.org/api/v4/projects/890/packages/generic/fontconfig/${PKG_VERSION}/fontconfig-${PKG_VERSION}.tar.xz

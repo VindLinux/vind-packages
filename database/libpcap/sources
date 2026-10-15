@@ -1,0 +1,2 @@
+# tried in order, the first one that works wins
+https://www.tcpdump.org/release/libpcap-${PKG_VERSION}.tar.xz

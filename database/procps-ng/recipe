@@ -2,7 +2,7 @@ src="procps-v4.0.4"
 
 pkg_download()
 {
-    curl -fL --retry 3 --retry-delay 2 -o procps-ng-4.0.4.tar.xz https://gitlab.com/procps-ng/procps/-/archive/v4.0.4/procps-v4.0.4.tar.gz
+    fetch_source procps-ng-4.0.4.tar.xz || exit 1
     tar -xf procps-ng-4.0.4.tar.xz
 }
 

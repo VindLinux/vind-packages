@@ -2,7 +2,7 @@ src="libunistring-1.4.2"
 
 pkg_download()
 {
-    curl -fL --retry 3 --retry-delay 2 -o libunistring-1.4.2.tar.xz https://ftp.gnu.org/gnu/libunistring/libunistring-1.4.2.tar.xz
+    fetch_source libunistring-1.4.2.tar.xz || exit 1
     tar -xf libunistring-1.4.2.tar.xz
 }
 

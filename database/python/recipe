@@ -2,7 +2,7 @@ src="Python-3.13.7"
 
 pkg_download()
 {
-    curl -fL --retry 3 --retry-delay 2 -o Python-3.13.7.tar.xz https://www.python.org/ftp/python/3.13.7/Python-3.13.7.tar.xz
+    fetch_source Python-3.13.7.tar.xz || exit 1
     tar -xf Python-3.13.7.tar.xz
 }
 

@@ -1,0 +1,2 @@
+# tried in order, the first one that works wins
+https://smarden.org/runit/runit-${PKG_VERSION}.tar.gz

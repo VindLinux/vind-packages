@@ -1,0 +1,2 @@
+# tried in order, the first one that works wins
+https://github.com/libjpeg-turbo/libjpeg-turbo/releases/download/${PKG_VERSION}/libjpeg-turbo-${PKG_VERSION}.tar.gz

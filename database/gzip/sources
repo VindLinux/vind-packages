@@ -1,0 +1,2 @@
+# tried in order, the first one that works wins
+https://ftp.gnu.org/gnu/gzip/gzip-${PKG_VERSION}.tar.gz

@@ -2,7 +2,7 @@ src="rsync-$PKG_VERSION"
 
 pkg_download()
 {
-    curl -fL --retry 3 --retry-delay 2 -o "$src.tar.gz" "https://rsync.samba.org/ftp/rsync/src/$src.tar.gz"
+    fetch_source "$src.tar.gz" || exit 1
     tar -xf "$src.tar.gz"
 }
 

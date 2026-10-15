@@ -1,0 +1,2 @@
+# tried in order, the first one that works wins
+https://download.gnome.org/sources/gdk-pixbuf/${PKG_VERSION}/gdk-pixbuf-${PKG_VERSION}.tar.xz

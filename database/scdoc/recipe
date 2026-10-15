@@ -2,7 +2,7 @@ src="scdoc-1.11.3"
 
 pkg_download()
 {
-    curl -fL --retry 3 --retry-delay 2 -o scdoc-1.11.3.tar.gz https://git.sr.ht/~sircmpwn/scdoc/archive/1.11.3.tar.gz
+    fetch_source scdoc-1.11.3.tar.gz || exit 1
     tar -xf scdoc-1.11.3.tar.gz
 }
 

@@ -2,7 +2,7 @@ src="libXfixes-6.0.2"
 
 pkg_download()
 {
-    curl -fL --retry 3 --retry-delay 2 -o libXfixes-6.0.2.tar.xz https://www.x.org/pub/individual/lib/libXfixes-6.0.2.tar.xz
+    fetch_source libXfixes-6.0.2.tar.xz || exit 1
     tar -xf libXfixes-6.0.2.tar.xz
 }
 

@@ -1,0 +1,2 @@
+# tried in order, the first one that works wins
+https://security.ubuntu.com/ubuntu/pool/main/x/xwayland/xwayland_${PKG_VERSION}.orig.tar.xz

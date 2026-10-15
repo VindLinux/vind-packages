@@ -1,0 +1,2 @@
+# tried in order, the first one that works wins
+https://github.com/openjdk/jdk21u/archive/refs/tags/jdk-${PKG_VERSION}-ga.tar.gz

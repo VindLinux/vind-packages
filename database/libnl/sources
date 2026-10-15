@@ -1,0 +1,2 @@
+# tried in order, the first one that works wins
+https://github.com/thom311/libnl/releases/download/libnl${PKG_VERSION_UNDERSCORE}/libnl-${PKG_VERSION}.tar.gz

@@ -1,0 +1,2 @@
+# tried in order, the first one that works wins
+https://github.com/libusb/libusb/releases/download/v${PKG_VERSION}/libusb-${PKG_VERSION}.tar.bz2

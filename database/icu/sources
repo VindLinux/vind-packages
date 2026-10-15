@@ -1,0 +1,2 @@
+# tried in order, the first one that works wins
+https://github.com/unicode-org/icu/releases/download/release-${PKG_VERSION}/icu4c-${PKG_VERSION}-sources.tgz

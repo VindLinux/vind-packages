@@ -1,0 +1,2 @@
+# tried in order, the first one that works wins
+https://github.com/flatpak/flatpak/releases/download/${PKG_VERSION}/flatpak-${PKG_VERSION}.tar.xz

@@ -1,0 +1,2 @@
+# tried in order, the first one that works wins
+https://cmake.org/files/v${PKG_VERSION}/cmake-${PKG_VERSION}.tar.gz

@@ -1,0 +1,2 @@
+# tried in order, the first one that works wins
+https://github.com/mozilla/cbindgen/archive/v${PKG_VERSION}/cbindgen-${PKG_VERSION}.tar.gz

@@ -2,7 +2,7 @@ src="elfutils-0.193"
 
 pkg_download()
 {
-    curl -fL --retry 3 --retry-delay 2 -o elfutils-0.193.tar.bz2 https://sourceware.org/elfutils/ftp/0.193/elfutils-0.193.tar.bz2
+    fetch_source elfutils-0.193.tar.bz2 || exit 1
     tar -xf elfutils-0.193.tar.bz2
 }
 

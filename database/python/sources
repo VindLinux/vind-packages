@@ -1,0 +1,2 @@
+# tried in order, the first one that works wins
+https://www.python.org/ftp/python/${PKG_VERSION}/Python-${PKG_VERSION}.tar.xz

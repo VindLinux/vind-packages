@@ -1,0 +1,2 @@
+# tried in order, the first one that works wins
+https://github.com/libarchive/libarchive/releases/download/v${PKG_VERSION}/libarchive-${PKG_VERSION}.tar.xz

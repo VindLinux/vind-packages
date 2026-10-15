@@ -1,0 +1,2 @@
+# tried in order, the first one that works wins
+https://github.com/Cyan4973/xxHash/archive/refs/tags/v${PKG_VERSION}.tar.gz

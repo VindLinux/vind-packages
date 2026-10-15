@@ -1,0 +1,2 @@
+# tried in order, the first one that works wins
+http://www.fftw.org/fftw-${PKG_VERSION}.tar.gz

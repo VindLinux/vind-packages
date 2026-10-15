@@ -1,0 +1,2 @@
+# tried in order, the first one that works wins
+https://github.com/docbook/xslt10-stylesheets/releases/download/release/${PKG_VERSION}/docbook-xsl-${PKG_VERSION}.zip

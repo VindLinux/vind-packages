@@ -1,0 +1,2 @@
+# tried in order, the first one that works wins
+https://github.com/swaywm/swaybg/releases/download/v${PKG_VERSION}/swaybg-${PKG_VERSION}.tar.gz

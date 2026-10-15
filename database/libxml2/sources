@@ -1,0 +1,2 @@
+# tried in order, the first one that works wins
+https://download.gnome.org/sources/libxml2/${PKG_VERSION}/libxml2-${PKG_VERSION}.tar.xz

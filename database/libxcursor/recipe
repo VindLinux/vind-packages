@@ -2,7 +2,7 @@ src="libXcursor-1.2.3"
 
 pkg_download()
 {
-    curl -fL --retry 3 --retry-delay 2 -o libXcursor-1.2.3.tar.xz https://www.x.org/pub/individual/lib/libXcursor-1.2.3.tar.xz
+    fetch_source libXcursor-1.2.3.tar.xz || exit 1
     tar -xf libXcursor-1.2.3.tar.xz
 }
 

@@ -4,8 +4,7 @@ tarball="unzip${ver}.tar.gz"
 
 pkg_download()
 {
-    curl -fL --retry 3 --retry-delay 2 -o "$tarball" \
-        "https://downloads.sourceforge.net/project/infozip/UnZip%206.x%20%28latest%29/UnZip%20${PKG_VERSION}/$tarball" || exit 1
+    fetch_source "$tarball" || exit 1
     tar -xf "$tarball" || exit 1
 }
 

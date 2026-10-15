@@ -1,0 +1,2 @@
+# tried in order, the first one that works wins
+https://github.com/PCRE2Project/pcre2/releases/download/pcre2-${PKG_VERSION}/pcre2-${PKG_VERSION}.tar.gz

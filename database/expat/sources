@@ -1,0 +1,2 @@
+# tried in order, the first one that works wins
+https://github.com/libexpat/libexpat/releases/download/R_${PKG_VERSION}/expat-${PKG_VERSION}.tar.xz

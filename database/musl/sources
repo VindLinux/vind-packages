@@ -1,0 +1,2 @@
+# tried in order, the first one that works wins
+https://musl.libc.org/releases/musl-${PKG_VERSION}.tar.gz

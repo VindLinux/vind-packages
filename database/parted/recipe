@@ -2,7 +2,7 @@ src="parted-3.7"
 
 pkg_download()
 {
-    curl -fL --retry 3 --retry-delay 2 -o parted-3.7.tar.xz https://ftp.gnu.org/gnu/parted/parted-3.7.tar.xz
+    fetch_source parted-3.7.tar.xz || exit 1
     tar -xf parted-3.7.tar.xz
 }
 

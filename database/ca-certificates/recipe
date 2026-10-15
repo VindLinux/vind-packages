@@ -1,7 +1,6 @@
 pkg_download()
 {
-    curl -fL --retry 3 --retry-delay 2 -o cacert.pem \
-        https://curl.se/ca/cacert.pem || exit 1
+    fetch_source cacert.pem || exit 1
     curl -fL --retry 3 --retry-delay 2 -o cacert.pem.sha256 \
         https://curl.se/ca/cacert.pem.sha256 || exit 1
     sha256sum -c cacert.pem.sha256

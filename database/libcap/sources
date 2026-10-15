@@ -1,0 +1,2 @@
+# tried in order, the first one that works wins
+https://mirrors.edge.kernel.org/pub/linux/libs/security/linux-privs/libcap2/libcap-${PKG_VERSION}.tar.xz

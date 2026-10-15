@@ -3,8 +3,7 @@ tarball="$src.tar.xz"
 
 pkg_download()
 {
-    curl -fL --retry 3 --retry-delay 2 -o "$tarball" \
-        "https://www.kernel.org/pub/linux/network/wireless/$tarball" || exit 1
+    fetch_source "$tarball" || exit 1
     tar -xf "$tarball" || exit 1
 }
 

@@ -2,7 +2,7 @@ src="wayland-protocols-1.49"
 
 pkg_download()
 {
-    curl -fL --retry 3 --retry-delay 2 -o wayland-protocols-1.49.tar.xz https://gitlab.freedesktop.org/wayland/wayland-protocols/-/releases/1.49/downloads/wayland-protocols-1.49.tar.xz
+    fetch_source wayland-protocols-1.49.tar.xz || exit 1
     tar -xf wayland-protocols-1.49.tar.xz
 }
 

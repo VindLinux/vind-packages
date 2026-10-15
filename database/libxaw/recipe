@@ -2,7 +2,7 @@ src="libXaw-1.0.16"
 
 pkg_download()
 {
-    curl -fL --retry 3 --retry-delay 2 -o libXaw-1.0.16.tar.xz https://www.x.org/pub/individual/lib/libXaw-1.0.16.tar.xz
+    fetch_source libXaw-1.0.16.tar.xz || exit 1
     tar -xf libXaw-1.0.16.tar.xz
 }
 

@@ -1,0 +1,2 @@
+# tried in order, the first one that works wins
+https://libbsd.freedesktop.org/releases/libbsd-${PKG_VERSION}.tar.xz

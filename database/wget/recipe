@@ -2,7 +2,7 @@ src="wget-1.25.0"
 
 pkg_download()
 {
-    curl -fL --retry 3 --retry-delay 2 -o wget-1.25.0.tar.gz https://ftp.gnu.org/gnu/wget/wget-1.25.0.tar.gz
+    fetch_source wget-1.25.0.tar.gz || exit 1
     tar -xf wget-1.25.0.tar.gz
 }
 

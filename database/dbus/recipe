@@ -2,7 +2,7 @@ src="dbus-$PKG_VERSION"
 
 pkg_download()
 {
-    curl -fL --retry 3 --retry-delay 2 -o "dbus-$PKG_VERSION.tar.xz" "https://dbus.freedesktop.org/releases/dbus/dbus-$PKG_VERSION.tar.xz"
+    fetch_source "dbus-$PKG_VERSION.tar.xz" || exit 1
     tar -xf "dbus-$PKG_VERSION.tar.xz"
 }
 

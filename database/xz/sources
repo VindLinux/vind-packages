@@ -1,0 +1,2 @@
+# tried in order, the first one that works wins
+https://github.com/tukaani-project/xz/releases/download/v${PKG_VERSION}/xz-${PKG_VERSION}.tar.gz

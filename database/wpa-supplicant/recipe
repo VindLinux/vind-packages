@@ -2,7 +2,7 @@ src="wpa_supplicant-2.11"
 
 pkg_download()
 {
-    curl -fL --retry 3 --retry-delay 2 -o wpa_supplicant-2.11.tar.gz https://w1.fi/releases/wpa_supplicant-2.11.tar.gz
+    fetch_source wpa_supplicant-2.11.tar.gz || exit 1
     tar -xf wpa_supplicant-2.11.tar.gz
 }
 

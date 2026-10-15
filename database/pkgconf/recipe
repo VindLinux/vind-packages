@@ -2,7 +2,7 @@ src="pkgconf-2.5.1"
 
 pkg_download()
 {
-    curl -fL --retry 3 --retry-delay 2 -o pkgconf-2.5.1.tar.xz https://distfiles.ariadne.space/pkgconf/pkgconf-2.5.1.tar.xz
+    fetch_source pkgconf-2.5.1.tar.xz || exit 1
     tar -xf pkgconf-2.5.1.tar.xz
 }
 

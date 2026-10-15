@@ -1,0 +1,2 @@
+# tried in order, the first one that works wins
+https://dri.freedesktop.org/libdrm/libdrm-${PKG_VERSION}.tar.xz

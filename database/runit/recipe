@@ -2,7 +2,7 @@ src="admin/runit-2.3.1"
 
 pkg_download()
 {
-    curl -fL --retry 3 --retry-delay 2 -o runit-2.3.1.tar.gz https://smarden.org/runit/runit-2.3.1.tar.gz
+    fetch_source runit-2.3.1.tar.gz || exit 1
     tar -xf runit-2.3.1.tar.gz
 }
 

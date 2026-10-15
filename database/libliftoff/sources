@@ -1,0 +1,2 @@
+# tried in order, the first one that works wins
+https://gitlab.freedesktop.org/emersion/libliftoff/-/archive/v${PKG_VERSION}/libliftoff-v${PKG_VERSION}.tar.gz

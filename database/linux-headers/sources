@@ -1,0 +1,2 @@
+# tried in order, the first one that works wins
+https://cdn.kernel.org/pub/linux/kernel/v${PKG_VERSION}.x/linux-${PKG_VERSION}.tar.xz

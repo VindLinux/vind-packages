@@ -2,7 +2,7 @@ src="popt-1.19"
 
 pkg_download()
 {
-    curl -fL --retry 3 --retry-delay 2 -o popt-1.19.tar.gz https://ftp.osuosl.org/pub/rpm/popt/releases/popt-1.x/popt-1.19.tar.gz
+    fetch_source popt-1.19.tar.gz || exit 1
     tar -xf popt-1.19.tar.gz
 }
 

@@ -3,8 +3,7 @@ tarball="xwayland_${PKG_VERSION}.orig.tar.xz"
 
 pkg_download()
 {
-    curl -fL --retry 3 --retry-delay 2 -o "$tarball" \
-        "https://security.ubuntu.com/ubuntu/pool/main/x/xwayland/$tarball" || exit 1
+    fetch_source "$tarball" || exit 1
     tar -xf "$tarball" || exit 1
 }
 

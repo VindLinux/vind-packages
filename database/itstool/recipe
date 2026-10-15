@@ -5,8 +5,7 @@ patchfile="itstool-2.0.7-switch-to-lxml.patch.xz"
 
 pkg_download()
 {
-    curl -fL --retry 3 --retry-delay 2 -o "$tarball" \
-        "https://github.com/itstool/itstool/archive/$commit.tar.gz" || exit 1
+    fetch_source "$tarball" || exit 1
     curl -fL --retry 3 --retry-delay 2 -o "$patchfile" \
         "https://dev.gentoo.org/~sam/distfiles/dev-util/itstool/$patchfile" || exit 1
 

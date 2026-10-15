@@ -1,0 +1,2 @@
+# tried in order, the first one that works wins
+https://github.com/jqlang/jq/releases/download/jq-${PKG_VERSION}/jq-${PKG_VERSION}.tar.gz

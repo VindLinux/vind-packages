@@ -2,7 +2,7 @@ src="psmisc-23.7"
 
 pkg_download()
 {
-    curl -fL --retry 3 --retry-delay 2 -o psmisc-23.7.tar.xz https://sourceforge.net/projects/psmisc/files/psmisc/psmisc-23.7.tar.xz
+    fetch_source psmisc-23.7.tar.xz || exit 1
     tar -xf psmisc-23.7.tar.xz
 }
 

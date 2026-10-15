@@ -2,7 +2,7 @@ src="libffi-3.5.2"
 
 pkg_download()
 {
-    curl -fL --retry 3 --retry-delay 2 -o libffi-3.5.2.tar.gz https://github.com/libffi/libffi/releases/download/v3.5.2/libffi-3.5.2.tar.gz
+    fetch_source libffi-3.5.2.tar.gz || exit 1
     tar -xf libffi-3.5.2.tar.gz
 }
 

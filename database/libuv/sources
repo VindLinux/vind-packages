@@ -1,0 +1,2 @@
+# tried in order, the first one that works wins
+https://dist.libuv.org/dist/v${PKG_VERSION}/libuv-v${PKG_VERSION}.tar.gz

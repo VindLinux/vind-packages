@@ -1,0 +1,2 @@
+# tried in order, the first one that works wins
+https://download.savannah.gnu.org/releases/attr/attr-${PKG_VERSION}.tar.xz

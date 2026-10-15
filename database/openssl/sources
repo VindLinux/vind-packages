@@ -1,0 +1,2 @@
+# tried in order, the first one that works wins
+https://github.com/openssl/openssl/releases/download/openssl-${PKG_VERSION}/openssl-${PKG_VERSION}.tar.gz

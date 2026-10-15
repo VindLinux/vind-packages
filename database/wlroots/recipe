@@ -2,7 +2,7 @@ src="wlroots-0.20.1"
 
 pkg_download()
 {
-    curl -fL --retry 3 --retry-delay 2 -o wlroots-0.20.1.tar.gz https://gitlab.freedesktop.org/wlroots/wlroots/-/releases/0.20.1/downloads/wlroots-0.20.1.tar.gz
+    fetch_source wlroots-0.20.1.tar.gz || exit 1
     tar -xf wlroots-0.20.1.tar.gz
 }
 

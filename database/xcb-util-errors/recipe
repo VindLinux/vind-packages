@@ -2,7 +2,7 @@ src="xcb-util-errors-1.0.1"
 
 pkg_download()
 {
-    curl -fL --retry 3 --retry-delay 2 -o xcb-util-errors-1.0.1.tar.xz https://xcb.freedesktop.org/dist/xcb-util-errors-1.0.1.tar.xz
+    fetch_source xcb-util-errors-1.0.1.tar.xz || exit 1
     tar -xf xcb-util-errors-1.0.1.tar.xz
 }
 

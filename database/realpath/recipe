@@ -2,7 +2,7 @@ src="coreutils-9.7"
 
 pkg_download()
 {
-    curl -fL --retry 3 --retry-delay 2 -o coreutils-9.7.tar.xz https://ftp.gnu.org/gnu/coreutils/coreutils-9.7.tar.xz
+    fetch_source coreutils-9.7.tar.xz || exit 1
     tar -xf coreutils-9.7.tar.xz
 }
 

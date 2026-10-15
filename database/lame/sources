@@ -1,0 +1,2 @@
+# tried in order, the first one that works wins
+https://downloads.sourceforge.net/lame/lame-${PKG_VERSION}.tar.gz

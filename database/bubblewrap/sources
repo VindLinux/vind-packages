@@ -1,0 +1,2 @@
+# tried in order, the first one that works wins
+https://github.com/containers/bubblewrap/releases/download/v${PKG_VERSION}/bubblewrap-${PKG_VERSION}.tar.xz

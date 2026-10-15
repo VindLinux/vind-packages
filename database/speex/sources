@@ -1,0 +1,2 @@
+# tried in order, the first one that works wins
+https://downloads.xiph.org/releases/speex/speex-${PKG_VERSION}.tar.gz

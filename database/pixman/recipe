@@ -2,7 +2,7 @@ src="pixman-0.46.4"
 
 pkg_download()
 {
-    curl -fL --retry 3 --retry-delay 2 -o pixman-0.46.4.tar.gz https://www.cairographics.org/releases/pixman-0.46.4.tar.gz
+    fetch_source pixman-0.46.4.tar.gz || exit 1
     tar -xf pixman-0.46.4.tar.gz
 }
 

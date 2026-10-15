@@ -1,0 +1,2 @@
+# tried in order, the first one that works wins
+https://github.com/htop-dev/htop/releases/download/${PKG_VERSION}/htop-${PKG_VERSION}.tar.xz

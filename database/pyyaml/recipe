@@ -2,7 +2,7 @@ src="pyyaml-6.0.3"
 
 pkg_download()
 {
-    curl -fL --retry 3 --retry-delay 2 -o pyyaml-6.0.3.tar.gz https://files.pythonhosted.org/packages/source/P/PyYAML/pyyaml-6.0.3.tar.gz
+    fetch_source pyyaml-6.0.3.tar.gz || exit 1
     tar -xf pyyaml-6.0.3.tar.gz
 }
 

@@ -2,7 +2,7 @@ src="libfontenc-1.1.9"
 
 pkg_download()
 {
-    curl -fL --retry 3 --retry-delay 2 -o libfontenc-1.1.9.tar.xz https://www.x.org/pub/individual/lib/libfontenc-1.1.9.tar.xz
+    fetch_source libfontenc-1.1.9.tar.xz || exit 1
     tar -xf libfontenc-1.1.9.tar.xz
 }
 

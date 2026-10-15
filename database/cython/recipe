@@ -2,7 +2,7 @@ src="cython-$PKG_VERSION"
 
 pkg_download()
 {
-    curl -fL --retry 3 --retry-delay 2 -o "cython-$PKG_VERSION.tar.gz" "https://github.com/cython/cython/releases/download/$PKG_VERSION/cython-$PKG_VERSION.tar.gz"
+    fetch_source "cython-$PKG_VERSION.tar.gz" || exit 1
     tar -xf "cython-$PKG_VERSION.tar.gz"
 }
 

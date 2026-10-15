@@ -1,0 +1,2 @@
+# tried in order, the first one that works wins
+https://www.cairographics.org/releases/pixman-${PKG_VERSION}.tar.gz

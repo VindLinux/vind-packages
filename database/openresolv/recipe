@@ -2,7 +2,7 @@ src="openresolv-3.13.4"
 
 pkg_download()
 {
-    curl -fL --retry 3 --retry-delay 2 -o openresolv-3.13.4.tar.xz https://roy.marples.name/downloads/openresolv/openresolv-3.13.4.tar.xz
+    fetch_source openresolv-3.13.4.tar.xz || exit 1
     tar -xf openresolv-3.13.4.tar.xz
 }
 

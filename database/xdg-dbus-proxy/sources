@@ -1,0 +1,2 @@
+# tried in order, the first one that works wins
+https://github.com/flatpak/xdg-dbus-proxy/releases/download/${PKG_VERSION}/xdg-dbus-proxy-${PKG_VERSION}.tar.xz

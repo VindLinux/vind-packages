@@ -1,0 +1,3 @@
+# tried in order, the first one that works wins
+https://ftp.gnu.org/gnu/m4/m4-${PKG_VERSION}.tar.xz
+https://mirrors.kernel.org/gnu/m4/m4-${PKG_VERSION}.tar.xz

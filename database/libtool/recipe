@@ -2,7 +2,7 @@ src="libtool-2.5.4"
 
 pkg_download()
 {
-    curl -fL --retry 3 --retry-delay 2 -o libtool-2.5.4.tar.xz https://ftp.gnu.org/gnu/libtool/libtool-2.5.4.tar.xz
+    fetch_source libtool-2.5.4.tar.xz || exit 1
     tar -xf libtool-2.5.4.tar.xz
 }
 

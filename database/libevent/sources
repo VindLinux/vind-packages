@@ -1,0 +1,2 @@
+# tried in order, the first one that works wins
+https://github.com/libevent/libevent/releases/download/release-${PKG_VERSION}-stable/libevent-${PKG_VERSION}-stable.tar.gz

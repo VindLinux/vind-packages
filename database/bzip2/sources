@@ -1,0 +1,2 @@
+# tried in order, the first one that works wins
+https://sourceware.org/pub/bzip2/bzip2-${PKG_VERSION}.tar.gz

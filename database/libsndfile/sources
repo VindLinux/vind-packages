@@ -1,0 +1,2 @@
+# tried in order, the first one that works wins
+https://github.com/libsndfile/libsndfile/releases/download/${PKG_VERSION}/libsndfile-${PKG_VERSION}.tar.xz

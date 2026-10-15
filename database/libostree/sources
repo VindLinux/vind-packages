@@ -1,0 +1,2 @@
+# tried in order, the first one that works wins
+https://github.com/ostreedev/ostree/releases/download/v${PKG_VERSION}/libostree-${PKG_VERSION}.tar.xz

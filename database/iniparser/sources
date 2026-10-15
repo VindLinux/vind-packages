@@ -1,0 +1,2 @@
+# tried in order, the first one that works wins
+https://gitlab.com/iniparser/iniparser/-/archive/v${PKG_VERSION}/iniparser-v${PKG_VERSION}.tar.gz

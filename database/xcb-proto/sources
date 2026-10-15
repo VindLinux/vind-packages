@@ -1,0 +1,2 @@
+# tried in order, the first one that works wins
+https://xorg.freedesktop.org/archive/individual/proto/xcb-proto-${PKG_VERSION}.tar.xz
