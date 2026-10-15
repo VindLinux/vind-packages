@@ -1,0 +1,80 @@
+src="jdk21u-jdk-${PKG_VERSION}-ga"
+tarball="jdk-${PKG_VERSION}-ga.tar.gz"
+
+pkg_download()
+{
+    curl -fL --retry 3 --retry-delay 2 -o "$tarball" \
+        "https://github.com/openjdk/jdk21u/archive/refs/tags/$tarball" || exit 1
+    tar -xf "$tarball" || exit 1
+}
+
+pkg_build()
+{
+    cd "$src" || exit 1
+
+    # JDK de bootstrap (20 ou 21); pode ser trocado com BOOT_JDK=/caminho
+    boot="${BOOT_JDK:-$PREFIX/lib/jvm/bootstrap}"
+
+    set -- --prefix="$PREFIX" \
+        --with-boot-jdk="$boot" \
+        --with-debug-level=release \
+        --with-native-debug-symbols=none \
+        --with-version-pre= \
+        --with-version-opt= \
+        --disable-warnings-as-errors \
+        --with-freetype=system \
+        --with-freetype-include="$PREFIX/include/freetype2" \
+        --with-freetype-lib="$PREFIX/lib" \
+        --with-fontconfig="$PREFIX" \
+        --with-alsa="$PREFIX" \
+        --with-extra-cflags="-I$PREFIX/include" \
+        --with-extra-cxxflags="-I$PREFIX/include" \
+        --with-extra-ldflags="-L$PREFIX/lib"
+
+    if attr_on x11; then
+        set -- "$@" --x-includes="$PREFIX/include" --x-libraries="$PREFIX/lib" \
+            --with-cups="$PREFIX"
+    else
+        set -- "$@" --enable-headless-only
+    fi
+
+    # giflib e harfbuzz continuam embutidos
+    if attr_on syslibs; then
+        set -- "$@" --with-zlib=system --with-libpng=system \
+            --with-libjpeg=system --with-lcms=system
+    fi
+
+    if attr_on zero; then
+        set -- "$@" --with-jvm-variants=zero --with-libffi="$PREFIX"
+    fi
+
+    if attr_on docs; then
+        set -- "$@" --enable-full-docs
+    else
+        set -- "$@" --disable-full-docs
+    fi
+
+    # o configure do JDK ignora variaveis de ambiente, so aceita pela linha de comando
+    bash ./configure "$@" || exit 1
+
+    make images $MAKEOPTS || exit 1
+}
+
+pkg_install()
+{
+    cd "$src" || exit 1
+
+    img=$(echo build/*/images/jdk)
+    [ -d "$img" ] || exit 1
+
+    jvm="$PREFIX/lib/jvm/openjdk-${PKG_VERSION}"
+    mkdir -p "$DESTDIR$jvm" "$DESTDIR$PREFIX/bin" || exit 1
+    cp -a "$img/." "$DESTDIR$jvm/" || exit 1
+
+    ln -sfn "openjdk-${PKG_VERSION}" "$DESTDIR$PREFIX/lib/jvm/openjdk" || exit 1
+
+    for f in "$img"/bin/*; do
+        n="${f##*/}"
+        ln -sf "../lib/jvm/openjdk/bin/$n" "$DESTDIR$PREFIX/bin/$n" || exit 1
+    done
+}

@@ -1,0 +1,1 @@
+X server that runs as a Wayland client, providing X11 compatibility so legacy X applications can run on Wayland compositors.

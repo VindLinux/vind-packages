@@ -1,0 +1,88 @@
+src="xwayland-${PKG_VERSION}"
+tarball="xwayland_${PKG_VERSION}.orig.tar.xz"
+
+pkg_download()
+{
+    curl -fL --retry 3 --retry-delay 2 -o "$tarball" \
+        "https://security.ubuntu.com/ubuntu/pool/main/x/xwayland/$tarball" || exit 1
+    tar -xf "$tarball" || exit 1
+}
+
+# opt <atributo> <opcao-meson>: true se o atributo estiver ligado, senao false
+opt()
+{
+    if attr_on "$1"; then
+        mopts="$mopts -D$2=true"
+    else
+        mopts="$mopts -D$2=false"
+    fi
+}
+
+pkg_build()
+{
+    cd "$src" || exit 1
+
+    mopts=""
+
+    opt glamor      glamor
+    opt xvfb        xvfb
+    opt glx         glx
+    opt xdmcp       xdmcp
+    opt xdm-auth    xdm-auth-1
+    opt secure-rpc  secure-rpc
+    opt tcp         listen_tcp
+    opt ipv6        ipv6
+    opt dri3        dri3
+    opt drm         drm
+    opt libdecor    libdecor
+    opt libunwind   libunwind
+    opt mitshm      mitshm
+    opt xselinux    xselinux
+    opt dpms        dpms
+    opt xf86bigfont xf86bigfont
+    opt screensaver screensaver
+    opt xres        xres
+    opt xace        xace
+    opt xinerama    xinerama
+    opt xcsecurity  xcsecurity
+    opt xv          xv
+
+    if attr_on ei; then
+        mopts="$mopts -Dxwayland_ei=auto"
+    else
+        mopts="$mopts -Dxwayland_ei=false"
+    fi
+
+    if attr_on docs; then
+        mopts="$mopts -Ddocs=true -Ddevel-docs=true -Ddocs-pdf=false"
+    else
+        mopts="$mopts -Ddocs=false -Ddevel-docs=false -Ddocs-pdf=false"
+    fi
+
+    # implementacao de SHA1: so uma vale; sem nenhuma, o meson escolhe sozinho
+    if attr_on libmd; then
+        mopts="$mopts -Dsha1=libmd"
+    elif attr_on gcrypt; then
+        mopts="$mopts -Dsha1=libgcrypt"
+    elif attr_on openssl; then
+        mopts="$mopts -Dsha1=libcrypto"
+    fi
+
+    # sem systemd no sistema
+    mopts="$mopts -Dsystemd_notify=false"
+
+    PKG_CONFIG_PATH="$PREFIX/lib/pkgconfig:$PREFIX/share/pkgconfig${PKG_CONFIG_PATH:+:$PKG_CONFIG_PATH}" \
+    CPPFLAGS="-I$PREFIX/include" \
+    LDFLAGS="-L$PREFIX/lib" \
+    LD_LIBRARY_PATH="$PREFIX/lib${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}" \
+    meson setup build --prefix="$PREFIX" --libdir=lib --buildtype=release \
+        $mopts || exit 1
+
+    ninja -C build $MAKEOPTS || exit 1
+}
+
+pkg_install()
+{
+    cd "$src" || exit 1
+    DESTDIR="$DESTDIR" meson install -C build || exit 1
+}
