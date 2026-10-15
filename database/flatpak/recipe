@@ -12,14 +12,9 @@ pkg_build()
 {
     cd "$src" || exit 1
 
-    # bubblewrap e xdg-dbus-proxy ja existem no database: usa os do sistema
-    # em vez de compilar os subprojects embutidos
     bwrap=$(command -v bwrap) || { echo "bwrap nao encontrado (instale bubblewrap)" >&2; exit 1; }
     dbusproxy=$(command -v xdg-dbus-proxy) || { echo "xdg-dbus-proxy nao encontrado" >&2; exit 1; }
 
-    # desligados, cada um puxaria uma sub-arvore: dconf, systemd, malcontent,
-    #   gir, gtk-doc, man, docbook, selinux, testes
-    # ligados: seccomp, xauth (obrigatorios por padrao) e zstd
     set -- --prefix="$PREFIX" --libdir=lib --sysconfdir=/etc --localstatedir=/var \
         --buildtype=release \
         -Dsystem_bubblewrap="$bwrap" -Dsystem_dbus_proxy="$dbusproxy" \

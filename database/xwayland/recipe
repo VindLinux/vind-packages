@@ -8,7 +8,6 @@ pkg_download()
     tar -xf "$tarball" || exit 1
 }
 
-# opt <atributo> <opcao-meson>: true se o atributo estiver ligado, senao false
 opt()
 {
     if attr_on "$1"; then
@@ -59,7 +58,6 @@ pkg_build()
         mopts="$mopts -Ddocs=false -Ddevel-docs=false -Ddocs-pdf=false"
     fi
 
-    # implementacao de SHA1: so uma vale; sem nenhuma, o meson escolhe sozinho
     if attr_on libmd; then
         mopts="$mopts -Dsha1=libmd"
     elif attr_on gcrypt; then
@@ -68,7 +66,6 @@ pkg_build()
         mopts="$mopts -Dsha1=libcrypto"
     fi
 
-    # sem systemd no sistema
     mopts="$mopts -Dsystemd_notify=false"
 
     PKG_CONFIG_PATH="$PREFIX/lib/pkgconfig:$PREFIX/share/pkgconfig${PKG_CONFIG_PATH:+:$PKG_CONFIG_PATH}" \

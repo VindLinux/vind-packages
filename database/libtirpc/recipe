@@ -14,7 +14,6 @@ pkg_build()
 
     set -- --prefix="$PREFIX"
 
-    # gssapi, ipv6 e symvers vem ligados por padrao no upstream
     if ! attr_on gssapi; then
         set -- "$@" --disable-gssapi
     fi

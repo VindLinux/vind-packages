@@ -12,10 +12,6 @@ pkg_build()
 {
     cd "$src" || exit 1
 
-    # BUILD_TYPE=None: nao acrescenta -O3/-DNDEBUG por cima do CFLAGS do make.conf
-    # ENABLE_PORTABLE_TARGET=ON: sem otimizacao por CPU (-march=native), respeita o make.conf
-    # ENABLE_LIBCLANG=OFF: evita ligar o llvm e colocar libclang no libfyaml.pc
-    # ENABLE_PYTHON_BINDINGS=OFF e BUILD_TESTING=OFF: sem extensao Python nem testes
     cmake -G Ninja -S . -B build \
         -D CMAKE_INSTALL_PREFIX="$PREFIX" \
         -D CMAKE_INSTALL_LIBDIR=lib \

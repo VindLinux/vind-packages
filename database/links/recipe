@@ -14,8 +14,6 @@ pkg_build()
 
     set -- --prefix="$PREFIX"
 
-    # drivers graficos de outros sistemas ficam de fora; svgalib e directfb
-    # so seriam usados se estivessem instalados por acaso
     set -- "$@" --without-svgalib --without-directfb
 
     if attr_on graphics; then

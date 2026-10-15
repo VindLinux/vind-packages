@@ -12,8 +12,6 @@ pkg_build()
 {
     cd "$src" || exit 1
 
-    # glycin desligado: se fosse encontrado, ele desativaria os loaders png/jpeg/tiff
-    # introspection, docs, man, tests e thumbnailer desligados: cada um puxaria uma sub-arvore
     set -- --prefix="$PREFIX" --libdir=lib --buildtype=release \
         -Dpng=enabled -Dgif=enabled -Dglycin=disabled -Dandroid=disabled \
         -Dothers=disabled -Dintrospection=disabled \

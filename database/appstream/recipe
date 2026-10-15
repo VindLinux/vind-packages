@@ -12,9 +12,6 @@ pkg_build()
 {
     cd "$src" || exit 1
 
-    # so a biblioteca e o appstreamcli. Desligados porque cada um puxaria uma sub-arvore:
-    #   compose (cairo, pango, vips, freetype, fontconfig, blake3), gir, vapi, qt,
-    #   stemming (libstemmer), systemd, bash-completion, docs/apidocs/man
     set -- --prefix="$PREFIX" --libdir=lib --sysconfdir=/etc --localstatedir=/var \
         --buildtype=release \
         -Dtools=true -Dzstd-support=true -Dblake3-support=false \

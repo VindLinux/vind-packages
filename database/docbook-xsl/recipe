@@ -10,7 +10,6 @@ pkg_download()
 
 pkg_build()
 {
-    # o Makefile do upstream so tem alvos de teste, nada a compilar
     :
 }
 
@@ -28,7 +27,6 @@ pkg_install()
 
     install -d -m755 "$DESTDIR$xsldir" "$DESTDIR$docdir" "$DESTDIR$xmletc" || exit 1
 
-    # VERSION.xsl ja vem no tarball, entao e copiado (sem symlink)
     cp -R VERSION VERSION.xsl catalog.xml \
         assembly common eclipse epub epub3 extensions fo highlighting \
         html htmlhelp images javahelp lib manpages params profiling \
@@ -42,7 +40,6 @@ pkg_install()
     install -m644 README "$DESTDIR$docdir/README.txt" || exit 1
     install -m644 RELEASE-NOTES* NEWS* "$DESTDIR$docdir/" || exit 1
 
-    # catalogo mestre: /etc/xml/catalog (compartilhado com o docbook-xml)
     if [ -f "$PREFIX/etc/xml/catalog" ]; then
         cp -f "$PREFIX/etc/xml/catalog" "$master" || exit 1
     else

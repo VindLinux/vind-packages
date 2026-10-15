@@ -1,4 +1,3 @@
-# 6.0 -> 60 (o tarball e o diretorio se chamam unzip60)
 ver="$(printf '%s' "$PKG_VERSION" | tr -d .)"
 src="unzip${ver}"
 tarball="unzip${ver}.tar.gz"
@@ -14,7 +13,6 @@ pkg_build()
 {
     cd "$src" || exit 1
 
-    # NO_LCHMOD: lchmod nao existe no Linux/musl
     defs="-DACORN_FTYPE_NFS -DWILD_STOP_AT_DIR -DLARGE_FILE_SUPPORT -DNO_LCHMOD -DNOMEMCPY"
     bz2_def=""
     bz2_lib=""
@@ -43,7 +41,6 @@ pkg_install()
 {
     cd "$src" || exit 1
 
-    # o Makefile do unzip nao tem DESTDIR: o destino vai dentro do prefix
     mkdir -p "$DESTDIR$PREFIX/bin" "$DESTDIR$PREFIX/share/man/man1" || exit 1
 
     make -f unix/Makefile \

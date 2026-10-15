@@ -18,7 +18,6 @@ pkg_build()
         set -- "$@" --disable-backtrace
     fi
 
-    # a documentacao e ligada por padrao no upstream, mas exige sphinx
     if ! attr_on docs; then
         set -- "$@" --disable-documentation
     fi
@@ -53,7 +52,6 @@ pkg_build()
         set -- "$@" --disable-python
     fi
 
-    # provedor de cripto: so um vale; se varios estiverem ligados, vence o primeiro
     if attr_on gcrypt; then
         crypto=libgcrypt
     elif attr_on sodium; then

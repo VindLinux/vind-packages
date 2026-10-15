@@ -12,9 +12,6 @@ pkg_build()
 {
     cd "$src" || exit 1
 
-    # useroot=false: o script de instalacao tentaria chown/setuid dentro do DESTDIR
-    # initscriptdir vazio: nao instala script de init
-    # io_uring desligado: exigiria liburing e numa
     set -- --prefix="$PREFIX" --libdir=lib --sysconfdir=/etc --buildtype=release \
         -Dutils=true -Dexamples=false -Dtests=false \
         -Duseroot=false -Dinitscriptdir= -Denable-io-uring=false
@@ -31,6 +28,5 @@ pkg_install()
     cd "$src" || exit 1
     DESTDIR="$DESTDIR" meson install -C build || exit 1
 
-    # o fusermount3 precisa ser setuid para montar sem root
     chmod u+s "$DESTDIR$PREFIX/bin/fusermount3" || exit 1
 }

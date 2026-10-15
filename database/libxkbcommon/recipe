@@ -27,7 +27,6 @@ pkg_build()
         set -- "$@" -Denable-x11=false
     fi
 
-    # wayland exige tools
     if attr_on wayland && attr_on tools; then
         set -- "$@" -Denable-wayland=true
     else

@@ -12,9 +12,6 @@ pkg_build()
 {
     cd "$src" || exit 1
 
-    # curl no lugar do libsoup (que e o padrao do configure)
-    # desligados, cada um puxaria uma sub-arvore: composefs, libsodium, selinux, avahi,
-    #   libsystemd, introspection, gtk-doc, man
     set -- --prefix="$PREFIX" --libdir="$PREFIX/lib" --sysconfdir=/etc --localstatedir=/var \
         --with-curl --without-soup --without-soup3 \
         --with-gpgme --with-libarchive --with-libmount \

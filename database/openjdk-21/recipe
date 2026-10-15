@@ -12,7 +12,6 @@ pkg_build()
 {
     cd "$src" || exit 1
 
-    # JDK de bootstrap (20 ou 21); pode ser trocado com BOOT_JDK=/caminho
     boot="${BOOT_JDK:-$PREFIX/lib/jvm/bootstrap}"
 
     set -- --prefix="$PREFIX" \
@@ -38,7 +37,6 @@ pkg_build()
         set -- "$@" --enable-headless-only
     fi
 
-    # giflib e harfbuzz continuam embutidos
     if attr_on syslibs; then
         set -- "$@" --with-zlib=system --with-libpng=system \
             --with-libjpeg=system --with-lcms=system
@@ -54,7 +52,6 @@ pkg_build()
         set -- "$@" --disable-full-docs
     fi
 
-    # o configure do JDK ignora variaveis de ambiente, so aceita pela linha de comando
     bash ./configure "$@" || exit 1
 
     make images $MAKEOPTS || exit 1

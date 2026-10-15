@@ -1,4 +1,3 @@
-# one dependency per line
 popt
 zlib
 gawk
