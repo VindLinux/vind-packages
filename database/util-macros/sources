@@ -1,2 +1,3 @@
 # tried in order, the first one that works wins
 https://www.x.org/pub/individual/util/util-macros-${PKG_VERSION}.tar.xz
+https://download.nus.edu.sg/mirror/gentoo/distfiles/7a/util-macros-${PKG_VERSION}.tar.xz
