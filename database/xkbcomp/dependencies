@@ -1,0 +1,7 @@
+meson
+ninja
+pkgconf
+xorgproto
+libx11
+libxkbfile
+xkeyboard-config

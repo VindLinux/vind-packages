@@ -1,0 +1,1 @@
+Library and cvt command-line tool that compute VESA CVT standard video mode timings, used by X servers such as Xorg and Xwayland.
