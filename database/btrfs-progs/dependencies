@@ -1,0 +1,16 @@
+pkgconf
+util-linux
+zlib
+linux-headers
+zstd?zstd
+lzo?lzo
+udev?eudev
+python?python
+convert?e2fsprogs
+reiserfs?reiserfsprogs
+docs?sphinx
+gcrypt?libgcrypt
+sodium?libsodium
+kcapi?libkcapi
+botan?botan
+openssl?openssl

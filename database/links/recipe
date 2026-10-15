@@ -1,0 +1,118 @@
+src="links-${PKG_VERSION}"
+tarball="$src.tar.gz"
+
+pkg_download()
+{
+    curl -fL --retry 3 --retry-delay 2 -o "$tarball" \
+        "https://links.twibright.com/download/$tarball" || exit 1
+    tar -xf "$tarball" || exit 1
+}
+
+pkg_build()
+{
+    cd "$src" || exit 1
+
+    set -- --prefix="$PREFIX"
+
+    # drivers graficos de outros sistemas ficam de fora; svgalib e directfb
+    # so seriam usados se estivessem instalados por acaso
+    set -- "$@" --without-svgalib --without-directfb
+
+    if attr_on graphics; then
+        set -- "$@" --enable-graphics
+    else
+        set -- "$@" --disable-graphics
+    fi
+
+    if attr_on x11; then
+        set -- "$@" --with-x
+    else
+        set -- "$@" --without-x
+    fi
+
+    if ! attr_on fb; then
+        set -- "$@" --without-fb
+    fi
+
+    if ! attr_on freetype; then
+        set -- "$@" --without-freetype
+    fi
+
+    if ! attr_on jpeg; then
+        set -- "$@" --without-libjpeg
+    fi
+
+    if ! attr_on tiff; then
+        set -- "$@" --without-libtiff
+    fi
+
+    if ! attr_on svg; then
+        set -- "$@" --without-librsvg
+    fi
+
+    if ! attr_on webp; then
+        set -- "$@" --without-libwebp
+    fi
+
+    if ! attr_on avif; then
+        set -- "$@" --without-libavif
+    fi
+
+    if ! attr_on ssl; then
+        set -- "$@" --without-ssl
+    fi
+
+    if ! attr_on zlib; then
+        set -- "$@" --without-zlib
+    fi
+
+    if ! attr_on brotli; then
+        set -- "$@" --without-brotli
+    fi
+
+    if ! attr_on zstd; then
+        set -- "$@" --without-zstd
+    fi
+
+    if ! attr_on bzip2; then
+        set -- "$@" --without-bzip2
+    fi
+
+    if ! attr_on lzma; then
+        set -- "$@" --without-lzma
+    fi
+
+    if ! attr_on lzip; then
+        set -- "$@" --without-lzip
+    fi
+
+    if ! attr_on libevent; then
+        set -- "$@" --without-libevent
+    fi
+
+    if ! attr_on gpm; then
+        set -- "$@" --without-gpm
+    fi
+
+    if ! attr_on ipv6; then
+        set -- "$@" --without-ipv6
+    fi
+
+    if ! attr_on utf8; then
+        set -- "$@" --disable-utf8
+    fi
+
+    PKG_CONFIG_PATH="$PREFIX/lib/pkgconfig:$PREFIX/share/pkgconfig${PKG_CONFIG_PATH:+:$PKG_CONFIG_PATH}" \
+    CPPFLAGS="-I$PREFIX/include" \
+    LDFLAGS="-L$PREFIX/lib" \
+    LD_LIBRARY_PATH="$PREFIX/lib${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}" \
+    ./configure "$@" || exit 1
+
+    make $MAKEOPTS
+}
+
+pkg_install()
+{
+    cd "$src" || exit 1
+    make DESTDIR="$DESTDIR" install
+}

@@ -1,0 +1,89 @@
+src="btrfs-progs-v${PKG_VERSION}"
+tarball="$src.tar.xz"
+
+pkg_download()
+{
+    curl -fL --retry 3 --retry-delay 2 -o "$tarball" \
+        "https://www.kernel.org/pub/linux/kernel/people/kdave/btrfs-progs/$tarball" || exit 1
+    tar -xf "$tarball" || exit 1
+}
+
+pkg_build()
+{
+    cd "$src" || exit 1
+
+    set -- --prefix="$PREFIX"
+
+    if ! attr_on backtrace; then
+        set -- "$@" --disable-backtrace
+    fi
+
+    # a documentacao e ligada por padrao no upstream, mas exige sphinx
+    if ! attr_on docs; then
+        set -- "$@" --disable-documentation
+    fi
+
+    if attr_on convert; then
+        if attr_on reiserfs; then
+            set -- "$@" --with-convert=ext2,reiserfs
+        else
+            set -- "$@" --with-convert=ext2
+        fi
+    else
+        set -- "$@" --disable-convert
+    fi
+
+    if ! attr_on zoned; then
+        set -- "$@" --disable-zoned
+    fi
+
+    if ! attr_on zstd; then
+        set -- "$@" --disable-zstd
+    fi
+
+    if ! attr_on lzo; then
+        set -- "$@" --disable-lzo
+    fi
+
+    if ! attr_on udev; then
+        set -- "$@" --disable-libudev
+    fi
+
+    if ! attr_on python; then
+        set -- "$@" --disable-python
+    fi
+
+    # provedor de cripto: so um vale; se varios estiverem ligados, vence o primeiro
+    if attr_on gcrypt; then
+        crypto=libgcrypt
+    elif attr_on sodium; then
+        crypto=libsodium
+    elif attr_on kcapi; then
+        crypto=libkcapi
+    elif attr_on botan; then
+        crypto=botan
+    elif attr_on openssl; then
+        crypto=openssl
+    else
+        crypto=builtin
+    fi
+    set -- "$@" --with-crypto="$crypto"
+
+    if attr_on experimental; then
+        set -- "$@" --enable-experimental
+    fi
+
+    PKG_CONFIG_PATH="$PREFIX/lib/pkgconfig:$PREFIX/share/pkgconfig${PKG_CONFIG_PATH:+:$PKG_CONFIG_PATH}" \
+    CPPFLAGS="-I$PREFIX/include" \
+    LDFLAGS="-L$PREFIX/lib" \
+    LD_LIBRARY_PATH="$PREFIX/lib${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}" \
+    ./configure "$@" || exit 1
+
+    make $MAKEOPTS
+}
+
+pkg_install()
+{
+    cd "$src" || exit 1
+    make DESTDIR="$DESTDIR" install
+}
