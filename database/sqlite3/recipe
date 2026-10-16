@@ -1,5 +1,4 @@
-year="2026"
-src="sqlite-autoconf-$(printf '%s' "$PKG_VERSION" | awk -F. '{printf "%d%02d%02d00", $1, $2, $3}')"
+src="sqlite-autoconf-${PKG_VERSION}"
 tarball="$src.tar.gz"
 
 pkg_download()
