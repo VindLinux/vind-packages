@@ -11,6 +11,13 @@ pkg_build()
 {
     cd "$src" || exit 1
 
+    sed -i \
+        -e 's|^\([[:space:]]*data\.num_local[[:space:]]*= 0;.*\)$|#ifdef HAVE_DNSSD\n\1\n#endif|' \
+        -e 's|^\([[:space:]]*data\.local_dests[[:space:]]*= NULL;.*\)$|#ifdef HAVE_DNSSD\n\1\n#endif|' \
+        -e 's|^\([[:space:]]*data\.num_local = cupsCopyDest.*\)$|#ifdef HAVE_DNSSD\n\1\n#endif|' \
+        -e 's|^\([[:space:]]*cupsFreeDests(data\.num_local, data\.local_dests);.*\)$|#ifdef HAVE_DNSSD\n\1\n#endif|' \
+        cups/dest.c || exit 1
+
     set -- --prefix="$PREFIX" --with-rcdir=no
 
     if ! attr_on daemon; then
