@@ -21,7 +21,8 @@ pkg_build()
         --with-version-opt= \
 		--with-toolchain-type=clang \
 		--disable-warnings-as-errors \
-        --with-freetype=system \
+		CXXFILT=/usr/bin/llvm-cxxfilt \
+		--with-freetype=system \
         --with-freetype-include="$PREFIX/include/freetype2" \
         --with-freetype-lib="$PREFIX/lib" \
         --with-fontconfig="$PREFIX" \
