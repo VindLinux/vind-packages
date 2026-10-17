@@ -19,7 +19,8 @@ pkg_build()
         --with-native-debug-symbols=none \
         --with-version-pre= \
         --with-version-opt= \
-        --disable-warnings-as-errors \
+		--with-toolchain-type=clang \
+		--disable-warnings-as-errors \
         --with-freetype=system \
         --with-freetype-include="$PREFIX/include/freetype2" \
         --with-freetype-lib="$PREFIX/lib" \
