@@ -1,0 +1,3 @@
+# tried in order, the first one that works wins
+https://www.gnupg.org/ftp/gcrypt/gnutls/v3.8/gnutls-${PKG_VERSION}.tar.xz
+https://www.mirrorservice.org/sites/ftp.gnupg.org/gcrypt/gnutls/v3.8/gnutls-${PKG_VERSION}.tar.xz

@@ -1,0 +1,5 @@
+meson
+ninja
+pkgconf
+audit?audit
+libcap?libcap

@@ -1,0 +1,12 @@
+pkgconf
+nettle
+gmp
+nls?gettext
+tasn1?libtasn1
+p11kit?p11-kit
+tpm2?tpm2-tss
+idn?libidn2
+unistring?libunistring
+zlib?zlib
+brotli?brotli
+zstd?zstd

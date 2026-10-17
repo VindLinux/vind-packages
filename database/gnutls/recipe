@@ -1,0 +1,104 @@
+src="gnutls-${PKG_VERSION}"
+tarball="$src.tar.xz"
+
+pkg_download()
+{
+    fetch_source "$tarball" || exit 1
+    tar -xf "$tarball" || exit 1
+}
+
+pkg_build()
+{
+    cd "$src" || exit 1
+
+    set -- --prefix="$PREFIX" --disable-tests --disable-maintainer-mode --without-tpm
+
+    if ! attr_on tools; then
+        set -- "$@" --disable-tools
+    fi
+
+    if ! attr_on cxx; then
+        set -- "$@" --disable-cxx
+    fi
+
+    if ! attr_on docs; then
+        set -- "$@" --disable-doc
+    fi
+
+    if ! attr_on dane; then
+        set -- "$@" --disable-libdane
+    fi
+
+    if ! attr_on nls; then
+        set -- "$@" --disable-nls
+    fi
+
+    if attr_on static; then
+        set -- "$@" --enable-static
+    fi
+
+    if attr_on openssl-compat; then
+        set -- "$@" --enable-openssl-compatibility
+    fi
+
+    if attr_on ktls; then
+        set -- "$@" --enable-ktls
+    fi
+
+    if attr_on srp; then
+        set -- "$@" --enable-srp-authentication
+    fi
+
+    if ! attr_on ocsp; then
+        set -- "$@" --disable-ocsp
+    fi
+
+    if ! attr_on p11kit; then
+        set -- "$@" --without-p11-kit
+    fi
+
+    if attr_on tpm2; then
+        set -- "$@" --with-tpm2=yes
+    else
+        set -- "$@" --without-tpm2
+    fi
+
+    if ! attr_on idn; then
+        set -- "$@" --without-idn
+    fi
+
+    if ! attr_on unistring; then
+        set -- "$@" --with-included-unistring
+    fi
+
+    if ! attr_on tasn1; then
+        set -- "$@" --with-included-libtasn1
+    fi
+
+    if attr_on zlib; then
+        set -- "$@" --with-zlib=link
+    else
+        set -- "$@" --without-zlib
+    fi
+
+    if attr_on brotli; then
+        set -- "$@" --with-brotli=link
+    else
+        set -- "$@" --without-brotli
+    fi
+
+    if attr_on zstd; then
+        set -- "$@" --with-zstd=link
+    else
+        set -- "$@" --without-zstd
+    fi
+
+    ./configure "$@" || exit 1
+    make $MAKEOPTS
+}
+
+pkg_install()
+{
+    cd "$src" || exit 1
+    make DESTDIR="$DESTDIR" install
+}

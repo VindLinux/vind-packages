@@ -1,0 +1,2 @@
+# tried in order, the first one that works wins
+https://download.gnome.org/sources/gobject-introspection/1.86/gobject-introspection-${PKG_VERSION}.tar.xz

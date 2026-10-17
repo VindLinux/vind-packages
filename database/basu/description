@@ -1,0 +1,1 @@
+Standalone fork of the sd-bus D-Bus client library from systemd, for programs that need an sd-bus API without depending on systemd.

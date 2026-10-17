@@ -1,0 +1,10 @@
+meson
+ninja
+pkgconf
+bison
+flex
+glib
+libffi
+python
+setuptools
+cairo?cairo
