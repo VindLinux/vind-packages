@@ -20,6 +20,7 @@ pkg_build()
         --with-version-pre= \
         --with-version-opt= \
 		--with-toolchain-type=clang \
+		--with-cups \
 		--disable-warnings-as-errors \
 		CXXFILT=/usr/bin/llvm-cxxfilt \
 		--with-freetype=system \

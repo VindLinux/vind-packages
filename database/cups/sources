@@ -1,0 +1,3 @@
+# tried in order, the first one that works wins
+https://downloads.sourceforge.net/project/openprinting-cups.mirror/v${PKG_VERSION}/cups-${PKG_VERSION}-source.tar.gz
+https://github.com/OpenPrinting/cups/releases/download/v${PKG_VERSION}/cups-${PKG_VERSION}-source.tar.gz

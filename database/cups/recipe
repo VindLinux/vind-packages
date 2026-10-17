@@ -1,0 +1,62 @@
+src="cups-${PKG_VERSION}"
+tarball="$src-source.tar.gz"
+
+pkg_download()
+{
+    fetch_source "$tarball" || exit 1
+    tar -xf "$tarball" || exit 1
+}
+
+pkg_build()
+{
+    cd "$src" || exit 1
+
+    set -- --prefix="$PREFIX" --with-rcdir=no
+
+    if ! attr_on daemon; then
+        set -- "$@" --with-components=libcups
+    fi
+
+    if attr_on gnutls; then
+        set -- "$@" --with-tls=gnutls
+    elif attr_on openssl; then
+        set -- "$@" --with-tls=openssl
+    else
+        set -- "$@" --with-tls=no
+    fi
+
+    if attr_on avahi; then
+        set -- "$@" --with-dnssd=avahi
+    else
+        set -- "$@" --with-dnssd=no
+    fi
+
+    if attr_on usb; then
+        set -- "$@" --enable-libusb
+    else
+        set -- "$@" --disable-libusb
+    fi
+
+    if attr_on acl; then
+        set -- "$@" --enable-acl
+    else
+        set -- "$@" --disable-acl
+    fi
+
+    if ! attr_on dbus; then
+        set -- "$@" --disable-dbus
+    fi
+
+    if ! attr_on pam; then
+        set -- "$@" --disable-pam
+    fi
+
+    ./configure "$@" || exit 1
+    make $MAKEOPTS
+}
+
+pkg_install()
+{
+    cd "$src" || exit 1
+    make BUILDROOT="$DESTDIR" install
+}

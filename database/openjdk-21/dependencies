@@ -9,6 +9,7 @@ freetype
 findutils
 file
 openjdk-bootstrap-21
+cups
 x11?libx11
 x11?libxext
 x11?libxrender
@@ -16,7 +17,6 @@ x11?libxrandr
 x11?libxtst
 x11?libxi
 x11?libxt
-x11?cups
 syslibs?zlib
 syslibs?libpng
 syslibs?libjpeg-turbo

@@ -1,0 +1,8 @@
+daemon
+gnutls
+openssl
+avahi
+usb
+acl
+dbus
+pam

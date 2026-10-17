@@ -1,0 +1,9 @@
+pkgconf
+zlib
+gnutls?gnutls
+openssl?openssl
+avahi?avahi
+usb?libusb
+acl?libacl
+dbus?dbus
+pam?pam
