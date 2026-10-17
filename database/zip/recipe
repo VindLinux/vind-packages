@@ -1,0 +1,24 @@
+src="zip$(printf '%s' "$PKG_VERSION" | tr -d .)"
+tarball="zip_${PKG_VERSION}.orig.tar.gz"
+
+pkg_download()
+{
+    fetch_source "$tarball" || exit 1
+    tar -xf "$tarball" || exit 1
+}
+
+pkg_build()
+{
+    cd "$src" || exit 1
+    make -f unix/Makefile generic CC="cc -std=gnu89" || exit 1
+}
+
+pkg_install()
+{
+    cd "$src" || exit 1
+    mkdir -p "$DESTDIR$PREFIX/bin" "$DESTDIR$PREFIX/share/man/man1" || exit 1
+    make -f unix/Makefile \
+        prefix="$DESTDIR$PREFIX" \
+        MANDIR="$DESTDIR$PREFIX/share/man/man1" \
+        install
+}

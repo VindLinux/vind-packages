@@ -1,0 +1,20 @@
+src="openjdk-bootstrap-${PKG_VERSION}-x86_64"
+tarball="$src.tar.xz"
+
+pkg_download()
+{
+    fetch_source "$tarball" || exit 1
+    tar -xf "$tarball" || exit 1
+}
+
+pkg_build()
+{
+    :
+}
+
+pkg_install()
+{
+    cd "$src" || exit 1
+    mkdir -p "$DESTDIR$PREFIX/lib/jvm/bootstrap" || exit 1
+    cp -a . "$DESTDIR$PREFIX/lib/jvm/bootstrap/" || exit 1
+}

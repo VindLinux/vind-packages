@@ -1,0 +1,1 @@
+Prebuilt OpenJDK 21 runtime used only to bootstrap the build of OpenJDK, installed separately from the final JDK.

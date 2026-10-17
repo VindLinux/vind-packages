@@ -6,7 +6,7 @@ unzip
 alsa-lib
 fontconfig
 freetype
-openjdk-bootstrap
+openjdk-bootstrap-21
 x11?libx11
 x11?libxext
 x11?libxrender
