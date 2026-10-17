@@ -56,7 +56,7 @@ pkg_build()
 
     bash ./configure "$@" || exit 1
 
-    make images $MAKEOPTS || exit 1
+    make images JOBS=$(printf '%s\n' "$MAKEOPTS" | sed 's/^-j//') || exit 1
 }
 
 pkg_install()
