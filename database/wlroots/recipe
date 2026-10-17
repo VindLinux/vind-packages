@@ -9,7 +9,7 @@ pkg_download()
 pkg_build()
 {
     xwayland="disabled"
-    renderers="vulkan"
+    renderers=""
     allocators="udmabuf"
 
     if attr_on xwayland; then
@@ -17,7 +17,11 @@ pkg_build()
     fi
 
     if attr_on egl; then
-        renderers="$renderers,gles2"
+        renderers="gles2"
+    fi
+
+    if attr_on vulkan; then
+        renderers="${renderers:+$renderers,}vulkan"
     fi
 
     if attr_on gbm; then
