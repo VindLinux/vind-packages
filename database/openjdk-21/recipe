@@ -19,22 +19,22 @@ pkg_build()
         --with-native-debug-symbols=none \
         --with-version-pre= \
         --with-version-opt= \
-		--with-toolchain-type=clang \
-		--with-cups=/usr \
-		--disable-warnings-as-errors \
-		CXXFILT=/usr/bin/llvm-cxxfilt \
-		--with-freetype=system \
+        --with-toolchain-type=clang \
+        --with-stdc++lib=dynamic \
+        --with-cups=/usr \
+        --disable-warnings-as-errors \
+        CXXFILT=/usr/bin/llvm-cxxfilt \
+        --with-freetype=system \
         --with-freetype-include="$PREFIX/include/freetype2" \
         --with-freetype-lib="$PREFIX/lib" \
         --with-fontconfig="$PREFIX" \
         --with-alsa="$PREFIX" \
         --with-extra-cflags="-I$PREFIX/include" \
-        --with-extra-cxxflags="-I$PREFIX/include" \
-        --with-extra-ldflags="-L$PREFIX/lib"
+        --with-extra-cxxflags="-I$PREFIX/include -stdlib=libc++" \
+        --with-extra-ldflags="-L$PREFIX/lib -Wl,--undefined-version -stdlib=libc++"
 
     if attr_on x11; then
-        set -- "$@" --x-includes="$PREFIX/include" --x-libraries="$PREFIX/lib" \
-            --with-cups="$PREFIX"
+        set -- "$@" --x-includes="$PREFIX/include" --x-libraries="$PREFIX/lib"
     else
         set -- "$@" --enable-headless-only
     fi
