@@ -11,7 +11,7 @@ pkg_build()
 {
     cd "$src" || exit 1
 
-    set -- --prefix="$PREFIX" --libdir=lib --buildtype=release \
+    set -- --prefix="$PREFIX" --libdir=lib --buildtype=release --wrap-mode=nodownload \
            -Dtests=disabled -Dgtk_doc=false \
            -Dfreetype=enabled -Dfontconfig=enabled \
            -Dpng=enabled -Dzlib=enabled \
