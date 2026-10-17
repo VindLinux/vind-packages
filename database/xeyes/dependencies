@@ -1,0 +1,9 @@
+pkgconf
+xorgproto
+libx11
+libxi
+libxt
+libxext
+libxmu
+xrender?libxrender
+present?libxcb
