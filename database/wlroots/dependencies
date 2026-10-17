@@ -1,7 +1,8 @@
 wayland
 wayland-protocols
 libdrm
-mesa
+egl?mesa
+gbm?mesa
 pixman
 libxkbcommon
 libinput

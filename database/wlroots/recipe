@@ -9,12 +9,24 @@ pkg_download()
 pkg_build()
 {
     xwayland="disabled"
-    
-	if attr_on xwayland; then
+    renderers="vulkan"
+    allocators="udmabuf"
+
+    if attr_on xwayland; then
         xwayland="enabled"
     fi
 
-    meson setup "$src/build" "$src" --prefix="$PREFIX" --buildtype=release -Dexamples=false -Dxwayland="$xwayland" || exit 1
+    if attr_on egl; then
+        renderers="$renderers,gles2"
+    fi
+
+    if attr_on gbm; then
+        allocators="$allocators,gbm"
+    fi
+
+    meson setup "$src/build" "$src" --prefix="$PREFIX" --buildtype=release \
+        -Dexamples=false -Dxwayland="$xwayland" \
+        -Drenderers="$renderers" -Dallocators="$allocators" || exit 1
     ninja -C "$src/build" $MAKEOPTS
 }
 
