@@ -20,6 +20,8 @@ pkg_build()
 {
     cd "$src" || exit 1
 
+    sed -i 's|^#include "config.h"|&\n#include <fontconfig/fontconfig.h>\n#include <fontconfig/fcfreetype.h>|' pango/pangofc-fontmap.c || exit 1
+
     mopts=""
 
     feat cairo         cairo
