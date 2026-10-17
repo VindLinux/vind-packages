@@ -1,0 +1,2 @@
+# tried in order, the first one that works wins
+https://download.gnome.org/sources/gtk/3.24/gtk-${PKG_VERSION}.tar.xz

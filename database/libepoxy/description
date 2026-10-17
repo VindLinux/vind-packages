@@ -1,0 +1,1 @@
+Library that handles OpenGL function pointer management, so programs can call OpenGL, GLX and EGL functions without resolving them by hand.

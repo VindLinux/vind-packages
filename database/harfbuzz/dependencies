@@ -1,0 +1,12 @@
+meson
+ninja
+pkgconf
+glib?glib
+gobject?glib
+cairo?cairo
+icu?icu
+freetype?freetype
+graphite2?graphite2
+png?libpng
+zlib?zlib
+introspection?gobject-introspection

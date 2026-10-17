@@ -1,0 +1,3 @@
+# tried in order, the first one that works wins
+https://download.videolan.org/contrib/fribidi/fribidi-${PKG_VERSION}.tar.xz
+https://github.com/fribidi/fribidi/releases/download/v${PKG_VERSION}/fribidi-${PKG_VERSION}.tar.xz

@@ -1,0 +1,7 @@
+meson
+ninja
+pkgconf
+glx?libglvnd
+egl?libglvnd
+x11?libx11
+docs?doxygen

@@ -1,0 +1,49 @@
+src="harfbuzz-${PKG_VERSION}"
+tarball="$src.tar.xz"
+
+pkg_download()
+{
+    fetch_source "$tarball" || exit 1
+    tar -xf "$tarball" || exit 1
+}
+
+feat()
+{
+    if attr_on "$1"; then
+        mopts="$mopts -D$2=enabled"
+    else
+        mopts="$mopts -D$2=disabled"
+    fi
+}
+
+pkg_build()
+{
+    cd "$src" || exit 1
+
+    mopts=""
+
+    feat glib          glib
+    feat gobject       gobject
+    feat cairo         cairo
+    feat icu           icu
+    feat freetype      freetype
+    feat graphite2     graphite2
+    feat png           png
+    feat zlib          zlib
+    feat introspection introspection
+    feat utilities     utilities
+
+    meson setup build --prefix="$PREFIX" --libdir=lib --buildtype=release \
+        --wrap-mode=nodownload \
+        -Dtests=disabled -Ddocs=disabled -Dbenchmark=disabled \
+        -Dchafa=disabled -Dgpu_demo=disabled \
+        $mopts || exit 1
+
+    ninja -C build $MAKEOPTS
+}
+
+pkg_install()
+{
+    cd "$src" || exit 1
+    DESTDIR="$DESTDIR" ninja -C build install
+}

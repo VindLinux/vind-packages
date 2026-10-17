@@ -1,0 +1,2 @@
+# tried in order, the first one that works wins
+https://github.com/harfbuzz/harfbuzz/releases/download/${PKG_VERSION}/harfbuzz-${PKG_VERSION}.tar.xz

@@ -1,0 +1,13 @@
+meson
+ninja
+pkgconf
+glib
+fontconfig
+fribidi
+harfbuzz
+cairo?cairo
+freetype?freetype
+xft?libxft
+xft?libxrender
+libthai?libthai
+introspection?gobject-introspection

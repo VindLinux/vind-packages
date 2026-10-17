@@ -1,0 +1,50 @@
+src="libepoxy-${PKG_VERSION}"
+tarball="$src.tar.xz"
+
+pkg_download()
+{
+    fetch_source "$tarball" || exit 1
+    tar -xf "$tarball" || exit 1
+}
+
+opt()
+{
+    if attr_on "$1"; then
+        mopts="$mopts -D$2=true"
+    else
+        mopts="$mopts -D$2=false"
+    fi
+}
+
+yn()
+{
+    if attr_on "$1"; then
+        mopts="$mopts -D$2=yes"
+    else
+        mopts="$mopts -D$2=no"
+    fi
+}
+
+pkg_build()
+{
+    cd "$src" || exit 1
+
+    mopts=""
+
+    yn  glx  glx
+    yn  egl  egl
+    opt x11  x11
+    opt docs docs
+
+    meson setup build --prefix="$PREFIX" --libdir=lib --buildtype=release \
+        --wrap-mode=nodownload -Dtests=false \
+        $mopts || exit 1
+
+    ninja -C build $MAKEOPTS
+}
+
+pkg_install()
+{
+    cd "$src" || exit 1
+    DESTDIR="$DESTDIR" ninja -C build install
+}

@@ -1,0 +1,1 @@
+Accessibility toolkit for the Linux desktop, providing the AT-SPI D-Bus registry, the ATK interfaces and the bridge that GTK applications use to expose their widgets.

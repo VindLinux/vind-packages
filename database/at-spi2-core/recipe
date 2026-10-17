@@ -1,0 +1,51 @@
+src="at-spi2-core-${PKG_VERSION}"
+tarball="$src.tar.xz"
+
+pkg_download()
+{
+    fetch_source "$tarball" || exit 1
+    tar -xf "$tarball" || exit 1
+}
+
+opt()
+{
+    if attr_on "$1"; then
+        mopts="$mopts -D$2=true"
+    else
+        mopts="$mopts -D$2=false"
+    fi
+}
+
+feat()
+{
+    if attr_on "$1"; then
+        mopts="$mopts -D$2=enabled"
+    else
+        mopts="$mopts -D$2=disabled"
+    fi
+}
+
+pkg_build()
+{
+    cd "$src" || exit 1
+
+    mopts=""
+
+    feat x11           x11
+    feat introspection introspection
+    opt  gtk2          gtk2_atk_adaptor
+    opt  docs          docs
+
+    meson setup build --prefix="$PREFIX" --libdir=lib --buildtype=release \
+        --wrap-mode=nodownload \
+        -Duse_systemd=false -Ddefault_bus=dbus-daemon -Ddbus_glib=disabled \
+        $mopts || exit 1
+
+    ninja -C build $MAKEOPTS
+}
+
+pkg_install()
+{
+    cd "$src" || exit 1
+    DESTDIR="$DESTDIR" ninja -C build install
+}

@@ -1,0 +1,4 @@
+meson
+ninja
+pkgconf
+docs?c2man
