@@ -1,7 +1,7 @@
 xorg-libraries
 libdrm
 libelf
-mako
+mako-python
 pyyaml
 glslang
 rust-bindgen
