@@ -1,2 +1,2 @@
 # tried in order, the first one that works wins
-https://files.pythonhosted.org/packages/source/M/Mako/mako-${PKG_VERSION}.tar.gz
+https://github.com/emersion/mako/archive/refs/tags/v${PKG_VERSION}.tar.gz

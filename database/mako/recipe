@@ -1,5 +1,5 @@
 src="mako-$PKG_VERSION"
-tarball="$src.tar.gz"
+tarball="mako-$PKG_VERSION.tar.gz"
 
 pkg_download()
 {
@@ -10,11 +10,28 @@ pkg_download()
 pkg_build()
 {
     cd "$src" || exit 1
-    pip3 wheel -w dist --no-build-isolation --no-deps --no-cache-dir "$PWD"
+
+    set -- --prefix="$PREFIX" --libdir=lib --buildtype=release \
+           --wrap-mode=nodownload -Dsd-bus-provider=basu
+
+    if attr_on icons; then
+        set -- "$@" -Dicons=enabled
+    else
+        set -- "$@" -Dicons=disabled
+    fi
+
+    if attr_on man; then
+        set -- "$@" -Dman-pages=enabled
+    else
+        set -- "$@" -Dman-pages=disabled
+    fi
+
+    meson setup build "$@" || exit 1
+    ninja -C build $MAKEOPTS || exit 1
 }
 
 pkg_install()
 {
     cd "$src" || exit 1
-    pip3 install --break-system-packages --no-index --find-links dist --no-user --root="$DESTDIR" --prefix="$PREFIX" Mako
+    DESTDIR="$DESTDIR" meson install -C build || exit 1
 }

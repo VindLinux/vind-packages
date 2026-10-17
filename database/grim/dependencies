@@ -1,0 +1,9 @@
+meson
+ninja
+pkgconf
+wayland
+wayland-protocols
+libpng
+pixman
+jpeg?libjpeg-turbo
+man?scdoc

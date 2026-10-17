@@ -1,0 +1,9 @@
+meson
+ninja
+pkgconf
+wayland
+wayland-protocols
+libxkbcommon
+cairo
+pango
+scdoc

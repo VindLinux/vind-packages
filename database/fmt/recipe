@@ -1,0 +1,34 @@
+src="fmt-$PKG_VERSION"
+tarball="fmt-$PKG_VERSION.tar.gz"
+
+pkg_download()
+{
+    fetch_source "$tarball" || exit 1
+    tar -xf "$tarball" || exit 1
+}
+
+pkg_build()
+{
+    cd "$src" || exit 1
+
+    cmake -G Ninja -S . -B build \
+        -D CMAKE_INSTALL_PREFIX="$PREFIX" \
+        -D CMAKE_INSTALL_LIBDIR=lib \
+        -D CMAKE_SKIP_INSTALL_RPATH=ON \
+        -D CMAKE_BUILD_TYPE=Release \
+        -D BUILD_SHARED_LIBS=ON \
+        -D FMT_INSTALL=ON \
+        -D FMT_TEST=OFF \
+        -D FMT_DOC=OFF \
+        -D FMT_FUZZ=OFF \
+        -D FMT_MODULE=OFF \
+        -W no-dev || exit 1
+
+    ninja -C build $MAKEOPTS || exit 1
+}
+
+pkg_install()
+{
+    cd "$src" || exit 1
+    DESTDIR="$DESTDIR" ninja -C build install || exit 1
+}

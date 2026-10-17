@@ -1,0 +1,2 @@
+# tried in order, the first one that works wins
+https://download.gnome.org/sources/libsigc++/2.12/libsigc++-${PKG_VERSION}.tar.xz

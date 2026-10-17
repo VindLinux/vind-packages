@@ -1,0 +1,33 @@
+src="gtkmm-$PKG_VERSION"
+tarball="gtkmm-$PKG_VERSION.tar.xz"
+
+pkg_download()
+{
+    fetch_source "$tarball" || exit 1
+    tar -xf "$tarball" || exit 1
+}
+
+pkg_build()
+{
+    cd "$src" || exit 1
+
+    set -- --prefix="$PREFIX" --libdir=lib --buildtype=release \
+           --wrap-mode=nodownload \
+           -Dmaintainer-mode=false -Dbuild-documentation=false \
+           -Dbuild-demos=false -Dbuild-tests=false
+
+    if attr_on atkmm; then
+        set -- "$@" -Dbuild-atkmm-api=true
+    else
+        set -- "$@" -Dbuild-atkmm-api=false
+    fi
+
+    meson setup _build "$@" || exit 1
+    ninja -C _build $MAKEOPTS || exit 1
+}
+
+pkg_install()
+{
+    cd "$src" || exit 1
+    DESTDIR="$DESTDIR" meson install -C _build || exit 1
+}

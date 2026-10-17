@@ -1,0 +1,2 @@
+# tried in order, the first one that works wins
+https://archive.ubuntu.com/ubuntu/pool/universe/s/slurp/slurp_${PKG_VERSION}.orig.tar.xz

@@ -1,0 +1,41 @@
+src="Waybar-$PKG_VERSION"
+tarball="waybar-$PKG_VERSION.tar.gz"
+
+pkg_download()
+{
+    fetch_source "$tarball" || exit 1
+    tar -xf "$tarball" || exit 1
+}
+
+pkg_build()
+{
+    cd "$src" || exit 1
+
+    set -- --prefix="$PREFIX" --libdir=lib --buildtype=release \
+           --wrap-mode=nodownload \
+           -Dtests=disabled -Dsystemd=disabled -Dlogind=disabled \
+           -Dexperimental=false -Dniri=false -Dlogin-proxy=false
+
+    for pair in libinput:libinput libnl:libnl libudev:libudev \
+                libevdev:libevdev pulseaudio:pulseaudio pipewire:pipewire \
+                wireplumber:wireplumber jack:jack mpd:mpd mpris:mpris \
+                upower:upower_glib tray:dbusmenu-gtk cava:cava gps:gps \
+                sndio:sndio rfkill:rfkill man:man-pages; do
+        a=${pair%%:*}
+        o=${pair#*:}
+        if attr_on "$a"; then
+            set -- "$@" "-D$o=enabled"
+        else
+            set -- "$@" "-D$o=disabled"
+        fi
+    done
+
+    meson setup build "$@" || exit 1
+    ninja -C build $MAKEOPTS || exit 1
+}
+
+pkg_install()
+{
+    cd "$src" || exit 1
+    DESTDIR="$DESTDIR" meson install -C build || exit 1
+}

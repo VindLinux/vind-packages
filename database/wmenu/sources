@@ -1,0 +1,2 @@
+# tried in order, the first one that works wins
+https://deb.debian.org/debian/pool/main/w/wmenu/wmenu_${PKG_VERSION}.orig.tar.xz

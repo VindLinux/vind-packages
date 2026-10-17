@@ -1,0 +1,3 @@
+# tried in order, the first one that works wins
+https://github.com/fmtlib/fmt/archive/refs/tags/${PKG_VERSION}.tar.gz
+https://fossies.org/linux/misc/fmt-${PKG_VERSION}.tar.gz

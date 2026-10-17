@@ -1,0 +1,35 @@
+src="spdlog-$PKG_VERSION"
+tarball="spdlog-$PKG_VERSION.tar.gz"
+
+pkg_download()
+{
+    fetch_source "$tarball" || exit 1
+    tar -xf "$tarball" || exit 1
+}
+
+pkg_build()
+{
+    cd "$src" || exit 1
+
+    cmake -G Ninja -S . -B build \
+        -D CMAKE_INSTALL_PREFIX="$PREFIX" \
+        -D CMAKE_INSTALL_LIBDIR=lib \
+        -D CMAKE_SKIP_INSTALL_RPATH=ON \
+        -D CMAKE_BUILD_TYPE=Release \
+        -D SPDLOG_BUILD_SHARED=ON \
+        -D SPDLOG_FMT_EXTERNAL=ON \
+        -D SPDLOG_USE_STD_FORMAT=OFF \
+        -D SPDLOG_INSTALL=ON \
+        -D SPDLOG_BUILD_EXAMPLE=OFF \
+        -D SPDLOG_BUILD_TESTS=OFF \
+        -D SPDLOG_BUILD_BENCH=OFF \
+        -W no-dev || exit 1
+
+    ninja -C build $MAKEOPTS || exit 1
+}
+
+pkg_install()
+{
+    cd "$src" || exit 1
+    DESTDIR="$DESTDIR" ninja -C build install || exit 1
+}

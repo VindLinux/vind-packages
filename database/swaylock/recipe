@@ -1,0 +1,47 @@
+src="swaylock-$PKG_VERSION"
+tarball="swaylock-$PKG_VERSION.tar.gz"
+
+pkg_download()
+{
+    fetch_source "$tarball" || exit 1
+    tar -xf "$tarball" || exit 1
+}
+
+pkg_build()
+{
+    cd "$src" || exit 1
+
+    set -- --prefix="$PREFIX" --libdir=lib --buildtype=release \
+           --wrap-mode=nodownload
+
+    if attr_on pam; then
+        set -- "$@" -Dpam=enabled
+    else
+        set -- "$@" -Dpam=disabled
+    fi
+
+    if attr_on pixbuf; then
+        set -- "$@" -Dgdk-pixbuf=enabled
+    else
+        set -- "$@" -Dgdk-pixbuf=disabled
+    fi
+
+    if attr_on man; then
+        set -- "$@" -Dman-pages=enabled
+    else
+        set -- "$@" -Dman-pages=disabled
+    fi
+
+    meson setup build "$@" || exit 1
+    ninja -C build $MAKEOPTS || exit 1
+}
+
+pkg_install()
+{
+    cd "$src" || exit 1
+    DESTDIR="$DESTDIR" meson install -C build || exit 1
+
+    if ! attr_on pam; then
+        chmod u+s "$DESTDIR$PREFIX/bin/swaylock" || exit 1
+    fi
+}

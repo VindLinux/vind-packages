@@ -1,3 +1,12 @@
-markupsafe
-setuptools
-wheel
+meson
+ninja
+pkgconf
+wayland
+wayland-protocols
+cairo
+pango
+glib
+basu
+dbus
+icons?gdk-pixbuf
+man?scdoc

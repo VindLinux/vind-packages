@@ -1,0 +1,9 @@
+meson
+ninja
+pkgconf
+gtk3
+glibmm2.4
+cairomm1.0
+pangomm1.4
+gdk-pixbuf
+atkmm?atkmm1.6

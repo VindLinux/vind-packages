@@ -1,0 +1,37 @@
+src="grim-$PKG_VERSION"
+tarball="grim-$PKG_VERSION.tar.gz"
+
+pkg_download()
+{
+    fetch_source "$tarball" || exit 1
+    tar -xf "$tarball" || exit 1
+}
+
+pkg_build()
+{
+    cd "$src" || exit 1
+
+    set -- --prefix="$PREFIX" --libdir=lib --buildtype=release \
+           --wrap-mode=nodownload
+
+    if attr_on jpeg; then
+        set -- "$@" -Djpeg=enabled
+    else
+        set -- "$@" -Djpeg=disabled
+    fi
+
+    if attr_on man; then
+        set -- "$@" -Dman-pages=enabled
+    else
+        set -- "$@" -Dman-pages=disabled
+    fi
+
+    meson setup build "$@" || exit 1
+    ninja -C build $MAKEOPTS || exit 1
+}
+
+pkg_install()
+{
+    cd "$src" || exit 1
+    DESTDIR="$DESTDIR" meson install -C build || exit 1
+}

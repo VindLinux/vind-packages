@@ -1,0 +1,17 @@
+libinput
+libnl
+libudev
+libevdev
+pulseaudio
+pipewire
+wireplumber
+jack
+mpd
+mpris
+upower
+tray
+cava
+gps
+sndio
+rfkill
+man

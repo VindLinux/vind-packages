@@ -1,0 +1,8 @@
+pkgconf
+wayland
+libxkbcommon
+cairo
+pango
+curses?ncurses
+x11?libx11
+x11?libxinerama

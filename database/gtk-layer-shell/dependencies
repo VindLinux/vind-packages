@@ -1,0 +1,6 @@
+meson
+ninja
+pkgconf
+wayland
+wayland-protocols
+gtk3
