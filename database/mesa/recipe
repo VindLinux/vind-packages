@@ -9,12 +9,32 @@ pkg_download()
 
 pkg_build()
 {
-    gallium="llvmpipe,r300,nouveau,zink"
+    gallium="llvmpipe"
     vulkan=""
 
     if attr_on amdgpu; then
         gallium="$gallium,radeonsi,r600"
-        vulkan="amd"
+        vulkan="${vulkan:+$vulkan,}amd"
+    fi
+
+    if attr_on intel; then
+        gallium="$gallium,iris"
+    fi
+
+    if attr_on anv; then
+        vulkan="${vulkan:+$vulkan,}intel"
+    fi
+
+    if attr_on nouveau; then
+        gallium="$gallium,nouveau"
+    fi
+
+    if attr_on r300; then
+        gallium="$gallium,r300"
+    fi
+
+    if attr_on zink; then
+        gallium="$gallium,zink"
     fi
 
     meson setup "$src/build" "$src" \

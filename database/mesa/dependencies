@@ -9,3 +9,11 @@ libclc
 meson
 ninja
 wayland-protocols
+intel?libclc
+intel?spirv-tools
+intel?spirv-llvm-translator
+intel?llvm
+anv?libclc
+anv?spirv-tools
+anv?spirv-llvm-translator
+anv?llvm
