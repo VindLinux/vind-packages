@@ -1,0 +1,1 @@
+Command-line tool that queries system databases such as passwd, group, hosts, services and shadow, as getent does on glibc systems, for use with musl.

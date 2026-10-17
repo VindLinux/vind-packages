@@ -1,0 +1,2 @@
+# tried in order, the first one that works wins
+https://raw.githubusercontent.com/alpinelinux/aports/${PKG_VERSION}-stable/main/musl/getent.c

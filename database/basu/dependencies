@@ -1,5 +1,6 @@
 meson
 ninja
 pkgconf
+getent
 audit?audit
 libcap?libcap

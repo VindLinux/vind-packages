@@ -1,0 +1,17 @@
+src="."
+
+pkg_download()
+{
+    fetch_source getent.c || exit 1
+}
+
+pkg_build()
+{
+    ${CC:-cc} $CFLAGS $LDFLAGS -D_GNU_SOURCE -o getent getent.c || exit 1
+}
+
+pkg_install()
+{
+    mkdir -p "$DESTDIR$PREFIX/bin" || exit 1
+    install -m755 getent "$DESTDIR$PREFIX/bin/getent" || exit 1
+}
