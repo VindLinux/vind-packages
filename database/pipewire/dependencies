@@ -32,7 +32,6 @@ sdl2?SDL2
 ffmpeg?ffmpeg
 vulkan?vulkan-headers
 vulkan?vulkan-loader
-roc?roc-toolkit
 gstreamer?gstreamer
 gstreamer?gst-plugins-base
 x11?libx11

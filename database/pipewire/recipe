@@ -57,7 +57,6 @@ pkg_build()
     feature ffmpeg ffmpeg
     feature ffmpeg pw-cat-ffmpeg
     feature vulkan vulkan
-    feature roc roc
     feature gstreamer gstreamer
     feature gstreamer gstreamer-device-provider
     feature x11 x11

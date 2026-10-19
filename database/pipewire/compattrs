@@ -24,7 +24,6 @@ webrtc
 sdl2
 ffmpeg
 vulkan
-roc
 gstreamer
 x11
 canberra
