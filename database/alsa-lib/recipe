@@ -13,6 +13,9 @@ pkg_build()
 {
     cd "$src" || exit 1
 
+    sed -i '1i #include <unistd.h>\n#include <sys/syscall.h>\n#ifndef SYS_close_range\n#define SYS_close_range 436\n#endif\nstatic inline int close_range(unsigned int a, unsigned int b, int f) { return syscall(SYS_close_range, a, b, f); }' src/ucm/ucm_exec.c
+    export CFLAGS="${CFLAGS} -D_GNU_SOURCE"
+
     set -- --prefix="$PREFIX" --disable-maintainer-mode
 
     if ! attr_on python; then
