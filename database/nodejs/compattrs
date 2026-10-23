@@ -8,5 +8,4 @@ shared-zstd
 shared-sqlite
 icu
 inspector
-corepack
 ninja

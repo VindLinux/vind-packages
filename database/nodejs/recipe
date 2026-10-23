@@ -38,7 +38,6 @@ pkg_build()
     en ninja          ninja
 
     dis inspector without-inspector
-    dis corepack  without-corepack
 
     if attr_on icu; then
         nopts="$nopts --with-intl=system-icu"
