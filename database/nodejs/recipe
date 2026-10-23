@@ -5,6 +5,8 @@ pkg_download()
 {
     fetch_source "$tarball" || exit 1
     tar -xf "$tarball" || exit 1
+    sed -i 's/OS=="linux" and clang==1/OS=="linux" and clang==1 and target_arch!="x64"/' "$src/node.gyp" || exit 1
+    sed -i 's/OS=="linux" and clang==1/OS=="linux" and clang==1 and v8_current_cpu!="x64"/' "$src/tools/v8_gypfiles/v8.gyp" || exit 1
 }
 
 en()
