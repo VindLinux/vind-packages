@@ -5,7 +5,7 @@ linux-headers
 zstd?zstd
 lzo?lzo
 udev?eudev
-python?python
+python3?python3
 convert?e2fsprogs
 reiserfs?reiserfsprogs
 docs?sphinx

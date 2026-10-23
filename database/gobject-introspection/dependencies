@@ -5,6 +5,6 @@ bison
 flex
 glib
 libffi
-python
+python3
 setuptools
 cairo?cairo

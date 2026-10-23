@@ -4,7 +4,7 @@ pkgconf
 glib
 dbus
 libxml2
-python
+python3
 x11?libx11
 x11?libxi
 x11?libxtst
