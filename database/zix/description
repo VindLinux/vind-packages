@@ -1,0 +1,1 @@
+Lightweight C library of portability wrappers and data structures, such as hash tables, trees and ring buffers, used by Lilv, Sord and other projects.

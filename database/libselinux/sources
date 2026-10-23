@@ -1,0 +1,2 @@
+# tried in order, the first one that works wins
+https://github.com/SELinuxProject/selinux/releases/download/${PKG_VERSION}/libselinux-${PKG_VERSION}.tar.gz

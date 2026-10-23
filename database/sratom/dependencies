@@ -1,0 +1,8 @@
+meson
+ninja
+pkgconf
+lv2
+serd
+sord
+docs?doxygen
+docs?sphinx

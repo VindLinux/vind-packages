@@ -1,0 +1,54 @@
+src="libgd-${PKG_VERSION}"
+tarball="$src.tar.xz"
+
+pkg_download()
+{
+    fetch_source "$tarball" || exit 1
+    tar -xf "$tarball" || exit 1
+}
+
+ww()
+{
+    if attr_on "$1"; then
+        gopts="$gopts --with-$2"
+    else
+        gopts="$gopts --without-$2"
+    fi
+}
+
+pkg_build()
+{
+    cd "$src" || exit 1
+
+    gopts=""
+
+    ww zlib       zlib
+    ww png        png
+    ww freetype   freetype
+    ww raqm       raqm
+    ww fontconfig fontconfig
+    ww jpeg       jpeg
+    ww liq        liq
+    ww xpm        xpm
+    ww tiff       tiff
+    ww webp       webp
+    ww heif       heif
+    ww avif       avif
+
+    if attr_on gd-formats; then
+        gopts="$gopts --enable-gd-formats"
+    fi
+
+    if ! attr_on static; then
+        gopts="$gopts --disable-static"
+    fi
+
+    ./configure --prefix="$PREFIX" --disable-rpath $gopts || exit 1
+    make $MAKEOPTS
+}
+
+pkg_install()
+{
+    cd "$src" || exit 1
+    make DESTDIR="$DESTDIR" install
+}

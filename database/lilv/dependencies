@@ -1,0 +1,12 @@
+meson
+ninja
+pkgconf
+zix
+serd
+sord
+lv2
+sratom
+tools?libsndfile
+python3?python3
+docs?doxygen
+docs?sphinx

@@ -1,0 +1,57 @@
+src="libavif-$PKG_VERSION"
+tarball="libavif-$PKG_VERSION.tar.gz"
+
+pkg_download()
+{
+    fetch_source "$tarball" || exit 1
+    tar -xf "$tarball" || exit 1
+}
+
+pkg_build()
+{
+    cd "$src" || exit 1
+
+    if attr_on aom; then
+        aom=SYSTEM
+    else
+        aom=OFF
+    fi
+
+    if attr_on svt; then
+        svt=SYSTEM
+    else
+        svt=OFF
+    fi
+
+    cmake -G Ninja -S . -B build \
+        -D CMAKE_INSTALL_PREFIX="$PREFIX" \
+        -D CMAKE_INSTALL_LIBDIR=lib \
+        -D CMAKE_SKIP_INSTALL_RPATH=ON \
+        -D CMAKE_BUILD_TYPE=Release \
+        -D BUILD_SHARED_LIBS=ON \
+        -D AVIF_CODEC_DAV1D=SYSTEM \
+        -D AVIF_CODEC_AOM="$aom" \
+        -D AVIF_CODEC_SVT="$svt" \
+        -D AVIF_CODEC_LIBGAV1=OFF \
+        -D AVIF_CODEC_RAV1E=OFF \
+        -D AVIF_CODEC_AVM=OFF \
+        -D AVIF_LIBYUV=OFF \
+        -D AVIF_LIBSHARPYUV=SYSTEM \
+        -D AVIF_LIBXML2=OFF \
+        -D AVIF_ZLIBPNG=SYSTEM \
+        -D AVIF_JPEG=SYSTEM \
+        -D AVIF_BUILD_APPS=ON \
+        -D AVIF_BUILD_TESTS=OFF \
+        -D AVIF_BUILD_EXAMPLES=OFF \
+        -D AVIF_BUILD_MAN_PAGES=OFF \
+        -D AVIF_BUILD_GDK_PIXBUF=OFF \
+        -W no-dev || exit 1
+
+    ninja -C build $MAKEOPTS || exit 1
+}
+
+pkg_install()
+{
+    cd "$src" || exit 1
+    DESTDIR="$DESTDIR" ninja -C build install || exit 1
+}

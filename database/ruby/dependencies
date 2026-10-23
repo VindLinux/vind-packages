@@ -1,0 +1,8 @@
+zlib
+yjit?rustc
+zjit?rustc
+gmp?gmp
+jemalloc?jemalloc
+openssl?openssl
+yaml?libyaml
+ffi?libffi

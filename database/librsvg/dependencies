@@ -1,0 +1,13 @@
+meson
+ninja
+pkgconf
+python3
+rustc
+glib
+cairo
+pango
+harfbuzz
+freetype
+libxml2
+pixbuf?gdk-pixbuf
+avif?dav1d

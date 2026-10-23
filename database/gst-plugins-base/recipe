@@ -1,0 +1,56 @@
+src="gst-plugins-base-$PKG_VERSION"
+tarball="gst-plugins-base-$PKG_VERSION.tar.xz"
+
+pkg_download()
+{
+    fetch_source "$tarball" || exit 1
+    tar -xf "$tarball" || exit 1
+}
+
+pkg_build()
+{
+    cd "$src" || exit 1
+
+    set -- --prefix="$PREFIX" --libdir=lib --buildtype=release \
+           --wrap-mode=nodownload \
+           -Dintrospection=disabled -Dtests=disabled -Dexamples=disabled \
+           -Ddoc=disabled -Dtools=enabled -Dqt5=disabled \
+           -Dorc=disabled -Diso-codes=disabled \
+           -Dtheora=disabled -Dtremor=disabled -Dcdparanoia=disabled \
+           -Dlibvisual=disabled -Dgl-graphene=disabled \
+           -Dogg=enabled -Dvorbis=enabled -Dopus=enabled \
+           -Dpango=enabled -Ddrm=enabled
+
+    if attr_on alsa; then
+        set -- "$@" -Dalsa=enabled
+    else
+        set -- "$@" -Dalsa=disabled
+    fi
+
+    if attr_on x11; then
+        set -- "$@" -Dx11=enabled -Dxshm=enabled -Dxvideo=enabled -Dxi=enabled
+    else
+        set -- "$@" -Dx11=disabled -Dxshm=disabled -Dxvideo=disabled -Dxi=disabled
+    fi
+
+    if attr_on gl; then
+        set -- "$@" -Dgl=enabled -Dgl-png=enabled -Dgl-jpeg=enabled
+    else
+        set -- "$@" -Dgl=disabled -Dgl-png=disabled -Dgl-jpeg=disabled
+    fi
+
+    if attr_on nls; then
+        set -- "$@" -Dnls=enabled
+    else
+        set -- "$@" -Dnls=disabled
+    fi
+
+    meson setup build "$@" || exit 1
+    ninja -C build $MAKEOPTS || exit 1
+}
+
+pkg_install()
+{
+    cd "$src" || exit 1
+    DESTDIR="$DESTDIR" meson install -C build || exit 1
+}

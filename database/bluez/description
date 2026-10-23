@@ -1,0 +1,1 @@
+Official Linux Bluetooth protocol stack, with the bluetoothd daemon, the bluetoothctl client and the D-Bus API used by audio servers and desktop environments.

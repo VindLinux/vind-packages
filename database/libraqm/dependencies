@@ -1,0 +1,8 @@
+meson
+ninja
+pkgconf
+freetype
+harfbuzz
+fribidi
+sheenbidi?sheenbidi
+docs?gtk-doc

@@ -1,0 +1,27 @@
+src="libimagequant-$PKG_VERSION"
+tarball="libimagequant-$PKG_VERSION.tar.gz"
+
+pkg_download()
+{
+    fetch_source "$tarball" || exit 1
+    tar -xf "$tarball" || exit 1
+}
+
+pkg_build()
+{
+    cd "$src/imagequant-sys" || exit 1
+
+    RUSTFLAGS="$RUSTFLAGS -C target-feature=-crt-static" \
+    CARGO_BUILD_JOBS=2 \
+    cargo cbuild --release --prefix="$PREFIX" --libdir="$PREFIX/lib" || exit 1
+}
+
+pkg_install()
+{
+    cd "$src/imagequant-sys" || exit 1
+
+    RUSTFLAGS="$RUSTFLAGS -C target-feature=-crt-static" \
+    CARGO_BUILD_JOBS=2 \
+    cargo cinstall --release --prefix="$PREFIX" --libdir="$PREFIX/lib" \
+        --destdir="$DESTDIR" || exit 1
+}

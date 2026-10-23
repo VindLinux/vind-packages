@@ -1,0 +1,1 @@
+Python module that reads the width and height of image files such as PNG, JPEG and GIF without loading the whole image.

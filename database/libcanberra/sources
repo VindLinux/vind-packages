@@ -1,0 +1,2 @@
+# tried in order, the first one that works wins
+https://deb.debian.org/debian/pool/main/libc/libcanberra/libcanberra_${PKG_VERSION}.orig.tar.xz

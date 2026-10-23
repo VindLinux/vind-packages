@@ -1,0 +1,1 @@
+Audio processing library extracted from the WebRTC project, providing echo cancellation, noise suppression and automatic gain control.

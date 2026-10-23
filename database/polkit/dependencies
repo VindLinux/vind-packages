@@ -1,0 +1,9 @@
+meson
+ninja
+pkgconf
+glib
+daemon?expat
+daemon?dbus
+daemon?duktape
+daemon?elogind
+daemon?pam

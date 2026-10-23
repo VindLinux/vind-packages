@@ -1,0 +1,2 @@
+# tried in order, the first one that works wins
+https://kerberos.org/dist/krb5/1.22/krb5-${PKG_VERSION}.tar.gz

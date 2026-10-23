@@ -1,0 +1,3 @@
+# tried in order, the first one that works wins
+https://mirrors.uni-ruse.bg/debian/pool/main/u/upower/upower_${PKG_VERSION}.orig.tar.bz2
+https://deb.debian.org/debian/pool/main/u/upower/upower_${PKG_VERSION}.orig.tar.bz2

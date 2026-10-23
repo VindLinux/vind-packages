@@ -1,0 +1,1 @@
+General-purpose malloc implementation that emphasizes fragmentation avoidance and scalable concurrency, with heap profiling and introspection tools.

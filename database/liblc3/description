@@ -1,0 +1,1 @@
+Implementation of the Low Complexity Communication Codec (LC3) used by Bluetooth LE Audio, with optional encoder and decoder command-line tools.

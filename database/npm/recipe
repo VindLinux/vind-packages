@@ -1,0 +1,29 @@
+src="package"
+tarball="npm-${PKG_VERSION}.tgz"
+
+pkg_download()
+{
+    fetch_source "$tarball" || exit 1
+    tar -xf "$tarball" || exit 1
+}
+
+pkg_build()
+{
+    :
+}
+
+pkg_install()
+{
+    cd "$src" || exit 1
+
+    mkdir -p "$DESTDIR$PREFIX/lib/node_modules/npm" "$DESTDIR$PREFIX/bin" || exit 1
+    cp -a . "$DESTDIR$PREFIX/lib/node_modules/npm/" || exit 1
+
+    ln -sf ../lib/node_modules/npm/bin/npm-cli.js "$DESTDIR$PREFIX/bin/npm" || exit 1
+    ln -sf ../lib/node_modules/npm/bin/npx-cli.js "$DESTDIR$PREFIX/bin/npx" || exit 1
+
+    if [ -d man ]; then
+        mkdir -p "$DESTDIR$PREFIX/share" || exit 1
+        cp -a man "$DESTDIR$PREFIX/share/" || exit 1
+    fi
+}

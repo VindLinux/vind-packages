@@ -1,0 +1,7 @@
+pkgconf
+python3?python3
+curl?curl
+jpeg?libjpeg-turbo
+png?libpng
+gd?libgd
+gdk-pixbuf?gdk-pixbuf

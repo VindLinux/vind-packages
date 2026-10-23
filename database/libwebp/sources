@@ -1,0 +1,2 @@
+# tried in order, the first one that works wins
+https://storage.googleapis.com/downloads.webmproject.org/releases/webp/libwebp-${PKG_VERSION}.tar.gz

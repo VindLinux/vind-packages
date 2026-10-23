@@ -1,0 +1,1 @@
+Client-side window decorations library for Wayland, with a cairo plugin and an optional GTK plugin, used by toolkits such as SDL and GLFW.

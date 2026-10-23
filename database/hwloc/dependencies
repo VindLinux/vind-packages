@@ -1,0 +1,4 @@
+pci?libpciaccess
+cairo?cairo
+libudev?eudev
+libxml2?libxml2

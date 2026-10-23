@@ -1,0 +1,2 @@
+# tried in order, the first one that works wins
+https://gitlab.freedesktop.org/libdecor/libdecor/-/archive/${PKG_VERSION}/libdecor-${PKG_VERSION}.tar.gz

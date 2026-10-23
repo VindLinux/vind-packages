@@ -1,0 +1,2 @@
+# tried in order, the first one that works wins
+https://download.gnome.org/sources/libgudev/${PKG_VERSION}/libgudev-${PKG_VERSION}.tar.xz

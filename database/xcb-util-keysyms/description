@@ -1,0 +1,1 @@
+XCB utility library that maps X11 keycodes to keysyms and back, a replacement for the keysym handling of Xlib.

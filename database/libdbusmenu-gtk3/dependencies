@@ -1,0 +1,9 @@
+pkgconf
+autoconf
+automake
+libtool
+m4
+gettext
+glib
+gtk3
+gdk-pixbuf

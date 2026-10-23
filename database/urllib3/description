@@ -1,0 +1,1 @@
+HTTP client library for Python with thread-safe connection pooling, TLS verification, retries and support for compressed and chunked responses.

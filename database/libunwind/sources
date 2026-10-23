@@ -1,0 +1,2 @@
+# tried in order, the first one that works wins
+https://github.com/libunwind/libunwind/releases/download/v${PKG_VERSION}/libunwind-${PKG_VERSION}.tar.gz

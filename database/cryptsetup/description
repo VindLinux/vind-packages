@@ -1,0 +1,1 @@
+Tools for setting up transparent disk encryption with dm-crypt, including LUKS, plain dm-crypt, dm-verity and dm-integrity volumes.

@@ -1,0 +1,8 @@
+meson
+ninja
+pkgconf
+glib
+libgudev
+eudev
+dbus
+polkit?polkit

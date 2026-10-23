@@ -1,0 +1,2 @@
+# tried in order, the first one that works wins
+https://files.pythonhosted.org/packages/source/p/pygments/pygments-${PKG_VERSION}.tar.gz

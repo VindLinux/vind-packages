@@ -1,0 +1,28 @@
+src="lttng-ust-$PKG_VERSION"
+tarball="lttng-ust-$PKG_VERSION.tar.bz2"
+
+pkg_download()
+{
+    fetch_source "$tarball" || exit 1
+
+    bzip2 -t "$tarball" || { rm -f "$tarball"; exit 1; }
+    bzip2 -dc "$tarball" | tar -xf - || exit 1
+}
+
+pkg_build()
+{
+    cd "$src" || exit 1
+
+    CPPFLAGS="$CPPFLAGS -I$PREFIX/include" \
+    LDFLAGS="$LDFLAGS -L$PREFIX/lib" \
+    ./configure --prefix="$PREFIX" --disable-numa --disable-examples \
+        --disable-man-pages || exit 1
+
+    make $MAKEOPTS || exit 1
+}
+
+pkg_install()
+{
+    cd "$src" || exit 1
+    make DESTDIR="$DESTDIR" install || exit 1
+}

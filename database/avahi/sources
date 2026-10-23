@@ -1,0 +1,2 @@
+# tried in order, the first one that works wins
+https://github.com/avahi/avahi/releases/download/v${PKG_VERSION}/avahi-${PKG_VERSION}.tar.gz

@@ -1,0 +1,2 @@
+# tried in order, the first one that works wins
+https://github.com/strukturag/libheif/releases/download/v${PKG_VERSION}/libheif-${PKG_VERSION}.tar.gz

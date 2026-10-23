@@ -1,0 +1,35 @@
+src="libcanberra-$PKG_VERSION"
+tarball="libcanberra_$PKG_VERSION.orig.tar.xz"
+
+pkg_download()
+{
+    fetch_source "$tarball" || exit 1
+    tar -xf "$tarball" || exit 1
+}
+
+pkg_build()
+{
+    cd "$src" || exit 1
+
+    set -- --prefix="$PREFIX" --disable-gtk --disable-oss \
+           --disable-udev --disable-lynx \
+           --with-systemdsystemunitdir=no
+
+    for a in alsa pulse gstreamer gtk3 tdb; do
+        if ! attr_on "$a"; then
+            set -- "$@" "--disable-$a"
+        fi
+    done
+
+    CPPFLAGS="$CPPFLAGS -I$PREFIX/include" \
+    LDFLAGS="$LDFLAGS -L$PREFIX/lib" \
+    ./configure "$@" || exit 1
+
+    make $MAKEOPTS || exit 1
+}
+
+pkg_install()
+{
+    cd "$src" || exit 1
+    make DESTDIR="$DESTDIR" install || exit 1
+}

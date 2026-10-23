@@ -1,0 +1,1 @@
+Library and utilities for the SMACK Linux security module, used to read and set the mandatory access control labels on files and processes.

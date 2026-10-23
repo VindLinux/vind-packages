@@ -1,0 +1,13 @@
+pkgconf
+zlib?zlib
+png?libpng
+freetype?freetype
+raqm?libraqm
+fontconfig?fontconfig
+jpeg?libjpeg-turbo
+liq?libimagequant
+xpm?libxpm
+tiff?libtiff
+webp?libwebp
+heif?libheif
+avif?libavif

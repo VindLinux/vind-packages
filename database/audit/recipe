@@ -1,0 +1,63 @@
+src="audit-userspace-${PKG_VERSION}"
+tarball="v${PKG_VERSION}.tar.gz"
+
+pkg_download()
+{
+    fetch_source "$tarball" || exit 1
+    tar -xf "$tarball" || exit 1
+}
+
+pkg_build()
+{
+    cd "$src" || exit 1
+
+    autoreconf -fi || exit 1
+
+    set -- --prefix="$PREFIX" --sysconfdir=/etc --localstatedir=/var \
+        --without-golang --disable-zos-remote
+
+    if attr_on python3; then
+        set -- "$@" --with-python3=yes
+    else
+        set -- "$@" --without-python3
+    fi
+
+    if ! attr_on listener; then
+        set -- "$@" --disable-listener
+    fi
+
+    if ! attr_on legacy-actions; then
+        set -- "$@" --disable-legacy-actions
+    fi
+
+    if attr_on libcap-ng; then
+        set -- "$@" --with-libcap-ng=yes
+    else
+        set -- "$@" --with-libcap-ng=no
+    fi
+
+    if attr_on tls; then
+        set -- "$@" --enable-tls
+    fi
+
+    if attr_on gssapi-krb5; then
+        set -- "$@" --enable-gssapi-krb5=yes
+    fi
+
+    if attr_on io_uring; then
+        set -- "$@" --with-io_uring
+    fi
+
+    if attr_on experimental; then
+        set -- "$@" --enable-experimental
+    fi
+
+    ./configure "$@" || exit 1
+    make $MAKEOPTS
+}
+
+pkg_install()
+{
+    cd "$src" || exit 1
+    make DESTDIR="$DESTDIR" install
+}

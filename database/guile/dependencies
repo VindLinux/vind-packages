@@ -1,0 +1,6 @@
+pkgconf
+gmp
+libffi
+libunistring
+libgc
+nls?gettext

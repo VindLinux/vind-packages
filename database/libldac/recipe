@@ -1,0 +1,65 @@
+src="libldac-${PKG_VERSION}"
+tarball="libldac_${PKG_VERSION}.orig.tar.xz"
+
+pkg_download()
+{
+    fetch_source "$tarball" || exit 1
+    tar -xf "$tarball" || exit 1
+}
+
+pkg_build()
+{
+    cd "$src" || exit 1
+
+    ${CC:-cc} $CFLAGS $CPPFLAGS -fPIC -Iinc -Iabr/inc -Iabr \
+        -shared -Wl,-soname,libldacBT_enc.so.2 \
+        -o libldacBT_enc.so.2.0.2 src/*.c $LDFLAGS -lm || exit 1
+
+    ${CC:-cc} $CFLAGS $CPPFLAGS -fPIC -Iinc -Iabr/inc -Iabr \
+        -shared -Wl,-soname,libldacBT_abr.so.0 \
+        -o libldacBT_abr.so.0.0.1 abr/src/*.c $LDFLAGS -lm || exit 1
+}
+
+pkg_install()
+{
+    cd "$src" || exit 1
+
+    mkdir -p "$DESTDIR$PREFIX/lib/pkgconfig" "$DESTDIR$PREFIX/include/ldac" || exit 1
+
+    install -m755 libldacBT_enc.so.2.0.2 "$DESTDIR$PREFIX/lib/" || exit 1
+    install -m755 libldacBT_abr.so.0.0.1 "$DESTDIR$PREFIX/lib/" || exit 1
+
+    ln -sf libldacBT_enc.so.2.0.2 "$DESTDIR$PREFIX/lib/libldacBT_enc.so.2" || exit 1
+    ln -sf libldacBT_enc.so.2 "$DESTDIR$PREFIX/lib/libldacBT_enc.so" || exit 1
+    ln -sf libldacBT_abr.so.0.0.1 "$DESTDIR$PREFIX/lib/libldacBT_abr.so.0" || exit 1
+    ln -sf libldacBT_abr.so.0 "$DESTDIR$PREFIX/lib/libldacBT_abr.so" || exit 1
+
+    for h in inc/*.h abr/inc/*.h abr/*.h; do
+        [ -f "$h" ] || continue
+        install -m644 "$h" "$DESTDIR$PREFIX/include/ldac/" || exit 1
+    done
+
+    cat > "$DESTDIR$PREFIX/lib/pkgconfig/ldacBT-enc.pc" <<END_PC
+prefix=$PREFIX
+libdir=\${prefix}/lib
+includedir=\${prefix}/include
+
+Name: ldacBT-enc
+Description: LDAC encoder library
+Version: 2.0.2
+Libs: -L\${libdir} -lldacBT_enc
+Cflags: -I\${includedir}/ldac
+END_PC
+
+    cat > "$DESTDIR$PREFIX/lib/pkgconfig/ldacBT-abr.pc" <<END_PC
+prefix=$PREFIX
+libdir=\${prefix}/lib
+includedir=\${prefix}/include
+
+Name: ldacBT-abr
+Description: LDAC adaptive bit rate library
+Version: 2.0.2
+Libs: -L\${libdir} -lldacBT_abr
+Cflags: -I\${includedir}/ldac
+END_PC
+}

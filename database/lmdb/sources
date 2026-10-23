@@ -1,0 +1,2 @@
+# tried in order, the first one that works wins
+https://git.openldap.org/openldap/openldap/-/archive/LMDB_${PKG_VERSION}/openldap-LMDB_${PKG_VERSION}.tar.bz2

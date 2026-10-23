@@ -1,0 +1,23 @@
+src="duktape-$PKG_VERSION"
+tarball="duktape-$PKG_VERSION.tar.xz"
+
+pkg_download()
+{
+    fetch_source "$tarball" || exit 1
+    tar -xf "$tarball" || exit 1
+}
+
+pkg_build()
+{
+    cd "$src" || exit 1
+
+    make -f Makefile.sharedlibrary $MAKEOPTS INSTALL_PREFIX="$PREFIX" || exit 1
+}
+
+pkg_install()
+{
+    cd "$src" || exit 1
+
+    make -f Makefile.sharedlibrary INSTALL_PREFIX="$PREFIX" \
+        DESTDIR="$DESTDIR" install || exit 1
+}

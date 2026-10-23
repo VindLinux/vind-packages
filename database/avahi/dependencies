@@ -1,0 +1,13 @@
+pkgconf
+expat
+libcap
+dbus?dbus
+glib?glib
+gobject?glib
+libevent?libevent
+gtk3?gtk3
+gdbm?gdbm
+libdaemon?libdaemon
+python3?python3
+nls?gettext
+introspection?gobject-introspection

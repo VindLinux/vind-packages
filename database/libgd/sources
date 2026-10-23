@@ -1,0 +1,2 @@
+# tried in order, the first one that works wins
+https://github.com/libgd/libgd/releases/download/gd-${PKG_VERSION}/libgd-${PKG_VERSION}.tar.xz

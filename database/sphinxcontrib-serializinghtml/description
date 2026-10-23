@@ -1,0 +1,1 @@
+Sphinx extension that serializes HTML documentation as JSON or pickle files, and provides the serialization builders used by Sphinx.

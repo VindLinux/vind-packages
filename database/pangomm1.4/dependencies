@@ -1,0 +1,5 @@
+pango
+cairomm1.0
+glibmm2.4
+meson
+ninja

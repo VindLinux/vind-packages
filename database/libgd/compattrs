@@ -1,0 +1,14 @@
+zlib
+png
+freetype
+raqm
+fontconfig
+jpeg
+liq
+xpm
+tiff
+webp
+heif
+avif
+gd-formats
+static

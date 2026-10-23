@@ -1,0 +1,2 @@
+# tried in order, the first one that works wins
+https://github.com/Mbed-TLS/mbedtls/releases/download/mbedtls-${PKG_VERSION}/mbedtls-${PKG_VERSION}.tar.bz2

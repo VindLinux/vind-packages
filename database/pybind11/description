@@ -1,0 +1,1 @@
+Header-only C++11 library that exposes C++ types to Python and vice versa, used to write Python bindings, with CMake and pkg-config support files.

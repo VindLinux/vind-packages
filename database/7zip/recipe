@@ -1,0 +1,39 @@
+src="7zip-${PKG_VERSION}"
+tarball="7z${PKG_VERSION%.*}${PKG_VERSION#*.}-src.tar.xz"
+
+pkg_download()
+{
+    fetch_source "$tarball" || exit 1
+
+    mkdir -p "$src" || exit 1
+    tar -xf "$tarball" -C "$src" || exit 1
+}
+
+pkg_build()
+{
+    cd "$src/CPP/7zip/Bundles/Alone2" || exit 1
+
+    sed -i 's/-Werror//g' ../../*.mak || exit 1
+
+    set -- -f ../../cmpl_clang.mak
+
+    if ! attr_on rar; then
+        set -- "$@" DISABLE_RAR=1
+    fi
+
+    if ! attr_on rarcodecs; then
+        set -- "$@" DISABLE_RAR_COMPRESS=1
+    fi
+
+    make "$@" $MAKEOPTS
+}
+
+pkg_install()
+{
+    cd "$src/CPP/7zip/Bundles/Alone2" || exit 1
+
+    bin=$(find . -type f -name 7zz | head -n 1)
+    [ -n "$bin" ] || { echo "7zz nao encontrado apos o build" >&2; exit 1; }
+
+    install -Dm755 "$bin" "$DESTDIR$PREFIX/bin/7zz"
+}

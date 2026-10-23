@@ -1,0 +1,63 @@
+src="cryptsetup-${PKG_VERSION}"
+tarball="$src.tar.xz"
+
+pkg_download()
+{
+    fetch_source "$tarball" || exit 1
+    tar -xf "$tarball" || exit 1
+}
+
+opt()
+{
+    if attr_on "$1"; then
+        mopts="$mopts -D$2=true"
+    else
+        mopts="$mopts -D$2=false"
+    fi
+}
+
+pkg_build()
+{
+    cd "$src" || exit 1
+
+    mopts=""
+
+    opt udev      udev
+    opt nls       nls
+    opt ssh-token ssh-token
+    opt pwquality pwquality
+    opt static    enable-static
+
+    if attr_on asciidoc; then
+        mopts="$mopts -Dasciidoc=enabled"
+    else
+        mopts="$mopts -Dasciidoc=disabled"
+    fi
+
+    if attr_on gcrypt; then
+        mopts="$mopts -Dcrypto-backend=gcrypt"
+    elif attr_on nettle; then
+        mopts="$mopts -Dcrypto-backend=nettle"
+    else
+        mopts="$mopts -Dcrypto-backend=openssl"
+    fi
+
+    if attr_on libargon2; then
+        mopts="$mopts -Dargon-implementation=libargon2"
+    else
+        mopts="$mopts -Dargon-implementation=internal"
+    fi
+
+    meson setup build --prefix="$PREFIX" --libdir=lib --buildtype=release \
+        --wrap-mode=nodownload \
+        -Dtmpfilesdir="$PREFIX/lib/tmpfiles.d" \
+        $mopts || exit 1
+
+    ninja -C build $MAKEOPTS
+}
+
+pkg_install()
+{
+    cd "$src" || exit 1
+    DESTDIR="$DESTDIR" ninja -C build install
+}

@@ -1,0 +1,42 @@
+src="sord-${PKG_VERSION}"
+tarball="$src.tar.xz"
+
+pkg_download()
+{
+    fetch_source "$tarball" || exit 1
+    tar -xf "$tarball" || exit 1
+}
+
+feat()
+{
+    if attr_on "$1"; then
+        mopts="$mopts -D$2=enabled"
+    else
+        mopts="$mopts -D$2=disabled"
+    fi
+}
+
+pkg_build()
+{
+    cd "$src" || exit 1
+
+    mopts=""
+
+    feat tools tools
+    feat man   man
+    feat cpp   bindings_cpp
+    feat docs  docs
+
+    meson setup build --prefix="$PREFIX" --libdir=lib --buildtype=release \
+        --wrap-mode=nodownload \
+        -Dtests=disabled \
+        $mopts || exit 1
+
+    ninja -C build $MAKEOPTS
+}
+
+pkg_install()
+{
+    cd "$src" || exit 1
+    DESTDIR="$DESTDIR" ninja -C build install
+}

@@ -1,0 +1,6 @@
+ldap
+lmdb
+readline
+nls
+pkinit
+static

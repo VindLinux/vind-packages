@@ -1,0 +1,59 @@
+src="bluez-${PKG_VERSION}"
+tarball="$src.tar.xz"
+
+pkg_download()
+{
+    fetch_source "$tarball" || exit 1
+    tar -xf "$tarball" || exit 1
+}
+
+en()
+{
+    if attr_on "$1"; then
+        bopts="$bopts --enable-$2"
+    fi
+}
+
+dis()
+{
+    if ! attr_on "$1"; then
+        bopts="$bopts --disable-$2"
+    fi
+}
+
+pkg_build()
+{
+    cd "$src" || exit 1
+
+    bopts=""
+
+    dis udev     udev
+    dis cups     cups
+    dis obex     obex
+    dis tools    tools
+    dis monitor  monitor
+    dis client   client
+    dis manpages manpages
+
+    en mesh         mesh
+    en midi         midi
+    en library      library
+    en experimental experimental
+    en deprecated   deprecated
+
+    if attr_on mesh; then
+        bopts="$bopts --enable-btpclient"
+    fi
+
+    ./configure --prefix="$PREFIX" --sysconfdir=/etc --localstatedir=/var \
+        --disable-systemd --disable-maintainer-mode \
+        $bopts || exit 1
+
+    make $MAKEOPTS
+}
+
+pkg_install()
+{
+    cd "$src" || exit 1
+    make DESTDIR="$DESTDIR" install
+}

@@ -1,0 +1,13 @@
+python3
+pkgconf
+make
+shared-openssl?openssl
+shared-zlib?zlib
+shared-libuv?libuv
+shared-cares?c-ares
+shared-nghttp2?nghttp2
+shared-brotli?brotli
+shared-zstd?zstd
+shared-sqlite?sqlite3
+icu?icu
+ninja?ninja

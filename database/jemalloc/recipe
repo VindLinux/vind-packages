@@ -1,0 +1,60 @@
+src="jemalloc-${PKG_VERSION}"
+tarball="$src.tar.bz2"
+
+pkg_download()
+{
+    fetch_source "$tarball" || exit 1
+    tar -xf "$tarball" || exit 1
+}
+
+pkg_build()
+{
+    cd "$src" || exit 1
+
+    set -- --prefix="$PREFIX"
+
+    if attr_on cxx; then
+        set -- "$@" --with-cxx-stdlib=libcxx
+    else
+        set -- "$@" --disable-cxx
+    fi
+
+    if ! attr_on stats; then
+        set -- "$@" --disable-stats
+    fi
+
+    if ! attr_on fill; then
+        set -- "$@" --disable-fill
+    fi
+
+    if attr_on prof; then
+        set -- "$@" --enable-prof
+    fi
+
+    if attr_on prof-libunwind; then
+        set -- "$@" --enable-prof-libunwind
+    fi
+
+    if attr_on doc; then
+        set -- "$@" --enable-doc
+    else
+        set -- "$@" --disable-doc
+    fi
+
+    if ! attr_on static; then
+        set -- "$@" --disable-static
+    fi
+
+    if attr_on debug; then
+        set -- "$@" --enable-debug
+    fi
+
+    ./configure "$@" || exit 1
+    make $MAKEOPTS
+}
+
+pkg_install()
+{
+    cd "$src" || exit 1
+    make DESTDIR="$DESTDIR" install
+}

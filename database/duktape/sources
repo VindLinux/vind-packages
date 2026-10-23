@@ -1,0 +1,3 @@
+# tried in order, the first one that works wins
+https://duktape.org/duktape-${PKG_VERSION}.tar.xz
+https://github.com/svaarala/duktape/releases/download/v${PKG_VERSION}/duktape-${PKG_VERSION}.tar.xz

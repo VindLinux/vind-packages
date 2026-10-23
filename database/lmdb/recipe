@@ -1,0 +1,22 @@
+src="openldap-LMDB_${PKG_VERSION}/libraries/liblmdb"
+tarball="openldap-LMDB_${PKG_VERSION}.tar.bz2"
+
+pkg_download()
+{
+    fetch_source "$tarball" || exit 1
+    tar -xf "$tarball" || exit 1
+}
+
+pkg_build()
+{
+    cd "$src" || exit 1
+    make $MAKEOPTS prefix="$PREFIX"
+}
+
+pkg_install()
+{
+    cd "$src" || exit 1
+    make prefix="$PREFIX" DESTDIR="$DESTDIR" install || exit 1
+    mkdir -p "$DESTDIR$PREFIX/lib/pkgconfig"
+    cp lmdb.pc "$DESTDIR$PREFIX/lib/pkgconfig"
+}

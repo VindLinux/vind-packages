@@ -1,0 +1,35 @@
+src="openldap-${PKG_VERSION}"
+tarball="${src}.tgz"
+
+pkg_download()
+{
+    fetch_source "$tarball" || exit 1
+    tar -xf "$tarball" || exit 1
+}
+
+pkg_build()
+{
+    cd "$src" || exit 1
+
+    set -- --prefix="$PREFIX" --sysconfdir=/etc --localstatedir=/var --with-tls=openssl
+
+    if attr_on sasl; then
+        set -- "$@" --with-cyrus-sasl
+    else
+        set -- "$@" --without-cyrus-sasl
+    fi
+
+    if ! attr_on slapd; then
+        set -- "$@" --disable-slapd
+    fi
+
+    ./configure "$@" || exit 1
+    make depend || exit 1
+    make $MAKEOPTS
+}
+
+pkg_install()
+{
+    cd "$src" || exit 1
+    make DESTDIR="$DESTDIR" install
+}

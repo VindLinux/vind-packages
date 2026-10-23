@@ -1,0 +1,50 @@
+src="guile-${PKG_VERSION}"
+tarball="$src.tar.xz"
+
+pkg_download()
+{
+    fetch_source "$tarball" || exit 1
+    tar -xf "$tarball" || exit 1
+}
+
+pkg_build()
+{
+    cd "$src" || exit 1
+
+    set -- --prefix="$PREFIX"
+
+    if attr_on jit; then
+        set -- "$@" --enable-jit=yes
+    else
+        set -- "$@" --enable-jit=no
+    fi
+
+    if ! attr_on nls; then
+        set -- "$@" --disable-nls
+    fi
+
+    if attr_on lto; then
+        set -- "$@" --enable-lto
+    fi
+
+    if attr_on mini-gmp; then
+        set -- "$@" --enable-mini-gmp
+    fi
+
+    if ! attr_on deprecated; then
+        set -- "$@" --disable-deprecated
+    fi
+
+    if ! attr_on static; then
+        set -- "$@" --disable-static
+    fi
+
+    ./configure "$@" || exit 1
+    make $MAKEOPTS
+}
+
+pkg_install()
+{
+    cd "$src" || exit 1
+    make DESTDIR="$DESTDIR" install
+}

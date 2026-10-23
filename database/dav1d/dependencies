@@ -1,0 +1,7 @@
+meson
+ninja
+pkgconf
+asm?nasm
+xxhash?xxhash
+docs?doxygen
+docs?graphviz

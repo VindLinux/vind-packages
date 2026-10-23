@@ -1,0 +1,1 @@
+Perl module for parsing XML documents, built on the expat library, with Tree, Subs, Stream and Objects styles.

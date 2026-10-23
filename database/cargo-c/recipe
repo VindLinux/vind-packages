@@ -1,0 +1,29 @@
+src="cargo-c-$PKG_VERSION"
+tarball="cargo-c-$PKG_VERSION.tar.gz"
+
+pkg_download()
+{
+    fetch_source "$tarball" || exit 1
+    tar -xf "$tarball" || exit 1
+}
+
+pkg_build()
+{
+    cd "$src" || exit 1
+
+    RUSTFLAGS="$RUSTFLAGS -C target-feature=-crt-static" \
+    CARGO_BUILD_JOBS=2 \
+    cargo build --profile release-strip-nolto || exit 1
+}
+
+pkg_install()
+{
+    cd "$src" || exit 1
+
+    mkdir -p "$DESTDIR$PREFIX/bin" || exit 1
+
+    for b in cargo-capi cargo-cbuild cargo-cinstall cargo-ctest; do
+        install -m 755 "target/release-strip-nolto/$b" \
+            "$DESTDIR$PREFIX/bin/$b" || exit 1
+    done
+}

@@ -1,0 +1,68 @@
+src="libheif-${PKG_VERSION}"
+tarball="$src.tar.gz"
+
+pkg_download()
+{
+    fetch_source "$tarball" || exit 1
+    tar -xf "$tarball" || exit 1
+}
+
+cm()
+{
+    if attr_on "$1"; then
+        copts="$copts -D$2=ON"
+    else
+        copts="$copts -D$2=OFF"
+    fi
+}
+
+pkg_build()
+{
+    cd "$src" || exit 1
+
+    copts=""
+
+    cm de265        WITH_LIBDE265
+    cm x265         WITH_X265
+    cm x264         WITH_X264
+    cm aom          WITH_AOM_DECODER
+    cm aom          WITH_AOM_ENCODER
+    cm dav1d        WITH_DAV1D
+    cm svtav1       WITH_SvtEnc
+    cm rav1e        WITH_RAV1E
+    cm openjpeg     WITH_OpenJPEG_DECODER
+    cm openjpeg     WITH_OpenJPEG_ENCODER
+    cm jpeg         WITH_JPEG_DECODER
+    cm jpeg         WITH_JPEG_ENCODER
+    cm examples     WITH_EXAMPLES
+    cm gdkpixbuf    WITH_GDK_PIXBUF
+    cm docs         BUILD_DOCUMENTATION
+    cm uncompressed WITH_UNCOMPRESSED_CODEC
+    cm sharpyuv     WITH_LIBSHARPYUV
+    cm sharpyuv     WITH_LIBSHARPYUV_INTERNAL
+    cm experimental ENABLE_EXPERIMENTAL_FEATURES
+    cm plugins      ENABLE_PLUGIN_LOADING
+
+    if attr_on static; then
+        copts="$copts -DBUILD_SHARED_LIBS=OFF"
+    fi
+
+    cmake -S . -B build -G Ninja \
+        -DCMAKE_INSTALL_PREFIX="$PREFIX" \
+        -DCMAKE_INSTALL_LIBDIR=lib \
+        -DCMAKE_BUILD_TYPE=Release \
+        -DCMAKE_POLICY_VERSION_MINIMUM=3.5 \
+        -DBUILD_TESTING=OFF \
+        -DWITH_OpenH264_DECODER=OFF \
+        -DWITH_EXAMPLE_HEIF_VIEW=OFF \
+        -DWITH_EXAMPLE_HEIF_THUMB=OFF \
+        $copts || exit 1
+
+    cmake --build build || exit 1
+}
+
+pkg_install()
+{
+    cd "$src" || exit 1
+    DESTDIR="$DESTDIR" cmake --install build
+}

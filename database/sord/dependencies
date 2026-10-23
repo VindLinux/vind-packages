@@ -1,0 +1,7 @@
+meson
+ninja
+pkgconf
+zix
+serd
+tools?pcre2
+docs?doxygen

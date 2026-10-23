@@ -1,0 +1,2 @@
+# tried in order, the first one that works wins
+https://cdn.kernel.org/pub/linux/utils/cryptsetup/v2.8/cryptsetup-${PKG_VERSION}.tar.xz

@@ -1,0 +1,10 @@
+cmake
+ninja
+pkgconf
+zlib
+libpng
+libjpeg-turbo
+libwebp
+dav1d
+aom?libaom
+svt?svt-av1

@@ -1,0 +1,39 @@
+src="liblc3-${PKG_VERSION}"
+tarball="v${PKG_VERSION}.tar.gz"
+
+pkg_download()
+{
+    fetch_source "$tarball" || exit 1
+    tar -xf "$tarball" || exit 1
+}
+
+opt()
+{
+    if attr_on "$1"; then
+        mopts="$mopts -D$2=true"
+    else
+        mopts="$mopts -D$2=false"
+    fi
+}
+
+pkg_build()
+{
+    cd "$src" || exit 1
+
+    mopts=""
+
+    opt tools  tools
+    opt python python
+
+    meson setup build --prefix="$PREFIX" --libdir=lib --buildtype=release \
+        --wrap-mode=nodownload \
+        $mopts || exit 1
+
+    ninja -C build $MAKEOPTS
+}
+
+pkg_install()
+{
+    cd "$src" || exit 1
+    DESTDIR="$DESTDIR" ninja -C build install
+}

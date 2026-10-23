@@ -1,0 +1,10 @@
+pkgconf
+libtool
+libogg
+libvorbis
+alsa?alsa-lib
+pulse?pulseaudio
+gstreamer?gstreamer
+gtk3?gtk3
+gtk3?libx11
+tdb?tdb

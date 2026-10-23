@@ -1,0 +1,66 @@
+src="libsixel-${PKG_VERSION}"
+tarball="v${PKG_VERSION}.tar.gz"
+
+pkg_download()
+{
+    fetch_source "$tarball" || exit 1
+    tar -xf "$tarball" || exit 1
+}
+
+pkg_build()
+{
+    cd "$src" || exit 1
+
+    set -- --prefix="$PREFIX"
+
+    if ! attr_on img2sixel; then
+        set -- "$@" --disable-img2sixel
+    fi
+
+    if ! attr_on sixel2png; then
+        set -- "$@" --disable-sixel2png
+    fi
+
+    if ! attr_on python; then
+        set -- "$@" --disable-python
+    fi
+
+    if attr_on curl; then
+        set -- "$@" --with-libcurl
+    else
+        set -- "$@" --without-libcurl
+    fi
+
+    if attr_on jpeg; then
+        set -- "$@" --with-jpeg
+    else
+        set -- "$@" --without-jpeg
+    fi
+
+    if attr_on png; then
+        set -- "$@" --with-png
+    else
+        set -- "$@" --without-png
+    fi
+
+    if attr_on gd; then
+        set -- "$@" --with-gd
+    fi
+
+    if attr_on gdk-pixbuf; then
+        set -- "$@" --with-gdk-pixbuf2
+    fi
+
+    if ! attr_on static; then
+        set -- "$@" --disable-static
+    fi
+
+    ./configure "$@" || exit 1
+    make $MAKEOPTS
+}
+
+pkg_install()
+{
+    cd "$src" || exit 1
+    make DESTDIR="$DESTDIR" install
+}

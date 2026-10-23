@@ -1,0 +1,24 @@
+src="hatchling-${PKG_VERSION}"
+tarball="$src.tar.gz"
+
+pkg_download()
+{
+    fetch_source "$tarball" || exit 1
+    tar -xf "$tarball" || exit 1
+}
+
+pkg_build()
+{
+    cd "$src" || exit 1
+
+    python3 -m pip wheel --no-deps --no-build-isolation --no-index \
+        -w dist . || exit 1
+}
+
+pkg_install()
+{
+    cd "$src" || exit 1
+
+    python3 -m pip install --no-deps --no-build-isolation --no-index \
+        --root "$DESTDIR" --prefix "$PREFIX" dist/*.whl
+}

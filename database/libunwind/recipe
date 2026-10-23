@@ -1,0 +1,84 @@
+src="libunwind-${PKG_VERSION}"
+tarball="$src.tar.gz"
+
+pkg_download()
+{
+    fetch_source "$tarball" || exit 1
+    tar -xf "$tarball" || exit 1
+}
+
+pkg_build()
+{
+    cd "$src" || exit 1
+
+    set -- --prefix="$PREFIX" --disable-tests
+
+    if attr_on coredump; then
+        set -- "$@" --enable-coredump
+    else
+        set -- "$@" --disable-coredump
+    fi
+
+    if attr_on ptrace; then
+        set -- "$@" --enable-ptrace
+    else
+        set -- "$@" --disable-ptrace
+    fi
+
+    if attr_on setjmp; then
+        set -- "$@" --enable-setjmp
+    else
+        set -- "$@" --disable-setjmp
+    fi
+
+    if attr_on cxx-exceptions; then
+        set -- "$@" --enable-cxx-exceptions
+    else
+        set -- "$@" --disable-cxx-exceptions
+    fi
+
+    if ! attr_on docs; then
+        set -- "$@" --disable-documentation
+    fi
+
+    if attr_on minidebuginfo; then
+        set -- "$@" --enable-minidebuginfo
+    else
+        set -- "$@" --disable-minidebuginfo
+    fi
+
+    if attr_on zlibdebuginfo; then
+        set -- "$@" --enable-zlibdebuginfo
+    else
+        set -- "$@" --disable-zlibdebuginfo
+    fi
+
+    if attr_on debug-frame; then
+        set -- "$@" --enable-debug-frame
+    fi
+
+    if ! attr_on weak-backtrace; then
+        set -- "$@" --disable-weak-backtrace
+    fi
+
+    if ! attr_on unwind-header; then
+        set -- "$@" --disable-unwind-header
+    fi
+
+    if attr_on per-thread-cache; then
+        set -- "$@" --enable-per-thread-cache
+    fi
+
+    if ! attr_on static; then
+        set -- "$@" --disable-static
+    fi
+
+    ./configure "$@" || exit 1
+    make $MAKEOPTS
+}
+
+pkg_install()
+{
+    cd "$src" || exit 1
+    make DESTDIR="$DESTDIR" install
+}

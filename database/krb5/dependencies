@@ -1,0 +1,6 @@
+pkgconf
+openssl
+ldap?openldap
+lmdb?lmdb
+readline?readline
+nls?gettext

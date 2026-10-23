@@ -1,0 +1,17 @@
+expat
+pangocairo
+freetype2
+gdk-pixbuf
+webp
+rsvg
+poppler
+gd
+x11
+swig
+tcl
+python3
+perl
+ruby
+guile
+lua
+static

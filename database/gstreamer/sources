@@ -1,0 +1,2 @@
+# tried in order, the first one that works wins
+https://gstreamer.freedesktop.org/src/gstreamer/gstreamer-${PKG_VERSION}.tar.xz

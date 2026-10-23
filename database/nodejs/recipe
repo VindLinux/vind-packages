@@ -1,0 +1,56 @@
+src="node-v${PKG_VERSION}"
+tarball="$src.tar.xz"
+
+pkg_download()
+{
+    fetch_source "$tarball" || exit 1
+    tar -xf "$tarball" || exit 1
+}
+
+en()
+{
+    if attr_on "$1"; then
+        nopts="$nopts --$2"
+    fi
+}
+
+dis()
+{
+    if ! attr_on "$1"; then
+        nopts="$nopts --$2"
+    fi
+}
+
+pkg_build()
+{
+    cd "$src" || exit 1
+
+    nopts=""
+
+    en shared-openssl shared-openssl
+    en shared-zlib    shared-zlib
+    en shared-libuv   shared-libuv
+    en shared-cares   shared-cares
+    en shared-nghttp2 shared-nghttp2
+    en shared-brotli  shared-brotli
+    en shared-zstd    shared-zstd
+    en shared-sqlite  shared-sqlite
+    en ninja          ninja
+
+    dis inspector without-inspector
+    dis corepack  without-corepack
+
+    if attr_on icu; then
+        nopts="$nopts --with-intl=system-icu"
+    fi
+
+    ./configure --prefix="$PREFIX" --without-npm $nopts || exit 1
+
+    make $MAKEOPTS
+}
+
+pkg_install()
+{
+    cd "$src" || exit 1
+    make DESTDIR="$DESTDIR" install
+}

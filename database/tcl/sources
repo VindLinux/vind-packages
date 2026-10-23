@@ -1,0 +1,3 @@
+# tried in order, the first one that works wins
+https://downloads.sourceforge.net/project/tcl/Tcl/${PKG_VERSION}/tcl${PKG_VERSION}-src.tar.gz
+https://prdownloads.sourceforge.net/tcl/tcl${PKG_VERSION}-src.tar.gz

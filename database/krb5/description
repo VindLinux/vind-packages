@@ -1,0 +1,1 @@
+MIT implementation of the Kerberos 5 network authentication protocol, with the KDC, the kadmin tools, the client libraries and the GSSAPI mechanism.

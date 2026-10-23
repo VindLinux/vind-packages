@@ -1,0 +1,9 @@
+autoconf
+automake
+libtool
+pkgconf
+libtiff
+libjpeg-turbo
+sslfax?openssl
+docs?doxygen
+docs?libxslt

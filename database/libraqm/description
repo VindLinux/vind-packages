@@ -1,0 +1,1 @@
+Small library for complex text layout, combining FreeType, HarfBuzz and FriBidi to shape and order text in many scripts and directions.

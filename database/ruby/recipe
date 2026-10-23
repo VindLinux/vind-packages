@@ -1,0 +1,74 @@
+src="ruby-${PKG_VERSION}"
+tarball="$src.tar.xz"
+
+pkg_download()
+{
+    fetch_source "$tarball" || exit 1
+    tar -xf "$tarball" || exit 1
+}
+
+pkg_build()
+{
+    cd "$src" || exit 1
+
+    set -- --prefix="$PREFIX" --without-valgrind
+
+    if attr_on shared; then
+        set -- "$@" --enable-shared
+    fi
+
+    if attr_on yjit; then
+        set -- "$@" --enable-yjit
+    else
+        set -- "$@" --disable-yjit
+    fi
+
+    if attr_on zjit; then
+        set -- "$@" --enable-zjit
+    else
+        set -- "$@" --disable-zjit
+    fi
+
+    if ! attr_on gmp; then
+        set -- "$@" --without-gmp
+    fi
+
+    if attr_on jemalloc; then
+        set -- "$@" --with-jemalloc
+    fi
+
+    if ! attr_on docs; then
+        set -- "$@" --disable-install-doc
+    fi
+
+    if ! attr_on rubygems; then
+        set -- "$@" --disable-rubygems
+    fi
+
+    outext=""
+
+    if ! attr_on openssl; then
+        outext="openssl"
+    fi
+
+    if ! attr_on yaml; then
+        outext="${outext:+$outext,}psych"
+    fi
+
+    if ! attr_on ffi; then
+        outext="${outext:+$outext,}fiddle"
+    fi
+
+    if [ -n "$outext" ]; then
+        set -- "$@" --with-out-ext="$outext"
+    fi
+
+    ./configure "$@" || exit 1
+    make $MAKEOPTS
+}
+
+pkg_install()
+{
+    cd "$src" || exit 1
+    make DESTDIR="$DESTDIR" install
+}

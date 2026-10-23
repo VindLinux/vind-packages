@@ -1,0 +1,26 @@
+src="pandoc-${PKG_VERSION}"
+tarball="$src-linux-amd64.tar.gz"
+
+pkg_download()
+{
+    fetch_source "$tarball" || exit 1
+    tar -xf "$tarball" || exit 1
+}
+
+pkg_build()
+{
+    :
+}
+
+pkg_install()
+{
+    cd "$src" || exit 1
+
+    mkdir -p "$DESTDIR$PREFIX/bin" || exit 1
+    cp -a bin/. "$DESTDIR$PREFIX/bin/" || exit 1
+
+    if [ -d share/man ]; then
+        mkdir -p "$DESTDIR$PREFIX/share" || exit 1
+        cp -a share/man "$DESTDIR$PREFIX/share/" || exit 1
+    fi
+}

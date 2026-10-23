@@ -1,0 +1,1 @@
+Library that implements the EBU R128 loudness standard, measuring integrated loudness, loudness range and true peak of audio.

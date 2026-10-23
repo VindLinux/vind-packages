@@ -1,0 +1,2 @@
+# tried in order, the first one that works wins
+https://github.com/bdwgc/bdwgc/releases/download/v${PKG_VERSION}/gc-${PKG_VERSION}.tar.gz

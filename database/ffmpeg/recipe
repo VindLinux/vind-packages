@@ -1,0 +1,87 @@
+src="ffmpeg-${PKG_VERSION}"
+tarball="$src.tar.xz"
+
+pkg_download()
+{
+    fetch_source "$tarball" || exit 1
+    tar -xf "$tarball" || exit 1
+}
+
+en()
+{
+    if attr_on "$1"; then
+        fopts="$fopts --enable-$2"
+    fi
+}
+
+pkg_build()
+{
+    cd "$src" || exit 1
+
+    fopts=""
+
+    en shared   shared
+    en gpl      gpl
+    en version3 version3
+    en nonfree  nonfree
+    en alsa     alsa
+    en bzlib    bzlib
+    en lzma     lzma
+    en zlib     zlib
+    en sdl2     sdl2
+    en sndio    sndio
+    en xlib     xlib
+    en drm      libdrm
+    en vulkan   vulkan
+    en openssl  openssl
+    en gnutls   gnutls
+    en xml2     libxml2
+    en lcms2    lcms2
+    en mysofa   libmysofa
+    en freetype libfreetype
+    en fontconfig libfontconfig
+    en fribidi  libfribidi
+    en harfbuzz libharfbuzz
+    en ass      libass
+    en mp3lame  libmp3lame
+    en opus     libopus
+    en vorbis   libvorbis
+    en speex    libspeex
+    en pulse    libpulse
+    en jack     libjack
+    en webp     libwebp
+    en vpx      libvpx
+    en dav1d    libdav1d
+    en aom      libaom
+    en x264     libx264
+    en x265     libx265
+    en fdk-aac  libfdk-aac
+
+    if attr_on xcb; then
+        fopts="$fopts --enable-libxcb --enable-libxcb-shm --enable-libxcb-xfixes --enable-libxcb-shape"
+    fi
+
+    if ! attr_on static; then
+        fopts="$fopts --disable-static"
+    fi
+
+    if ! attr_on doc; then
+        fopts="$fopts --disable-doc"
+    fi
+
+    ./configure --prefix="$PREFIX" \
+        --disable-autodetect --disable-stripping \
+        --enable-pic --enable-iconv \
+        --cc="${CC:-cc}" --cxx="${CXX:-c++}" --dep-cc="${CC:-cc}" \
+        --extra-cflags="-I$PREFIX/include" \
+        --extra-ldflags="-L$PREFIX/lib" \
+        $fopts || exit 1
+
+    make $MAKEOPTS
+}
+
+pkg_install()
+{
+    cd "$src" || exit 1
+    make DESTDIR="$DESTDIR" install
+}

@@ -1,0 +1,2 @@
+# tried in order, the first one that works wins
+https://ffmpeg.org/releases/ffmpeg-${PKG_VERSION}.tar.xz

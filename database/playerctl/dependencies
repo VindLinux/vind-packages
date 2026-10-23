@@ -1,0 +1,7 @@
+meson
+ninja
+pkgconf
+glib
+introspection?gobject-introspection
+bash-completions?bash-completion
+docs?gtk-doc

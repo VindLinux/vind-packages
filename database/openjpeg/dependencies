@@ -1,0 +1,8 @@
+cmake
+ninja
+pkgconf
+codec?zlib
+codec?libpng
+codec?libtiff
+codec?lcms2
+doc?doxygen

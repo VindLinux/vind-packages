@@ -1,0 +1,26 @@
+src="xmltoman-$PKG_VERSION"
+tarball="xmltoman_$PKG_VERSION.orig.tar.gz"
+
+pkg_download()
+{
+    fetch_source "$tarball" || exit 1
+    mkdir -p "$src" || exit 1
+    tar -xf "$tarball" -C "$src" || exit 1
+}
+
+pkg_build()
+{
+    :
+}
+
+pkg_install()
+{
+    cd "$src" || exit 1
+
+    mkdir -p "$DESTDIR$PREFIX/bin" "$DESTDIR$PREFIX/share/xmltoman" || exit 1
+
+    install -m 755 xmltoman "$DESTDIR$PREFIX/bin/xmltoman" || exit 1
+    install -m 755 xmlmantohtml "$DESTDIR$PREFIX/bin/xmlmantohtml" || exit 1
+    install -m 644 xmltoman.dtd xmltoman.xsl xmltoman.css \
+        "$DESTDIR$PREFIX/share/xmltoman/" || exit 1
+}

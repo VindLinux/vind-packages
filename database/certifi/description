@@ -1,0 +1,1 @@
+Python package that provides the Mozilla bundle of root certificates, used by HTTP libraries such as requests to verify TLS connections.

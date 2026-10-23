@@ -1,0 +1,2 @@
+# tried in order, the first one that works wins
+https://download.gnome.org/sources/pangomm/${PKG_VERSION_MAJOR_MINOR}/pangomm-${PKG_VERSION}.tar.xz

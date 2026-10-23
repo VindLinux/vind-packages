@@ -1,0 +1,1 @@
+Implementation of the double-array trie data structure, with the trietool utility, used for fast dictionary lookups such as Thai word breaking.

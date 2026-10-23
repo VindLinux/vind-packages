@@ -1,0 +1,38 @@
+src="lv2-${PKG_VERSION}"
+tarball="v${PKG_VERSION}.tar.gz"
+
+pkg_download()
+{
+    fetch_source "$tarball" || exit 1
+    tar -xf "$tarball" || exit 1
+}
+
+pkg_build()
+{
+    cd "$src" || exit 1
+
+    if attr_on old-headers; then
+        old="true"
+    else
+        old="false"
+    fi
+
+    if attr_on docs; then
+        docs="enabled"
+    else
+        docs="disabled"
+    fi
+
+    meson setup build --prefix="$PREFIX" --libdir=lib --buildtype=release \
+        --wrap-mode=nodownload \
+        -Dplugins=disabled -Dtests=disabled \
+        -Dold_headers="$old" -Ddocs="$docs" || exit 1
+
+    ninja -C build $MAKEOPTS
+}
+
+pkg_install()
+{
+    cd "$src" || exit 1
+    DESTDIR="$DESTDIR" ninja -C build install
+}

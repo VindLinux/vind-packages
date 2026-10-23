@@ -1,0 +1,7 @@
+apps
+shared
+avx512
+lto
+minimal
+rtc
+quiet

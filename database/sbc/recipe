@@ -1,0 +1,40 @@
+src="sbc-${PKG_VERSION}"
+tarball="$src.tar.xz"
+
+pkg_download()
+{
+    fetch_source "$tarball" || exit 1
+    tar -xf "$tarball" || exit 1
+}
+
+pkg_build()
+{
+    cd "$src" || exit 1
+
+    set -- --prefix="$PREFIX"
+
+    if ! attr_on tools; then
+        set -- "$@" --disable-tools
+    fi
+
+    if ! attr_on tester; then
+        set -- "$@" --disable-tester
+    fi
+
+    if attr_on high-precision; then
+        set -- "$@" --enable-high-precision
+    fi
+
+    if attr_on static; then
+        set -- "$@" --enable-static
+    fi
+
+    ./configure "$@" || exit 1
+    make $MAKEOPTS
+}
+
+pkg_install()
+{
+    cd "$src" || exit 1
+    make DESTDIR="$DESTDIR" install
+}

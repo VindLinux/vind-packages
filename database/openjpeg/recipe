@@ -1,0 +1,46 @@
+src="openjpeg-${PKG_VERSION}"
+tarball="v${PKG_VERSION}.tar.gz"
+
+pkg_download()
+{
+    fetch_source "$tarball" || exit 1
+    tar -xf "$tarball" || exit 1
+}
+
+cm()
+{
+    if attr_on "$1"; then
+        copts="$copts -D$2=ON"
+    else
+        copts="$copts -D$2=OFF"
+    fi
+}
+
+pkg_build()
+{
+    cd "$src" || exit 1
+
+    copts=""
+
+    cm codec  BUILD_CODEC
+    cm shared BUILD_SHARED_LIBS
+    cm static BUILD_STATIC_LIBS
+    cm thread OPJ_USE_THREAD
+    cm doc    BUILD_DOC
+
+    cmake -S . -B build -G Ninja \
+        -DCMAKE_INSTALL_PREFIX="$PREFIX" \
+        -DCMAKE_INSTALL_LIBDIR=lib \
+        -DCMAKE_BUILD_TYPE=Release \
+        -DCMAKE_POLICY_VERSION_MINIMUM=3.5 \
+        -DBUILD_TESTING=OFF -DBUILD_THIRDPARTY=OFF \
+        $copts || exit 1
+
+    cmake --build build || exit 1
+}
+
+pkg_install()
+{
+    cd "$src" || exit 1
+    DESTDIR="$DESTDIR" cmake --install build
+}

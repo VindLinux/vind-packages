@@ -1,0 +1,30 @@
+src="cyrus-sasl-${PKG_VERSION}"
+tarball="cyrus-sasl2_${PKG_VERSION}+dfsg1.orig.tar.xz"
+
+pkg_download()
+{
+    fetch_source "$tarball" || exit 1
+    tar -xf "$tarball" || exit 1
+}
+
+pkg_build()
+{
+    cd "$src" || exit 1
+
+    set -- --prefix="$PREFIX" --sysconfdir=/etc --with-dblib=lmdb --disable-sample
+
+    if attr_on pam; then
+        set -- "$@" --with-pam
+    else
+        set -- "$@" --without-pam
+    fi
+
+    ./configure "$@" || exit 1
+    make $MAKEOPTS
+}
+
+pkg_install()
+{
+    cd "$src" || exit 1
+    make DESTDIR="$DESTDIR" install
+}

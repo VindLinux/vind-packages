@@ -1,0 +1,1 @@
+Lightweight C library for reading and writing RDF syntax (Turtle, NTriples, NQuads and TriG), with the serdi command-line tool.

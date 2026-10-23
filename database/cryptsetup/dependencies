@@ -1,0 +1,17 @@
+meson
+ninja
+pkgconf
+json-c
+lvm2
+popt
+util-linux
+openssl
+udev?eudev
+nls?gettext
+ssh-token?libssh
+ssh-token?argp-standalone
+pwquality?libpwquality
+asciidoc?asciidoctor
+gcrypt?libgcrypt
+nettle?nettle
+libargon2?libargon2

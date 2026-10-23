@@ -1,0 +1,29 @@
+src="mbedtls-${PKG_VERSION}"
+tarball="${src}.tar.bz2"
+
+pkg_download()
+{
+    fetch_source "$tarball" || exit 1
+    tar -xf "$tarball" || exit 1
+}
+
+pkg_build()
+{
+    cd "$src" || exit 1
+
+    cmake -B build \
+        -DCMAKE_BUILD_TYPE=Release \
+        -DCMAKE_INSTALL_PREFIX="$PREFIX" \
+        -DUSE_SHARED_MBEDTLS_LIBRARY=ON \
+        -DENABLE_PROGRAMS=OFF \
+        -DENABLE_TESTING=OFF \
+        -DMBEDTLS_FATAL_WARNINGS=OFF || exit 1
+
+    cmake --build build -- $MAKEOPTS
+}
+
+pkg_install()
+{
+    cd "$src" || exit 1
+    DESTDIR="$DESTDIR" cmake --install build
+}

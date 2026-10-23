@@ -1,0 +1,2 @@
+# tried in order, the first one that works wins
+https://github.com/tlwg/libdatrie/releases/download/v${PKG_VERSION}/libdatrie-${PKG_VERSION}.tar.xz

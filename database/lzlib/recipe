@@ -1,0 +1,46 @@
+src="lzlib-${PKG_VERSION}"
+tarball="$src.tar.gz"
+
+pkg_download()
+{
+    fetch_source "$tarball" || exit 1
+    tar -xf "$tarball" || exit 1
+}
+
+pkg_build()
+{
+    cd "$src" || exit 1
+
+    set -- --prefix="$PREFIX" --disable-ldconfig
+
+    if attr_on shared; then
+        set -- "$@" --enable-shared
+    fi
+
+    if ! attr_on static; then
+        set -- "$@" --disable-static
+    fi
+
+    ./configure "$@" \
+        CC="${CC:-cc}" \
+        CFLAGS="${CFLAGS:--O2}" \
+        CPPFLAGS="$CPPFLAGS" \
+        LDFLAGS="$LDFLAGS" || exit 1
+
+    if attr_on bin; then
+        make $MAKEOPTS bin
+    else
+        make $MAKEOPTS
+    fi
+}
+
+pkg_install()
+{
+    cd "$src" || exit 1
+
+    make DESTDIR="$DESTDIR" install || exit 1
+
+    if attr_on bin; then
+        make DESTDIR="$DESTDIR" install-bin || exit 1
+    fi
+}

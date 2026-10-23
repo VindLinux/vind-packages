@@ -1,0 +1,29 @@
+src="gpsd-$PKG_VERSION"
+tarball="gpsd-$PKG_VERSION.tar.xz"
+
+scons_opts()
+{
+    printf '%s' "prefix=$PREFIX libdir=$PREFIX/lib python=no qt=no ncurses=no systemd=no manbuild=no dbus_export=no bluez=no usb=no"
+}
+
+pkg_download()
+{
+    fetch_source "$tarball" || exit 1
+    tar -xf "$tarball" || exit 1
+}
+
+pkg_build()
+{
+    cd "$src" || exit 1
+
+    (
+        unset DESTDIR
+        scons -Q $MAKEOPTS $(scons_opts) build
+    ) || exit 1
+}
+
+pkg_install()
+{
+    cd "$src" || exit 1
+    scons -Q $(scons_opts) install || exit 1
+}

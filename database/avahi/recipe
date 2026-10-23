@@ -1,0 +1,79 @@
+src="avahi-${PKG_VERSION}"
+tarball="$src.tar.gz"
+
+pkg_download()
+{
+    fetch_source "$tarball" || exit 1
+    tar -xf "$tarball" || exit 1
+}
+
+pkg_build()
+{
+    cd "$src" || exit 1
+
+    set -- --prefix="$PREFIX" --sysconfdir=/etc --localstatedir=/var \
+        --with-distro=none --with-xml=expat \
+        --disable-mono --disable-monodoc \
+        --disable-qt3 --disable-qt4 --disable-qt5 --disable-gtk \
+        --disable-pygobject --disable-python-dbus \
+        --disable-doxygen-doc --disable-xmltoman
+
+    if ! attr_on dbus; then
+        set -- "$@" --disable-dbus
+    fi
+
+    if ! attr_on glib; then
+        set -- "$@" --disable-glib
+    fi
+
+    if ! attr_on gobject; then
+        set -- "$@" --disable-gobject
+    fi
+
+    if ! attr_on libevent; then
+        set -- "$@" --disable-libevent
+    fi
+
+    if ! attr_on gtk3; then
+        set -- "$@" --disable-gtk3
+    fi
+
+    if ! attr_on gdbm; then
+        set -- "$@" --disable-gdbm
+    fi
+
+    if ! attr_on libdaemon; then
+        set -- "$@" --disable-libdaemon
+    fi
+
+    if ! attr_on python; then
+        set -- "$@" --disable-python
+    fi
+
+    if ! attr_on autoipd; then
+        set -- "$@" --disable-autoipd
+    fi
+
+    if ! attr_on nls; then
+        set -- "$@" --disable-nls
+    fi
+
+    if attr_on introspection; then
+        set -- "$@" --enable-introspection=yes
+    else
+        set -- "$@" --enable-introspection=no
+    fi
+
+    if attr_on dnssd-compat; then
+        set -- "$@" --enable-compat-libdns_sd
+    fi
+
+    ./configure "$@" || exit 1
+    make $MAKEOPTS
+}
+
+pkg_install()
+{
+    cd "$src" || exit 1
+    make DESTDIR="$DESTDIR" install
+}

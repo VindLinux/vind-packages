@@ -1,0 +1,72 @@
+src="graphviz-${PKG_VERSION}"
+tarball="$src.tar.xz"
+
+pkg_download()
+{
+    fetch_source "$tarball" || exit 1
+    tar -xf "$tarball" || exit 1
+}
+
+ww()
+{
+    if attr_on "$1"; then
+        gopts="$gopts --with-$2"
+    else
+        gopts="$gopts --without-$2"
+    fi
+}
+
+lang()
+{
+    if attr_on "$1"; then
+        gopts="$gopts --enable-$2=yes"
+    else
+        gopts="$gopts --disable-$2"
+    fi
+}
+
+pkg_build()
+{
+    cd "$src" || exit 1
+
+    gopts=""
+
+    ww expat      expat
+    ww pangocairo pangocairo
+    ww freetype2  freetype2
+    ww gdk-pixbuf gdk-pixbuf
+    ww webp       webp
+    ww rsvg       rsvg
+    ww poppler    poppler
+    ww gd         libgd
+    ww x11        x
+
+    lang swig    swig
+    lang tcl     tcl
+    lang python3 python3
+    lang perl    perl
+    lang ruby    ruby
+    lang guile   guile
+    lang lua     lua
+
+    if ! attr_on static; then
+        gopts="$gopts --disable-static"
+    fi
+
+    ./configure --prefix="$PREFIX" --with-included-ltdl \
+        --disable-sharp --disable-d --disable-go --disable-java \
+        --disable-javascript --disable-php --disable-python --disable-r \
+        --without-smyrna --without-qt --without-gtk --without-gtkgl \
+        --without-gtkglext --without-gts --without-ann --without-glade \
+        --without-lasi --without-glut --without-aalib --without-devil \
+        --without-ghostscript \
+        $gopts || exit 1
+
+    make $MAKEOPTS
+}
+
+pkg_install()
+{
+    cd "$src" || exit 1
+    make DESTDIR="$DESTDIR" install
+}

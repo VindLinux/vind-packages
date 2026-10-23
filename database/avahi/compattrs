@@ -1,0 +1,12 @@
+dbus
+glib
+gobject
+libevent
+gtk3
+gdbm
+libdaemon
+python
+autoipd
+nls
+introspection
+dnssd-compat

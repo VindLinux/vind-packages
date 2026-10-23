@@ -1,0 +1,68 @@
+src="rav1e-${PKG_VERSION}"
+tarball="v${PKG_VERSION}.tar.gz"
+
+pkg_download()
+{
+    fetch_source "$tarball" || exit 1
+    tar -xf "$tarball" || exit 1
+}
+
+setfeat()
+{
+    feat=""
+
+    if attr_on binaries; then
+        feat="$feat,binaries,signal_support"
+    fi
+
+    if attr_on asm; then
+        feat="$feat,asm"
+    fi
+
+    if attr_on threading; then
+        feat="$feat,threading"
+    fi
+
+    feat="${feat#,}"
+}
+
+pkg_build()
+{
+    cd "$src" || exit 1
+
+    export CARGO_HOME="$PWD/.cargo"
+
+    setfeat
+
+    if attr_on binaries; then
+        cargo build --release --locked --no-default-features \
+            --features "$feat" || exit 1
+    fi
+
+    if attr_on capi; then
+        cargo cbuild --release --locked --no-default-features \
+            --features "$feat" \
+            --prefix "$PREFIX" --libdir "$PREFIX/lib" || exit 1
+    fi
+}
+
+pkg_install()
+{
+    cd "$src" || exit 1
+
+    export CARGO_HOME="$PWD/.cargo"
+
+    setfeat
+
+    if attr_on binaries; then
+        mkdir -p "$DESTDIR$PREFIX/bin" || exit 1
+        install -m755 target/release/rav1e "$DESTDIR$PREFIX/bin/rav1e" || exit 1
+    fi
+
+    if attr_on capi; then
+        cargo cinstall --release --locked --no-default-features \
+            --features "$feat" \
+            --prefix "$PREFIX" --libdir "$PREFIX/lib" \
+            --destdir "$DESTDIR" || exit 1
+    fi
+}

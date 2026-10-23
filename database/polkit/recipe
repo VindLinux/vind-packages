@@ -1,0 +1,34 @@
+src="polkit-$PKG_VERSION"
+tarball="polkit-$PKG_VERSION.tar.gz"
+
+pkg_download()
+{
+    fetch_source "$tarball" || exit 1
+    tar -xf "$tarball" || exit 1
+}
+
+pkg_build()
+{
+    cd "$src" || exit 1
+
+    set -- --prefix="$PREFIX" --libdir=lib --buildtype=release \
+           --sysconfdir=/etc --localstatedir=/var --wrap-mode=nodownload \
+           -Dintrospection=false -Dtests=false -Dexamples=false \
+           -Dman=false -Dgtk_doc=false -Dgettext=false
+
+    if attr_on daemon; then
+        set -- "$@" -Dlibs-only=false -Dsession_tracking=elogind \
+               -Dauthfw=pam -Dos_type=lfs
+    else
+        set -- "$@" -Dlibs-only=true
+    fi
+
+    meson setup build "$@" || exit 1
+    ninja -C build $MAKEOPTS || exit 1
+}
+
+pkg_install()
+{
+    cd "$src" || exit 1
+    DESTDIR="$DESTDIR" meson install -C build || exit 1
+}

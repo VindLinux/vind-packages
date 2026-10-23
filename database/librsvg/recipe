@@ -1,0 +1,44 @@
+src="librsvg-$PKG_VERSION"
+tarball="librsvg-$PKG_VERSION.tar.xz"
+
+pkg_download()
+{
+    fetch_source "$tarball" || exit 1
+    tar -xf "$tarball" || exit 1
+}
+
+pkg_build()
+{
+    cd "$src" || exit 1
+
+    set -- --prefix="$PREFIX" --libdir=lib --buildtype=release \
+           --wrap-mode=nodownload \
+           -Dintrospection=disabled -Dvala=disabled -Ddocs=disabled \
+           -Dtests=false -Drsvg-convert=enabled -Dpixbuf-loader=disabled
+
+    if attr_on pixbuf; then
+        set -- "$@" -Dpixbuf=enabled
+    else
+        set -- "$@" -Dpixbuf=disabled
+    fi
+
+    if attr_on avif; then
+        set -- "$@" -Davif=enabled
+    else
+        set -- "$@" -Davif=disabled
+    fi
+
+    RUSTFLAGS="$RUSTFLAGS -C target-feature=-crt-static" \
+    CARGO_BUILD_JOBS=2 \
+    meson setup build "$@" || exit 1
+
+    RUSTFLAGS="$RUSTFLAGS -C target-feature=-crt-static" \
+    CARGO_BUILD_JOBS=2 \
+    ninja -C build $MAKEOPTS || exit 1
+}
+
+pkg_install()
+{
+    cd "$src" || exit 1
+    DESTDIR="$DESTDIR" meson install -C build || exit 1
+}

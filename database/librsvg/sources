@@ -1,0 +1,2 @@
+# tried in order, the first one that works wins
+https://download.gnome.org/sources/librsvg/2.63/librsvg-${PKG_VERSION}.tar.xz

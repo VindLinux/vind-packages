@@ -1,0 +1,2 @@
+# tried in order, the first one that works wins
+https://gitlab.freedesktop.org/libinput/libei/-/archive/${PKG_VERSION}/libei-${PKG_VERSION}.tar.bz2

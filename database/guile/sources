@@ -1,0 +1,3 @@
+# tried in order, the first one that works wins
+https://ftp.gnu.org/gnu/guile/guile-${PKG_VERSION}.tar.xz
+https://bio.nic.funet.fi/pub/mirrors/ftp.gnu.org/gnu/guile/guile-${PKG_VERSION}.tar.xz

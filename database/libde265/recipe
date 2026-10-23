@@ -1,0 +1,34 @@
+src="libde265-$PKG_VERSION"
+tarball="libde265-$PKG_VERSION.tar.gz"
+
+pkg_download()
+{
+    fetch_source "$tarball" || exit 1
+    tar -xf "$tarball" || exit 1
+}
+
+pkg_build()
+{
+    cd "$src" || exit 1
+
+    cmake -G Ninja -S . -B _build \
+        -D CMAKE_INSTALL_PREFIX="$PREFIX" \
+        -D CMAKE_INSTALL_LIBDIR=lib \
+        -D CMAKE_SKIP_INSTALL_RPATH=ON \
+        -D CMAKE_BUILD_TYPE=Release \
+        -D BUILD_SHARED_LIBS=ON \
+        -D ENABLE_DECODER=ON \
+        -D ENABLE_ENCODER=OFF \
+        -D ENABLE_SDL=OFF \
+        -D ENABLE_SHERLOCK265=OFF \
+        -D ENABLE_AVX512=OFF \
+        -W no-dev || exit 1
+
+    ninja -C _build $MAKEOPTS || exit 1
+}
+
+pkg_install()
+{
+    cd "$src" || exit 1
+    DESTDIR="$DESTDIR" ninja -C _build install || exit 1
+}

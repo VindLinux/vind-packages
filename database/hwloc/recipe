@@ -1,0 +1,30 @@
+src="hwloc-${PKG_VERSION}"
+tarball="hwloc_${PKG_VERSION}.orig.tar.bz2"
+
+pkg_download()
+{
+    fetch_source "$tarball" || exit 1
+    tar -xf "$tarball" || exit 1
+}
+
+pkg_build()
+{
+    cd "$src" || exit 1
+
+    set -- --prefix="$PREFIX"
+
+    for feature in pci cairo libudev libxml2; do
+        if ! attr_on "$feature"; then
+            set -- "$@" --disable-"$feature"
+        fi
+    done
+
+    ./configure "$@" || exit 1
+    make $MAKEOPTS
+}
+
+pkg_install()
+{
+    cd "$src" || exit 1
+    make DESTDIR="$DESTDIR" install
+}

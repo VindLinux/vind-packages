@@ -1,0 +1,12 @@
+pkgconf
+linux-headers
+glib
+dbus
+udev?eudev
+cups?cups
+obex?libical
+mesh?json-c
+midi?alsa-lib
+client?readline
+mesh?readline
+manpages?docutils

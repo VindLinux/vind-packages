@@ -1,0 +1,2 @@
+# tried in order, the first one that works wins
+https://mirrors.edge.kernel.org/debian/pool/main/libb/libb2/libb2_${PKG_VERSION}.orig.tar.gz

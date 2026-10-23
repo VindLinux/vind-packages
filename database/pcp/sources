@@ -1,0 +1,3 @@
+# tried in order, the first one that works wins
+https://fossies.org/linux/misc/pcp-${PKG_VERSION}.tar.gz
+https://github.com/performancecopilot/pcp/archive/refs/tags/${PKG_VERSION}.tar.gz

@@ -1,0 +1,42 @@
+src="tdb-${PKG_VERSION}"
+tarball="$src.tar.gz"
+
+pkg_download()
+{
+    fetch_source "$tarball" || exit 1
+    tar -xf "$tarball" || exit 1
+}
+
+pkg_build()
+{
+    cd "$src" || exit 1
+
+    set -- --prefix="$PREFIX" --libdir="$PREFIX/lib" \
+        --disable-rpath --disable-rpath-install \
+        --disable-warnings-as-errors
+
+    if ! attr_on python; then
+        set -- "$@" --disable-python
+    fi
+
+    if ! attr_on mutex; then
+        set -- "$@" --disable-tdb-mutex-locking
+    fi
+
+    if ! attr_on gettext; then
+        set -- "$@" --without-gettext
+    fi
+
+    if attr_on rust; then
+        set -- "$@" --enable-rust
+    fi
+
+    ./configure "$@" || exit 1
+    make $MAKEOPTS
+}
+
+pkg_install()
+{
+    cd "$src" || exit 1
+    DESTDIR="$DESTDIR" make install
+}

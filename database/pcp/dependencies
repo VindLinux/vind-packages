@@ -1,0 +1,12 @@
+openssl
+cyrus-sasl
+zlib
+xz
+readline
+ncurses
+sqlite3
+libuv
+bison
+flex
+python3?python3
+perl?perl

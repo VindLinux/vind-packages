@@ -1,0 +1,1 @@
+Sphinx extension that renders math in HTML output with the jsMath-style markup, handled in the browser by JavaScript.

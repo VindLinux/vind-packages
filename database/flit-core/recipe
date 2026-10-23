@@ -1,0 +1,20 @@
+src="flit_core-${PKG_VERSION}"
+tarball="$src.tar.gz"
+
+pkg_download()
+{
+    fetch_source "$tarball" || exit 1
+    tar -xf "$tarball" || exit 1
+}
+
+pkg_build()
+{
+    cd "$src" || exit 1
+    python3 build_dists.py || exit 1
+}
+
+pkg_install()
+{
+    cd "$src" || exit 1
+    python3 bootstrap_install.py --install-root "$DESTDIR" dist/flit_core-*.whl
+}

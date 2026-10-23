@@ -1,0 +1,1 @@
+Trivial Database, a fast key-value database library with transactions and locking, used by Samba and other programs, with the tdbtool, tdbdump and tdbbackup utilities.

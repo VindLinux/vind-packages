@@ -1,0 +1,1 @@
+Extensible, standards-compliant Python build backend used by Hatch and by many projects that declare hatchling.build in their pyproject.toml.

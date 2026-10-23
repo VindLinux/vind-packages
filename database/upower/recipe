@@ -1,0 +1,36 @@
+src="upower-v$PKG_VERSION"
+tarball="upower_$PKG_VERSION.orig.tar.bz2"
+
+pkg_download()
+{
+    fetch_source "$tarball" || exit 1
+    tar -xf "$tarball" || exit 1
+}
+
+pkg_build()
+{
+    cd "$src" || exit 1
+
+    set -- --prefix="$PREFIX" --libdir=lib --buildtype=release \
+           --sysconfdir=/etc --localstatedir=/var --wrap-mode=nodownload \
+           -Dman=false -Dgtk-doc=false -Dintrospection=disabled \
+           -Didevice=disabled -Dinstalled_tests=false \
+           -Dsystemdsystemunitdir=no \
+           -Dudevrulesdir="$PREFIX/lib/udev/rules.d" \
+           -Dudevhwdbdir="$PREFIX/lib/udev/hwdb.d"
+
+    if attr_on polkit; then
+        set -- "$@" -Dpolkit=enabled
+    else
+        set -- "$@" -Dpolkit=disabled
+    fi
+
+    meson setup build "$@" || exit 1
+    ninja -C build $MAKEOPTS || exit 1
+}
+
+pkg_install()
+{
+    cd "$src" || exit 1
+    DESTDIR="$DESTDIR" meson install -C build || exit 1
+}

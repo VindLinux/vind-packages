@@ -1,0 +1,48 @@
+src="dav1d-${PKG_VERSION}"
+tarball="$src.tar.xz"
+
+pkg_download()
+{
+    fetch_source "$tarball" || exit 1
+    tar -xf "$tarball" || exit 1
+}
+
+opt()
+{
+    if attr_on "$1"; then
+        mopts="$mopts -D$2=true"
+    else
+        mopts="$mopts -D$2=false"
+    fi
+}
+
+pkg_build()
+{
+    cd "$src" || exit 1
+
+    mopts=""
+
+    opt tools   enable_tools
+    opt asm     enable_asm
+    opt logging logging
+    opt docs    enable_docs
+
+    if attr_on xxhash; then
+        mopts="$mopts -Dxxhash_muxer=enabled"
+    else
+        mopts="$mopts -Dxxhash_muxer=disabled"
+    fi
+
+    meson setup build --prefix="$PREFIX" --libdir=lib --buildtype=release \
+        --wrap-mode=nodownload \
+        -Denable_tests=false -Denable_examples=false \
+        $mopts || exit 1
+
+    ninja -C build $MAKEOPTS
+}
+
+pkg_install()
+{
+    cd "$src" || exit 1
+    DESTDIR="$DESTDIR" ninja -C build install
+}

@@ -1,0 +1,7 @@
+python3
+setuptools
+wheel
+urllib3
+idna
+charset-normalizer
+certifi

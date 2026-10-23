@@ -1,0 +1,2 @@
+# tried in order, the first one that works wins
+https://github.com/jgm/pandoc/releases/download/${PKG_VERSION}/pandoc-${PKG_VERSION}-linux-amd64.tar.gz

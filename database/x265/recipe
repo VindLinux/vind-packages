@@ -1,0 +1,58 @@
+src="x265_$PKG_VERSION"
+tarball="x265_$PKG_VERSION.orig.tar.gz"
+
+x265_cmake()
+{
+    dir=$1
+    shift
+
+    cmake -G Ninja -S "$src/source" -B "$dir" \
+        -D CMAKE_INSTALL_PREFIX="$PREFIX" \
+        -D CMAKE_INSTALL_LIBDIR=lib \
+        -D CMAKE_SKIP_INSTALL_RPATH=ON \
+        -D CMAKE_BUILD_TYPE=Release \
+        -D CMAKE_POLICY_VERSION_MINIMUM=3.5 \
+        -D ENABLE_LIBNUMA=OFF \
+        -D ENABLE_LIBVMAF=OFF \
+        "$@" \
+        -W no-dev
+}
+
+pkg_download()
+{
+    fetch_source "$tarball" || exit 1
+    tar -xf "$tarball" || exit 1
+}
+
+pkg_build()
+{
+    if attr_on highbit; then
+        x265_cmake x265-12 -D HIGH_BIT_DEPTH=ON -D MAIN12=ON \
+            -D EXPORT_C_API=OFF -D ENABLE_SHARED=OFF -D ENABLE_CLI=OFF || exit 1
+        ninja -C x265-12 $MAKEOPTS || exit 1
+
+        x265_cmake x265-10 -D HIGH_BIT_DEPTH=ON \
+            -D EXPORT_C_API=OFF -D ENABLE_SHARED=OFF -D ENABLE_CLI=OFF || exit 1
+        ninja -C x265-10 $MAKEOPTS || exit 1
+
+        mkdir -p x265-8 || exit 1
+        ln -sf ../x265-10/libx265.a x265-8/libx265_main10.a || exit 1
+        ln -sf ../x265-12/libx265.a x265-8/libx265_main12.a || exit 1
+
+        x265_cmake x265-8 -D EXTRA_LIB="x265_main10.a;x265_main12.a" \
+            -D EXTRA_LINK_FLAGS=-L. -D LINKED_10BIT=ON -D LINKED_12BIT=ON || exit 1
+    else
+        x265_cmake x265-8 || exit 1
+    fi
+
+    ninja -C x265-8 $MAKEOPTS || exit 1
+}
+
+pkg_install()
+{
+    DESTDIR="$DESTDIR" ninja -C x265-8 install || exit 1
+
+    if attr_on highbit; then
+        rm -f "$DESTDIR$PREFIX/lib/libx265.a" || exit 1
+    fi
+}

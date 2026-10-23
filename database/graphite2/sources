@@ -1,0 +1,3 @@
+# tried in order, the first one that works wins
+https://mirrors.up.pt/pub/debian/pool/main/g/graphite2/graphite2_${PKG_VERSION}.orig.tar.gz
+https://github.com/silnrsi/graphite/archive/refs/tags/${PKG_VERSION}.tar.gz

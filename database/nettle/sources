@@ -1,0 +1,2 @@
+# tried in order, the first one that works wins
+https://mirrors.nic.funet.fi/pub/gnu/gnu/nettle/nettle-${PKG_VERSION}.tar.gz

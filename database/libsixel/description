@@ -1,0 +1,1 @@
+Encoder and decoder library for the SIXEL graphics format, with the img2sixel and sixel2png tools for showing images in compatible terminals.

@@ -1,0 +1,11 @@
+meson
+ninja
+pkgconf
+python3
+bison
+flex
+glib
+libcap
+bash-completion
+nls?gettext
+libunwind?libunwind

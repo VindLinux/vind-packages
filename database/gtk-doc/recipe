@@ -1,0 +1,25 @@
+src="gtk-doc-$PKG_VERSION"
+tarball="gtk-doc-$PKG_VERSION.tar.xz"
+
+pkg_download()
+{
+    fetch_source "$tarball" || exit 1
+    tar -xf "$tarball" || exit 1
+}
+
+pkg_build()
+{
+    cd "$src" || exit 1
+
+    meson setup _build --prefix="$PREFIX" --libdir=lib --buildtype=release \
+        --wrap-mode=nodownload \
+        -Dyelp_manual=false -Dtests=false -Dcheck_runtime_deps=false || exit 1
+
+    ninja -C _build $MAKEOPTS || exit 1
+}
+
+pkg_install()
+{
+    cd "$src" || exit 1
+    DESTDIR="$DESTDIR" meson install -C _build || exit 1
+}

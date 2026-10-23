@@ -1,0 +1,1 @@
+Library stack for emulating and capturing input events across processes, with libei for clients, libeis for servers and liboeffis for the RemoteDesktop portal.

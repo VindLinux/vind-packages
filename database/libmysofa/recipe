@@ -1,0 +1,42 @@
+src="libmysofa-${PKG_VERSION}"
+tarball="v${PKG_VERSION}.tar.gz"
+
+pkg_download()
+{
+    fetch_source "$tarball" || exit 1
+    tar -xf "$tarball" || exit 1
+}
+
+pkg_build()
+{
+    cd "$src" || exit 1
+
+    if attr_on shared; then
+        shared="ON"
+    else
+        shared="OFF"
+    fi
+
+    if attr_on static; then
+        static="ON"
+    else
+        static="OFF"
+    fi
+
+    cmake -S . -B build -G Ninja \
+        -DCMAKE_INSTALL_PREFIX="$PREFIX" \
+        -DCMAKE_INSTALL_LIBDIR=lib \
+        -DCMAKE_BUILD_TYPE=Release \
+        -DCMAKE_POLICY_VERSION_MINIMUM=3.5 \
+        -DBUILD_TESTS=OFF \
+        -DBUILD_SHARED_LIBS="$shared" \
+        -DBUILD_STATIC_LIBS="$static" || exit 1
+
+    cmake --build build || exit 1
+}
+
+pkg_install()
+{
+    cd "$src" || exit 1
+    DESTDIR="$DESTDIR" cmake --install build
+}

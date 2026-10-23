@@ -1,0 +1,28 @@
+src="libdbusmenu-${PKG_VERSION%+*}"
+tarball="libdbusmenu_$PKG_VERSION.orig.tar.xz"
+
+pkg_download()
+{
+    fetch_source "$tarball" || exit 1
+    tar -xf "$tarball" || exit 1
+}
+
+pkg_build()
+{
+    cd "$src" || exit 1
+
+    autoreconf -fi || exit 1
+
+    CFLAGS="$CFLAGS -Wno-error" \
+    ./configure --prefix="$PREFIX" --with-gtk=3 \
+        --disable-dumper --disable-tests --disable-vala \
+        --disable-introspection --disable-gtk-doc --disable-nls || exit 1
+
+    make $MAKEOPTS CFLAGS="$CFLAGS -Wno-error" || exit 1
+}
+
+pkg_install()
+{
+    cd "$src" || exit 1
+    make DESTDIR="$DESTDIR" install || exit 1
+}

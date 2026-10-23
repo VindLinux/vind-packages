@@ -1,0 +1,11 @@
+meson
+ninja
+pkgconf
+wayland
+wayland-protocols
+cairo
+pango
+dbus?dbus
+gtk?gtk3
+demo?mesa
+demo?libxkbcommon

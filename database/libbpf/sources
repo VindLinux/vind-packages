@@ -1,0 +1,2 @@
+# tried in order, the first one that works wins
+https://mirror.lug.umbc.edu/debian/pool/main/libb/libbpf/libbpf_${PKG_VERSION}.orig.tar.gz

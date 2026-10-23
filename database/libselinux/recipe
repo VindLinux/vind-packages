@@ -1,0 +1,55 @@
+src="libselinux-${PKG_VERSION}"
+tarball="$src.tar.gz"
+
+pkg_download()
+{
+    fetch_source "$tarball" || exit 1
+    tar -xf "$tarball" || exit 1
+}
+
+setopts()
+{
+    mkopts="PREFIX=$PREFIX LIBDIR=$PREFIX/lib SHLIBDIR=$PREFIX/lib USE_PCRE2=y"
+
+    if ! attr_on shared; then
+        mkopts="$mkopts DISABLE_SHARED=y"
+    fi
+
+    if ! attr_on rpm; then
+        mkopts="$mkopts DISABLE_RPM=y"
+    fi
+
+    if ! attr_on setrans; then
+        mkopts="$mkopts DISABLE_SETRANS=y"
+    fi
+
+    if ! attr_on bool; then
+        mkopts="$mkopts DISABLE_BOOL=y"
+    fi
+
+    if ! attr_on x11; then
+        mkopts="$mkopts DISABLE_X11=y"
+    fi
+
+    if attr_on lfs; then
+        mkopts="$mkopts USE_LFS=y"
+    fi
+}
+
+pkg_build()
+{
+    cd "$src" || exit 1
+
+    setopts
+
+    make $mkopts $MAKEOPTS
+}
+
+pkg_install()
+{
+    cd "$src" || exit 1
+
+    setopts
+
+    make $mkopts DESTDIR="$DESTDIR" install
+}

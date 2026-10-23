@@ -1,0 +1,10 @@
+shared
+yjit
+zjit
+gmp
+jemalloc
+docs
+rubygems
+openssl
+yaml
+ffi

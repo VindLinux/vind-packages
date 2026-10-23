@@ -1,0 +1,4 @@
+# tried in order, the first one that works wins
+https://download.savannah.gnu.org/releases/lzip/lzlib/lzlib-${PKG_VERSION}.tar.gz
+https://mirror.kumi.systems/nongnu/lzip/lzlib/lzlib-${PKG_VERSION}.tar.gz
+https://mirror.fi.ossplanet.net/nongnu/lzip/lzlib/lzlib-${PKG_VERSION}.tar.gz

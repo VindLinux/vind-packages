@@ -1,0 +1,1 @@
+Lightweight C library for storing RDF data in memory, built on serd, with the sordi and sord_validate command-line tools.

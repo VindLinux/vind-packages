@@ -1,0 +1,13 @@
+meson
+ninja
+pkgconf
+python3
+gperf
+m4
+libcap
+eudev
+util-linux
+libacl
+dbus
+pam?pam
+polkit?polkit

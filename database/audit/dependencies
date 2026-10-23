@@ -1,0 +1,9 @@
+autoconf
+automake
+libtool
+pkgconf
+python3?python3
+python3?swig
+libcap-ng?libcap-ng
+tls?openssl
+gssapi-krb5?krb5

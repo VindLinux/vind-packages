@@ -1,0 +1,34 @@
+src="pcp-${PKG_VERSION}"
+tarball="${src}.tar.gz"
+
+pkg_download()
+{
+    fetch_source "$tarball" || exit 1
+    tar -xf "$tarball" || exit 1
+}
+
+pkg_build()
+{
+    cd "$src" || exit 1
+
+    set -- --prefix="$PREFIX" --sysconfdir=/etc --localstatedir=/var \
+        --without-systemd --without-qt --without-selinux --without-infiniband \
+        --without-perfevent --without-pmdabpf --without-pmdabpftrace
+
+    for lang in python3 perl; do
+        if attr_on "$lang"; then
+            set -- "$@" --with-"$lang"
+        else
+            set -- "$@" --without-"$lang"
+        fi
+    done
+
+    ./configure "$@" || exit 1
+    make $MAKEOPTS default_pcp
+}
+
+pkg_install()
+{
+    cd "$src" || exit 1
+    NO_CHOWN=true DIST_ROOT="$DESTDIR" make install_pcp
+}

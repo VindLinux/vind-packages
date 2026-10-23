@@ -1,0 +1,27 @@
+src="x264-$PKG_VERSION"
+tarball="x264_$PKG_VERSION.orig.tar.xz"
+
+pkg_download()
+{
+    fetch_source "$tarball" || exit 1
+    tar -xf "$tarball" || exit 1
+}
+
+pkg_build()
+{
+    cd "$src" || exit 1
+
+    CC=cc ./configure --prefix="$PREFIX" --libdir="$PREFIX/lib" \
+        --enable-shared --enable-static --enable-pic \
+        --disable-opencl --disable-bashcompletion \
+        --disable-avs --disable-swscale --disable-lavf \
+        --disable-ffms --disable-gpac --disable-lsmash || exit 1
+
+    make $MAKEOPTS || exit 1
+}
+
+pkg_install()
+{
+    cd "$src" || exit 1
+    make DESTDIR="$DESTDIR" install || exit 1
+}

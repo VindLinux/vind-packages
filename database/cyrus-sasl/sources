@@ -1,0 +1,2 @@
+# tried in order, the first one that works wins
+https://mirrors.edge.kernel.org/debian/pool/main/c/cyrus-sasl2/cyrus-sasl2_${PKG_VERSION}+dfsg1.orig.tar.xz

@@ -1,0 +1,32 @@
+src="libaom-$PKG_VERSION"
+tarball="libaom-$PKG_VERSION.tar.gz"
+
+pkg_download()
+{
+    fetch_source "$tarball" || exit 1
+    tar -xf "$tarball" || exit 1
+}
+
+pkg_build()
+{
+    cmake -G Ninja -S "$src" -B aom-build \
+        -D CMAKE_INSTALL_PREFIX="$PREFIX" \
+        -D CMAKE_INSTALL_LIBDIR=lib \
+        -D CMAKE_SKIP_INSTALL_RPATH=ON \
+        -D CMAKE_BUILD_TYPE=Release \
+        -D BUILD_SHARED_LIBS=ON \
+        -D CONFIG_PIC=1 \
+        -D ENABLE_NASM=1 \
+        -D ENABLE_DOCS=0 \
+        -D ENABLE_EXAMPLES=0 \
+        -D ENABLE_TESTS=0 \
+        -D ENABLE_TOOLS=0 \
+        -W no-dev || exit 1
+
+    ninja -C aom-build $MAKEOPTS || exit 1
+}
+
+pkg_install()
+{
+    DESTDIR="$DESTDIR" ninja -C aom-build install || exit 1
+}

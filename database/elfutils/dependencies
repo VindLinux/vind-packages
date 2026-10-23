@@ -1,0 +1,5 @@
+zlib
+bzlib?bzip2
+lzma?xz
+zstd?zstd
+nls?gettext

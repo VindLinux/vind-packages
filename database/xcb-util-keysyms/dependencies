@@ -1,0 +1,4 @@
+pkgconf
+libxcb
+xorgproto
+devel-docs?doxygen

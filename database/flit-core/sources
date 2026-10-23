@@ -1,0 +1,3 @@
+# tried in order, the first one that works wins
+https://files.pythonhosted.org/packages/source/f/flit_core/flit_core-${PKG_VERSION}.tar.gz
+https://files.pythonhosted.org/packages/source/f/flit-core/flit_core-${PKG_VERSION}.tar.gz

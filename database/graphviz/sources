@@ -1,0 +1,2 @@
+# tried in order, the first one that works wins
+https://gitlab.com/api/v4/projects/4207231/packages/generic/graphviz-releases/${PKG_VERSION}/graphviz-${PKG_VERSION}.tar.xz

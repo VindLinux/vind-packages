@@ -1,0 +1,11 @@
+glib
+lcms2
+sqlite3
+libgudev
+libgusb
+eudev
+polkit
+meson
+ninja
+bash_completion?bash-completion
+introspection?gobject-introspection

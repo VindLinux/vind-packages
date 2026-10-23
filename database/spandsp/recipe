@@ -1,0 +1,46 @@
+src="spandsp-${PKG_VERSION}"
+tarball="v${PKG_VERSION}.tar.gz"
+
+pkg_download()
+{
+    fetch_source "$tarball" || exit 1
+    tar -xf "$tarball" || exit 1
+}
+
+pkg_build()
+{
+    cd "$src" || exit 1
+
+    autoreconf -fi || exit 1
+
+    set -- --prefix="$PREFIX" --disable-tests
+
+    if attr_on v32bis; then
+        set -- "$@" --enable-v32bis
+    fi
+
+    if attr_on v34; then
+        set -- "$@" --enable-v34
+    fi
+
+    if attr_on sslfax; then
+        set -- "$@" --enable-sslfax
+    fi
+
+    if attr_on fixed-point; then
+        set -- "$@" --enable-fixed-point
+    fi
+
+    if attr_on docs; then
+        set -- "$@" --enable-doc
+    fi
+
+    ./configure "$@" || exit 1
+    make $MAKEOPTS
+}
+
+pkg_install()
+{
+    cd "$src" || exit 1
+    make DESTDIR="$DESTDIR" install
+}

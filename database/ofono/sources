@@ -1,0 +1,2 @@
+# tried in order, the first one that works wins
+https://www.kernel.org/pub/linux/network/ofono/ofono-${PKG_VERSION}.tar.xz

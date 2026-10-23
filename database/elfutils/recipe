@@ -1,0 +1,36 @@
+src="elfutils-${PKG_VERSION}"
+tarball="${src}.tar.bz2"
+
+pkg_download()
+{
+    fetch_source "$tarball" || exit 1
+    tar -xf "$tarball" || exit 1
+}
+
+pkg_build()
+{
+    cd "$src" || exit 1
+
+    set -- --prefix="$PREFIX" --disable-debuginfod --disable-libdebuginfod
+
+    for lib in bzlib lzma zstd; do
+        if attr_on "$lib"; then
+            set -- "$@" --with-"$lib"
+        else
+            set -- "$@" --without-"$lib"
+        fi
+    done
+
+    if ! attr_on nls; then
+        set -- "$@" --disable-nls
+    fi
+
+    ./configure "$@" || exit 1
+    make $MAKEOPTS
+}
+
+pkg_install()
+{
+    cd "$src" || exit 1
+    make DESTDIR="$DESTDIR" install
+}

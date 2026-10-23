@@ -1,0 +1,2 @@
+# tried in order, the first one that works wins
+https://storage.googleapis.com/aom-releases/libaom-${PKG_VERSION}.tar.gz

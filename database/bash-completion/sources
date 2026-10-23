@@ -1,0 +1,2 @@
+# tried in order, the first one that works wins
+https://github.com/scop/bash-completion/releases/download/${PKG_VERSION}/bash-completion-${PKG_VERSION}.tar.xz

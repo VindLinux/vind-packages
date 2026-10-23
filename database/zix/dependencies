@@ -1,0 +1,5 @@
+meson
+ninja
+pkgconf
+docs?doxygen
+docs?sphinx

@@ -1,0 +1,3 @@
+# tried in order, the first one that works wins
+https://www.oberhumer.com/opensource/lzo/download/lzo-${PKG_VERSION}.tar.gz
+https://sources.libreelec.tv/mirror/lzo/lzo-${PKG_VERSION}.tar.gz

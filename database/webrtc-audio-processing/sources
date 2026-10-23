@@ -1,0 +1,2 @@
+# tried in order, the first one that works wins
+https://gstreamer.freedesktop.org/src/mirror/webrtc-audio-processing/webrtc-audio-processing-${PKG_VERSION}.tar.xz

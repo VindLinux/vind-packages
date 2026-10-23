@@ -1,0 +1,47 @@
+src="elogind-$PKG_VERSION"
+tarball="elogind-$PKG_VERSION.tar.gz"
+
+pkg_download()
+{
+    fetch_source "$tarball" || exit 1
+    tar -xf "$tarball" || exit 1
+}
+
+pkg_build()
+{
+    cd "$src" || exit 1
+
+    set -- --prefix="$PREFIX" --libdir=lib --buildtype=release \
+           --sysconfdir=/etc --localstatedir=/var --wrap-mode=nodownload \
+           -Dmode=release -Dcgroup-controller=elogind \
+           -Ddefault-kill-user-processes=false \
+           -Dacl=enabled -Daudit=disabled -Dselinux=disabled -Dsmack=false \
+           -Dxenctrl=disabled -Ddbus=disabled \
+           -Dutmp=false -Defi=false -Dvarlink=false -Duserdb=false \
+           -Dnss-elogind=false \
+           -Dman=disabled -Dhtml=disabled -Dtranslations=false \
+           -Dtests=false \
+           -Dudevrulesdir="$PREFIX/lib/udev/rules.d"
+
+    if attr_on pam; then
+        set -- "$@" -Dpam=enabled -Dpamlibdir="$PREFIX/lib/security" \
+               -Dpamconfdir=/etc/pam.d
+    else
+        set -- "$@" -Dpam=disabled -Dpamconfdir=no
+    fi
+
+    if attr_on polkit; then
+        set -- "$@" -Dpolkit=enabled
+    else
+        set -- "$@" -Dpolkit=disabled
+    fi
+
+    meson setup _build "$@" || exit 1
+    ninja -C _build $MAKEOPTS || exit 1
+}
+
+pkg_install()
+{
+    cd "$src" || exit 1
+    DESTDIR="$DESTDIR" meson install -C _build || exit 1
+}

@@ -1,0 +1,47 @@
+src="qtbase-everywhere-src-$PKG_VERSION"
+tarball="$src.tar.xz"
+
+pkg_download()
+{
+    fetch_source "$tarball" || exit 1
+    tar -xf "$tarball" || exit 1
+}
+
+pkg_build()
+{
+    mkdir -p qt-build || exit 1
+    cd qt-build || exit 1
+
+    set -- -prefix "$PREFIX" -libdir "$PREFIX/lib" \
+           -headerdir "$PREFIX/include/qt6" -archdatadir "$PREFIX/lib/qt6" \
+           -datadir "$PREFIX/share/qt6" -sysconfdir /etc/xdg \
+           -release -shared -platform linux-clang \
+           -nomake examples -nomake tests \
+           -no-pch -no-sbom -no-rpath \
+           -system-zlib -system-pcre -system-freetype -system-harfbuzz \
+           -system-libpng -system-libjpeg -system-sqlite \
+           -qt-doubleconversion -icu -glib -dbus-linked -openssl-runtime \
+           -fontconfig -xkbcommon -libudev -libinput -mtdev -evdev \
+           -no-cups -no-gtk -no-tslib
+
+    if attr_on opengl; then
+        set -- "$@" -opengl es2 -egl
+    else
+        set -- "$@" -no-opengl
+    fi
+
+    if attr_on xcb; then
+        set -- "$@" -xcb -xcb-xlib -bundled-xcb-xinput
+    else
+        set -- "$@" -no-xcb
+    fi
+
+    "../$src/configure" "$@" || exit 1
+    ninja $MAKEOPTS || exit 1
+}
+
+pkg_install()
+{
+    cd qt-build || exit 1
+    DESTDIR="$DESTDIR" cmake --install . || exit 1
+}

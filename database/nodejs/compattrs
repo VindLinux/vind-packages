@@ -1,0 +1,12 @@
+shared-openssl
+shared-zlib
+shared-libuv
+shared-cares
+shared-nghttp2
+shared-brotli
+shared-zstd
+shared-sqlite
+icu
+inspector
+corepack
+ninja

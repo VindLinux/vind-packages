@@ -1,0 +1,6 @@
+meson
+ninja
+python3
+docbook?libxslt
+docbook?docbook-xml
+docbook?docbook-xsl

@@ -1,0 +1,1 @@
+Hatch plugin that sets the package version from the tags of a version control system, using setuptools-scm.

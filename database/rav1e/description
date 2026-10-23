@@ -1,0 +1,1 @@
+AV1 video encoder written in Rust, with the rav1e command-line tool and an optional C-compatible library for programs such as libheif and ffmpeg.

@@ -1,0 +1,1 @@
+C library for hosting LV2 audio plugins, with the lv2ls, lv2info and lv2bench command-line tools.

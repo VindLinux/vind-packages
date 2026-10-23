@@ -1,0 +1,12 @@
+coredump
+ptrace
+setjmp
+cxx-exceptions
+docs
+minidebuginfo
+zlibdebuginfo
+debug-frame
+weak-backtrace
+unwind-header
+per-thread-cache
+static

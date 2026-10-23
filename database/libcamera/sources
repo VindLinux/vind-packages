@@ -1,0 +1,2 @@
+# tried in order, the first one that works wins
+https://ftp.debian.org/debian/pool/main/libc/libcamera/libcamera_${PKG_VERSION}.orig.tar.gz

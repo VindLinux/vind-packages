@@ -1,0 +1,1 @@
+Python library that detects the character encoding of text and converts it to Unicode, with a command-line tool, as an alternative to chardet.

@@ -1,0 +1,53 @@
+src="libcamera-v${PKG_VERSION}-191e202178f02430b5942397c70d215cdd2056fa"
+tarball="libcamera_${PKG_VERSION}.orig.tar.gz"
+
+pkg_download()
+{
+    fetch_source "$tarball" || exit 1
+    tar -xf "$tarball" || exit 1
+}
+
+feat()
+{
+    if attr_on "$1"; then
+        mopts="$mopts -D$2=enabled"
+    else
+        mopts="$mopts -D$2=disabled"
+    fi
+}
+
+pkg_build()
+{
+    cd "$src" || exit 1
+
+    mopts=""
+
+    feat cam         cam
+    feat kms         cam-output-kms
+    feat sdl2        cam-output-sdl2
+    feat jpeg        cam-jpeg
+    feat dng         apps-output-dng
+    feat gstreamer   gstreamer
+    feat libdw       libdw
+    feat libunwind   libunwind
+    feat qcam        qcam
+    feat udev        udev
+    feat v4l2        v4l2
+    feat softisp-gpu softisp-gpu
+    feat tracing     tracing
+    feat pycamera    pycamera
+    feat docs        documentation
+
+    meson setup build --prefix="$PREFIX" --libdir=lib --buildtype=release \
+        --wrap-mode=nodownload \
+        -Dtest=false -Dlc-compliance=disabled -Dandroid=disabled \
+        $mopts || exit 1
+
+    ninja -C build $MAKEOPTS
+}
+
+pkg_install()
+{
+    cd "$src" || exit 1
+    DESTDIR="$DESTDIR" ninja -C build install
+}

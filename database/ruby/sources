@@ -1,0 +1,2 @@
+# tried in order, the first one that works wins
+https://cache.ruby-lang.org/pub/ruby/4.0/ruby-${PKG_VERSION}.tar.xz

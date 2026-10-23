@@ -1,0 +1,48 @@
+src="SVT-AV1-v${PKG_VERSION}"
+tarball="$src.tar.gz"
+
+pkg_download()
+{
+    fetch_source "$tarball" || exit 1
+    tar -xf "$tarball" || exit 1
+}
+
+cm()
+{
+    if attr_on "$1"; then
+        copts="$copts -D$2=ON"
+    else
+        copts="$copts -D$2=OFF"
+    fi
+}
+
+pkg_build()
+{
+    cd "$src" || exit 1
+
+    copts=""
+
+    cm apps    BUILD_APPS
+    cm shared  BUILD_SHARED_LIBS
+    cm avx512  ENABLE_AVX512
+    cm lto     SVT_AV1_LTO
+    cm minimal MINIMAL_BUILD
+    cm rtc     RTC_BUILD
+    cm quiet   LOG_QUIET
+
+    cmake -S . -B build -G Ninja \
+        -DCMAKE_INSTALL_PREFIX="$PREFIX" \
+        -DCMAKE_INSTALL_LIBDIR=lib \
+        -DCMAKE_BUILD_TYPE=Release \
+        -DCMAKE_POLICY_VERSION_MINIMUM=3.5 \
+        -DBUILD_TESTING=OFF -DEXCLUDE_HASH=ON \
+        $copts || exit 1
+
+    cmake --build build || exit 1
+}
+
+pkg_install()
+{
+    cd "$src" || exit 1
+    DESTDIR="$DESTDIR" cmake --install build
+}

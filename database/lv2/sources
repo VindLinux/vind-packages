@@ -1,0 +1,2 @@
+# tried in order, the first one that works wins
+https://github.com/lv2/lv2/archive/refs/tags/v${PKG_VERSION}.tar.gz
