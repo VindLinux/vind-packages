@@ -1,0 +1,1 @@
+xdg-desktop-portal backend for wlroots-based Wayland compositors, providing screenshot and screencast portals through PipeWire.

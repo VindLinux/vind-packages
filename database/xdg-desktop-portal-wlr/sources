@@ -1,0 +1,2 @@
+# tried in order, the first one that works wins
+https://codeload.github.com/emersion/xdg-desktop-portal-wlr/tar.gz/refs/tags/v${PKG_VERSION}
