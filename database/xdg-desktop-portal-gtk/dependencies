@@ -1,0 +1,6 @@
+fontconfig
+glib
+gsettings-desktop-schemas
+gtk3
+xdg-desktop-portal
+wallpaper?gnome-desktop

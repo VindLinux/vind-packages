@@ -1,0 +1,6 @@
+glib
+json-glib
+libsoup
+modemmanager?modemmanager
+avahi?avahi
+demo?libnotify

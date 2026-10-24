@@ -1,0 +1,1 @@
+Thin layer of mathematical types for 3D graphics, with SIMD fast paths and optional GObject bindings.

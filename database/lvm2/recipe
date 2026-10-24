@@ -1,0 +1,32 @@
+src="LVM2.${PKG_VERSION}"
+tarball="LVM2.${PKG_VERSION}.tgz"
+
+pkg_download()
+{
+    fetch_source "$tarball" || exit 1
+    tar -xf "$tarball" || exit 1
+}
+
+pkg_build()
+{
+    cd "$src" || exit 1
+
+    set -- --prefix="$PREFIX" --enable-pkgconfig --enable-udev_sync --enable-udev_rules --without-systemd --without-libnvme
+
+    if attr_on dmeventd; then
+        set -- "$@" --enable-cmdlib --enable-dmeventd
+    fi
+
+    if ! attr_on selinux; then
+        set -- "$@" --disable-selinux
+    fi
+
+    ./configure "$@" || exit 1
+    make $MAKEOPTS
+}
+
+pkg_install()
+{
+    cd "$src" || exit 1
+    make DESTDIR="$DESTDIR" install
+}

@@ -1,0 +1,4 @@
+glib
+glib-networking
+brotli?brotli
+gssapi?krb5

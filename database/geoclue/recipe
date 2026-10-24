@@ -1,0 +1,48 @@
+src="geoclue-${PKG_VERSION}"
+tarball="geoclue-2.0_${PKG_VERSION}.orig.tar.bz2"
+
+pkg_download()
+{
+    fetch_source "$tarball" || exit 1
+    tar -xf "$tarball" || exit 1
+}
+
+pkg_build()
+{
+    cd "$src" || exit 1
+
+    set -- --prefix="$PREFIX" --sysconfdir=/etc --buildtype=release -Dgtk-doc=false -Dvapi=false -Ddbus-srv-user=geoclue
+
+    if attr_on introspection; then
+        set -- "$@" -Dintrospection=true
+    else
+        set -- "$@" -Dintrospection=false
+    fi
+
+    if attr_on modemmanager; then
+        set -- "$@" -D3g-source=true -Dcdma-source=true -Dmodem-gps-source=true
+    else
+        set -- "$@" -D3g-source=false -Dcdma-source=false -Dmodem-gps-source=false
+    fi
+
+    if attr_on avahi; then
+        set -- "$@" -Dnmea-source=true
+    else
+        set -- "$@" -Dnmea-source=false
+    fi
+
+    if attr_on demo; then
+        set -- "$@" -Ddemo-agent=true
+    else
+        set -- "$@" -Ddemo-agent=false
+    fi
+
+    meson setup build "$@" || exit 1
+    ninja -C build $MAKEOPTS
+}
+
+pkg_install()
+{
+    cd "$src" || exit 1
+    DESTDIR="$DESTDIR" ninja -C build install
+}

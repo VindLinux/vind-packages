@@ -1,0 +1,30 @@
+src="graphene-${PKG_VERSION}"
+tarball="graphene-${PKG_VERSION}.tar.xz"
+
+pkg_download()
+{
+    fetch_source "$tarball" || exit 1
+    tar -xf "$tarball" || exit 1
+}
+
+pkg_build()
+{
+    cd "$src" || exit 1
+
+    set -- --prefix="$PREFIX" --buildtype=release -Dtests=false -Dinstalled_tests=false
+
+    if attr_on introspection; then
+        set -- "$@" -Dintrospection=enabled
+    else
+        set -- "$@" -Dintrospection=disabled
+    fi
+
+    meson setup build "$@" || exit 1
+    ninja -C build $MAKEOPTS
+}
+
+pkg_install()
+{
+    cd "$src" || exit 1
+    DESTDIR="$DESTDIR" ninja -C build install
+}

@@ -1,0 +1,2 @@
+# tried in order, the first one that works wins
+https://download.gnome.org/sources/libadwaita/1.10/libadwaita-${PKG_VERSION}.tar.xz

@@ -1,0 +1,11 @@
+fontconfig
+gdk-pixbuf
+glib
+gsettings-desktop-schemas
+gtk4
+iso-codes
+libseccomp
+libxkbcommon
+xkeyboard-config
+bubblewrap
+gtk3?gtk3

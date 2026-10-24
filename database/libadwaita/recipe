@@ -1,0 +1,44 @@
+src="libadwaita-${PKG_VERSION}"
+tarball="$src.tar.xz"
+
+pkg_download()
+{
+    fetch_source "$tarball" || exit 1
+    tar -xf "$tarball" || exit 1
+}
+
+pkg_build()
+{
+    cd "$src" || exit 1
+
+    if attr_on introspection; then
+        intro="enabled"
+    else
+        intro="disabled"
+    fi
+
+    if attr_on vapi; then
+        vapi="true"
+    else
+        vapi="false"
+    fi
+
+    if attr_on docs; then
+        docs="true"
+    else
+        docs="false"
+    fi
+
+    meson setup build --prefix="$PREFIX" --libdir=lib --buildtype=release \
+        --wrap-mode=nodownload \
+        -Dtests=false -Dexamples=false \
+        -Dintrospection="$intro" -Dvapi="$vapi" -Ddocumentation="$docs" || exit 1
+
+    ninja -C build $MAKEOPTS
+}
+
+pkg_install()
+{
+    cd "$src" || exit 1
+    DESTDIR="$DESTDIR" ninja -C build install
+}

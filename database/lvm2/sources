@@ -1,0 +1,2 @@
+# tried in order, the first one that works wins
+https://mirrors.kernel.org/sourceware/lvm2/releases/LVM2.${PKG_VERSION}.tgz

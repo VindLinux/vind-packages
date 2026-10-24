@@ -1,0 +1,60 @@
+src="gtk-${PKG_VERSION}"
+tarball="gtk-${PKG_VERSION}.tar.xz"
+
+pkg_download()
+{
+    fetch_source "$tarball" || exit 1
+    tar -xf "$tarball" || exit 1
+}
+
+pkg_build()
+{
+    cd "$src" || exit 1
+
+    set -- --prefix="$PREFIX" --buildtype=release -Dbuild-demos=false -Dbuild-examples=false -Dbuild-tests=false -Dbuild-testsuite=false
+
+    if attr_on x11; then
+        set -- "$@" -Dx11-backend=true
+    else
+        set -- "$@" -Dx11-backend=false
+    fi
+
+    if attr_on wayland; then
+        set -- "$@" -Dwayland-backend=true
+    else
+        set -- "$@" -Dwayland-backend=false
+    fi
+
+    if attr_on vulkan; then
+        set -- "$@" -Dvulkan=enabled
+    else
+        set -- "$@" -Dvulkan=disabled
+    fi
+
+    if attr_on gstreamer; then
+        set -- "$@" -Dmedia-gstreamer=enabled
+    else
+        set -- "$@" -Dmedia-gstreamer=disabled
+    fi
+
+    if attr_on cups; then
+        set -- "$@" -Dprint-cups=enabled
+    else
+        set -- "$@" -Dprint-cups=disabled
+    fi
+
+    if attr_on introspection; then
+        set -- "$@" -Dintrospection=enabled
+    else
+        set -- "$@" -Dintrospection=disabled
+    fi
+
+    meson setup build "$@" || exit 1
+    ninja -C build $MAKEOPTS
+}
+
+pkg_install()
+{
+    cd "$src" || exit 1
+    DESTDIR="$DESTDIR" ninja -C build install
+}

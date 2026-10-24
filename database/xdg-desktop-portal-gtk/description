@@ -1,0 +1,1 @@
+GTK implementation of the xdg-desktop-portal backend, providing file chooser, printing, app chooser, settings, and optional wallpaper portals.

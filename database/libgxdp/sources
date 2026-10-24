@@ -1,0 +1,2 @@
+# tried in order, the first one that works wins
+https://gitlab.gnome.org/GNOME/libgxdp/-/archive/${PKG_VERSION}/libgxdp-${PKG_VERSION}.tar.gz

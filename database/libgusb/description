@@ -1,0 +1,1 @@
+GObject wrapper around libusb, providing a GLib-friendly API for enumerating and talking to USB devices.

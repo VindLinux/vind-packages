@@ -1,0 +1,3 @@
+# tried in order, the first one that works wins
+https://ftp.ussg.iu.edu/linux/debian/pool/main/g/geoclue-2.0/geoclue-2.0_${PKG_VERSION}.orig.tar.bz2
+https://deb.debian.org/debian/pool/main/g/geoclue-2.0/geoclue-2.0_${PKG_VERSION}.orig.tar.bz2

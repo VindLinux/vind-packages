@@ -1,0 +1,6 @@
+x11
+wayland
+vulkan
+gstreamer
+cups
+introspection

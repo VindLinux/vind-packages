@@ -1,0 +1,1 @@
+Network-related GIO modules for GLib, providing TLS support through GnuTLS and proxy support through libproxy or GNOME settings.

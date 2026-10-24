@@ -1,0 +1,2 @@
+# tried in order, the first one that works wins
+https://sources.voidlinux.org/iso-codes-${PKG_VERSION}/iso-codes_${PKG_VERSION}.orig.tar.xz

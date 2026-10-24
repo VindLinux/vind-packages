@@ -1,0 +1,4 @@
+glib
+gnutls
+libproxy?libproxy
+gnome?gsettings-desktop-schemas

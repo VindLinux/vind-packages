@@ -1,0 +1,2 @@
+# tried in order, the first one that works wins
+https://download.gnome.org/sources/atk/${PKG_VERSION_MAJOR_MINOR}/atk-${PKG_VERSION}.tar.xz

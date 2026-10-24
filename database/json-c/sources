@@ -1,0 +1,2 @@
+# tried in order, the first one that works wins
+https://s3.amazonaws.com/json-c_releases/releases/json-c-${PKG_VERSION}.tar.gz

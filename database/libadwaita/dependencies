@@ -1,0 +1,9 @@
+meson
+ninja
+pkgconf
+glib
+gtk4
+fribidi
+introspection?gobject-introspection
+vapi?vala
+docs?gi-docgen

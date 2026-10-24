@@ -1,0 +1,42 @@
+src="gnome-desktop-${PKG_VERSION}"
+tarball="gnome-desktop-${PKG_VERSION}.tar.xz"
+
+pkg_download()
+{
+    fetch_source "$tarball" || exit 1
+    tar -xf "$tarball" || exit 1
+}
+
+pkg_build()
+{
+    cd "$src" || exit 1
+
+    set -- --prefix="$PREFIX" --buildtype=release -Dsystemd=disabled -Dudev=enabled -Ddesktop_docs=false
+
+    if attr_on gtk3; then
+        set -- "$@" -Dlegacy_library=true
+    else
+        set -- "$@" -Dlegacy_library=false
+    fi
+
+    if attr_on introspection; then
+        set -- "$@" -Dintrospection=true
+    else
+        set -- "$@" -Dintrospection=false
+    fi
+
+    if attr_on qr; then
+        set -- "$@" -Dqr=enabled
+    else
+        set -- "$@" -Dqr=disabled
+    fi
+
+    meson setup build "$@" || exit 1
+    ninja -C build $MAKEOPTS
+}
+
+pkg_install()
+{
+    cd "$src" || exit 1
+    DESTDIR="$DESTDIR" ninja -C build install
+}

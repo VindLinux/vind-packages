@@ -1,0 +1,2 @@
+# tried in order, the first one that works wins
+https://download.gnome.org/sources/gnome-desktop/${PKG_VERSION_MAJOR}/gnome-desktop-${PKG_VERSION}.tar.xz

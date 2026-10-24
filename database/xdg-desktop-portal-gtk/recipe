@@ -1,0 +1,30 @@
+src="xdg-desktop-portal-gtk-${PKG_VERSION}"
+tarball="xdg-desktop-portal-gtk_${PKG_VERSION}.orig.tar.xz"
+
+pkg_download()
+{
+    fetch_source "$tarball" || exit 1
+    tar -xf "$tarball" || exit 1
+}
+
+pkg_build()
+{
+    cd "$src" || exit 1
+
+    set -- --prefix="$PREFIX" --buildtype=release
+
+    if attr_on wallpaper; then
+        set -- "$@" -Dwallpaper=enabled
+    else
+        set -- "$@" -Dwallpaper=disabled
+    fi
+
+    meson setup build "$@" || exit 1
+    ninja -C build $MAKEOPTS
+}
+
+pkg_install()
+{
+    cd "$src" || exit 1
+    DESTDIR="$DESTDIR" ninja -C build install
+}

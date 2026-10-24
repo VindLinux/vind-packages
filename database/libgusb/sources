@@ -1,0 +1,2 @@
+# tried in order, the first one that works wins
+https://github.com/hughsie/libgusb/releases/download/${PKG_VERSION}/libgusb-${PKG_VERSION}.tar.xz
