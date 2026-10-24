@@ -1,13 +1,9 @@
-meson
-ninja
-pkgconf
-glib
+cairo
 fontconfig
+freetype
 fribidi
+glib
 harfbuzz
-cairo?cairo
-freetype?freetype
 xft?libxft
 xft?libxrender
 libthai?libthai
-introspection?gobject-introspection

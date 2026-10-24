@@ -1,1 +1,1 @@
-Library for laying out and rendering text with internationalization support, used by GTK to draw text through cairo, FreeType and HarfBuzz.
+Text layout and rendering library with full internationalization support, using HarfBuzz for shaping and Cairo, FreeType, and FontConfig for rendering.

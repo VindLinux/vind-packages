@@ -1,5 +1,5 @@
 src="pango-${PKG_VERSION}"
-tarball="$src.tar.xz"
+tarball="pango-${PKG_VERSION}.tar.xz"
 
 pkg_download()
 {
@@ -7,36 +7,31 @@ pkg_download()
     tar -xf "$tarball" || exit 1
 }
 
-feat()
-{
-    if attr_on "$1"; then
-        mopts="$mopts -D$2=enabled"
-    else
-        mopts="$mopts -D$2=disabled"
-    fi
-}
-
 pkg_build()
 {
     cd "$src" || exit 1
 
-    sed -i 's|^#include "config.h"|&\n#include <fontconfig/fontconfig.h>\n#include <fontconfig/fcfreetype.h>|' pango/pangofc-fontmap.c || exit 1
+    set -- --prefix="$PREFIX" --buildtype=release -Dfontconfig=enabled -Dfreetype=enabled -Dcairo=enabled -Dbuild-testsuite=false -Dbuild-examples=false
 
-    mopts=""
+    if attr_on introspection; then
+        set -- "$@" -Dintrospection=enabled
+    else
+        set -- "$@" -Dintrospection=disabled
+    fi
 
-    feat cairo         cairo
-    feat freetype      freetype
-    feat xft           xft
-    feat libthai       libthai
-    feat introspection introspection
+    if attr_on xft; then
+        set -- "$@" -Dxft=enabled
+    else
+        set -- "$@" -Dxft=disabled
+    fi
 
-    meson setup build --prefix="$PREFIX" --libdir=lib --buildtype=release \
-        --wrap-mode=nodownload \
-        -Dfontconfig=enabled -Dsysprof=disabled \
-        -Ddocumentation=false -Dman-pages=false \
-        -Dbuild-testsuite=false -Dbuild-examples=false \
-        $mopts || exit 1
+    if attr_on libthai; then
+        set -- "$@" -Dlibthai=enabled
+    else
+        set -- "$@" -Dlibthai=disabled
+    fi
 
+    meson setup build "$@" || exit 1
     ninja -C build $MAKEOPTS
 }
 
