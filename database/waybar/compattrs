@@ -1,6 +1,5 @@
 libinput
 libnl
-libudev
 libevdev
 pulseaudio
 pipewire

@@ -15,7 +15,6 @@ xkbregistry
 libsigc++2
 libinput?libinput
 libnl?libnl
-libudev?eudev
 libevdev?libevdev
 pulseaudio?pulseaudio
 pipewire?pipewire
