@@ -32,7 +32,7 @@ pkg_build()
 	
 	sed -i 's|auto localtime = fmt::localtime(std::chrono::system_clock::to_time_t(now));|auto now_t = std::chrono::system_clock::to_time_t(now);\n  auto localtime = *std::localtime(\&now_t);|' src/modules/simpleclock.cpp
     
-	meson setup build "$@" || exit 1
+	meson setup build -Dlibudev=enabled "$@" || exit 1
     ninja -C build $MAKEOPTS || exit 1
 }
 
