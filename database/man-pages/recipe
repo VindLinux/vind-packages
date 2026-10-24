@@ -9,5 +9,5 @@ pkg_download()
 
 pkg_install()
 {
-    make -C "$src" DESTDIR="$DESTDIR$PREFIX" install
+    make -R -C "$src" DESTDIR="$DESTDIR$PREFIX" install
 }
