@@ -29,8 +29,10 @@ pkg_build()
             set -- "$@" "-D$o=disabled"
         fi
     done
-
-    meson setup build "$@" || exit 1
+	
+	sed -i 's|auto localtime = fmt::localtime(std::chrono::system_clock::to_time_t(now));|auto now_t = std::chrono::system_clock::to_time_t(now);\n  auto localtime = *std::localtime(\&now_t);|' src/modules/simpleclock.cpp
+    
+	meson setup build "$@" || exit 1
     ninja -C build $MAKEOPTS || exit 1
 }
 
