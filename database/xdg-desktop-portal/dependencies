@@ -1,0 +1,16 @@
+meson
+ninja
+pkgconf
+glib
+json-glib
+fuse3
+gdk-pixbuf
+gstreamer
+gst-plugins-base
+pipewire
+bubblewrap
+flatpak?flatpak
+geoclue?geoclue
+gudev?libgudev
+manpages?docutils
+docs?sphinx

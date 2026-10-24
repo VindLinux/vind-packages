@@ -1,0 +1,1 @@
+Desktop integration portal service that lets sandboxed applications, such as Flatpak apps, open files, take screenshots, share the screen and use devices through D-Bus.

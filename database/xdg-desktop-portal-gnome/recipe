@@ -1,0 +1,25 @@
+src="xdg-desktop-portal-gnome-${PKG_VERSION}"
+tarball="$src.tar.xz"
+
+pkg_download()
+{
+    fetch_source "$tarball" || exit 1
+    tar -xf "$tarball" || exit 1
+}
+
+pkg_build()
+{
+    cd "$src" || exit 1
+
+    meson setup build --prefix="$PREFIX" --libdir=lib --buildtype=release \
+        --wrap-mode=nodownload \
+        -Dsystemd=disabled || exit 1
+
+    ninja -C build $MAKEOPTS
+}
+
+pkg_install()
+{
+    cd "$src" || exit 1
+    DESTDIR="$DESTDIR" ninja -C build install
+}

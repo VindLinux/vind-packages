@@ -1,0 +1,12 @@
+meson
+ninja
+pkgconf
+glib
+fontconfig
+gtk4
+libadwaita
+gnome-desktop
+gsettings-desktop-schemas
+libgxdp
+xdg-desktop-portal
+xdg-desktop-portal-gtk
