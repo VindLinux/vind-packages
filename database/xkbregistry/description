@@ -1,0 +1,1 @@
+Library to query the XKB registry of keyboard models, layouts, variants, and options, built from the libxkbcommon sources.

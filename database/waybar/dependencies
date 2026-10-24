@@ -10,6 +10,7 @@ gtk-layer-shell
 fmt
 spdlog
 jsoncpp
+xkbregistry
 libsigc++2
 libinput?libinput
 libnl?libnl

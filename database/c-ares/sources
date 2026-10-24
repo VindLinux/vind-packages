@@ -1,0 +1,2 @@
+# tried in order, the first one that works wins
+https://github.com/c-ares/c-ares/releases/download/v${PKG_VERSION}/c-ares-${PKG_VERSION}.tar.gz

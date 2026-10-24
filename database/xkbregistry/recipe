@@ -1,0 +1,22 @@
+src="libxkbcommon-xkbcommon-${PKG_VERSION}"
+tarball="libxkbcommon-${PKG_VERSION}.tar.gz"
+
+pkg_download()
+{
+    fetch_source "$tarball" || exit 1
+    tar -xf "$tarball" || exit 1
+}
+
+pkg_build()
+{
+    cd "$src" || exit 1
+    meson setup build --prefix="$PREFIX" --buildtype=release -Denable-xkbregistry=true -Denable-tools=false -Denable-x11=false -Denable-wayland=false -Denable-docs=false -Denable-bash-completion=false || exit 1
+    ninja -C build $MAKEOPTS
+}
+
+pkg_install()
+{
+    cd "$src" || exit 1
+    DESTDIR="$DESTDIR" ninja -C build install || exit 1
+    find "$DESTDIR" \( -name 'libxkbcommon.*' -o -name 'xkbcommon.pc' -o -name 'xkbcommon*.h' \) -exec rm -f {} +
+}
