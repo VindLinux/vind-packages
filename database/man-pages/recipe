@@ -5,6 +5,11 @@ pkg_download()
 {
     fetch_source "$tarball" || exit 1
     tar -xf "$tarball" || exit 1
+    
+	sed -i \
+        -e '/INSTALL_DATA/s/ -T / /' \
+        -e 's/ -fsT / -fs /g' \
+        "$src/share/mk/install/man.mk" || exit 1
 }
 
 pkg_install()
