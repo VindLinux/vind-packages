@@ -16,7 +16,7 @@ pkg_build()
            -Dtests=disabled -Dsystemd=disabled -Dlogind=disabled \
            -Dexperimental=false -Dniri=false -Dlogin-proxy=false
 
-    for pair in libinput:libinput libnl:libnl libudev:libudev \
+    for pair in libinput:libinput libnl:libnl \
                 libevdev:libevdev pulseaudio:pulseaudio pipewire:pipewire \
                 wireplumber:wireplumber jack:jack mpd:mpd mpris:mpris \
                 upower:upower_glib tray:dbusmenu-gtk cava:cava gps:gps \
