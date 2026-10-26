@@ -19,7 +19,7 @@ pkg_build()
         set -- "$@" --without-python
     fi
 
-    ./configure "$@" || exit 1
+	acx_cv_cc_gcc_supports_ada=no ./configure "$@" || exit 1
     make $MAKEOPTS
 }
 
