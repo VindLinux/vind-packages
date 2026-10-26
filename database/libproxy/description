@@ -1,0 +1,1 @@
+Library that provides automatic proxy configuration management, with PAC support through Duktape and several configuration backends.

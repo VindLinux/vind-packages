@@ -1,0 +1,23 @@
+src="asciidoctor-${PKG_VERSION}"
+tarball="asciidoctor-${PKG_VERSION}.tar.gz"
+
+pkg_download()
+{
+    fetch_source "$tarball" || exit 1
+    tar -xf "$tarball" || exit 1
+}
+
+pkg_build()
+{
+    cd "$src" || exit 1
+    gem build asciidoctor.gemspec
+}
+
+pkg_install()
+{
+    cd "$src" || exit 1
+    gemdir=$(ruby -e 'puts Gem.default_dir') || exit 1
+    gem install --local --ignore-dependencies --no-document --install-dir "$DESTDIR$gemdir" --bindir "$DESTDIR$PREFIX/bin" "asciidoctor-${PKG_VERSION}.gem" || exit 1
+    mkdir -p "$DESTDIR$PREFIX/share/man/man1" || exit 1
+    cp man/asciidoctor.1 "$DESTDIR$PREFIX/share/man/man1/"
+}

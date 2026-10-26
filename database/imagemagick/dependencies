@@ -1,0 +1,15 @@
+bzip2
+xz
+png?libpng
+jpeg?libjpeg-turbo
+tiff?libtiff
+webp?libwebp
+heic?libheif
+lcms?lcms2
+openjp2?openjpeg
+xml?libxml2
+freetype?freetype
+fontconfig?fontconfig
+x11?libx11
+x11?libxext
+x11?libxt

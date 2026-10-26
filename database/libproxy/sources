@@ -1,0 +1,2 @@
+# tried in order, the first one that works wins
+https://codeload.github.com/libproxy/libproxy/tar.gz/refs/tags/${PKG_VERSION}

@@ -1,0 +1,21 @@
+src="p11-kit-${PKG_VERSION}"
+tarball="p11-kit-${PKG_VERSION}.tar.xz"
+
+pkg_download()
+{
+    fetch_source "$tarball" || exit 1
+    tar -xf "$tarball" || exit 1
+}
+
+pkg_build()
+{
+    cd "$src" || exit 1
+    meson setup build --prefix="$PREFIX" --buildtype=release -Dlibffi=enabled -Dtrust_module=enabled -Dsystemd=disabled -Dbash_completion=disabled -Dzsh_completion=disabled -Dtest=false || exit 1
+    ninja -C build $MAKEOPTS
+}
+
+pkg_install()
+{
+    cd "$src" || exit 1
+    DESTDIR="$DESTDIR" ninja -C build install
+}

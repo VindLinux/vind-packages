@@ -1,0 +1,33 @@
+src="tpm2-tss-${PKG_VERSION}"
+tarball="tpm2-tss_${PKG_VERSION}.orig.tar.gz"
+
+pkg_download()
+{
+    fetch_source "$tarball" || exit 1
+    tar -xf "$tarball" || exit 1
+}
+
+pkg_build()
+{
+    cd "$src" || exit 1
+
+    [ -f VERSION ] || echo "$PKG_VERSION" > VERSION
+    ./bootstrap || exit 1
+
+    set -- --prefix="$PREFIX" --sysconfdir=/etc --localstatedir=/var --disable-tcti-spi-ltt2go --disable-tcti-spi-ftdi --disable-tcti-i2c-ftdi --disable-tcti-libtpms
+
+    if attr_on fapi; then
+        set -- "$@" --enable-fapi
+    else
+        set -- "$@" --disable-fapi --disable-policy
+    fi
+
+    ./configure "$@" || exit 1
+    make $MAKEOPTS
+}
+
+pkg_install()
+{
+    cd "$src" || exit 1
+    make DESTDIR="$DESTDIR" install
+}

@@ -1,0 +1,8 @@
+glib
+jansson
+libacl
+libdrm
+libusb
+x11?libx11
+x11?libxext
+x11?libxrandr

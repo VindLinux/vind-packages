@@ -1,0 +1,36 @@
+src="libproxy-${PKG_VERSION}"
+tarball="libproxy-${PKG_VERSION}.tar.gz"
+
+pkg_download()
+{
+    fetch_source "$tarball" || exit 1
+    tar -xf "$tarball" || exit 1
+}
+
+pkg_build()
+{
+    cd "$src" || exit 1
+
+    set -- --prefix="$PREFIX" --buildtype=release -Dtests=false -Ddocs=false -Dvapi=false
+
+    if attr_on gnome; then
+        set -- "$@" -Dconfig-gnome=true
+    else
+        set -- "$@" -Dconfig-gnome=false
+    fi
+
+    if attr_on introspection; then
+        set -- "$@" -Dintrospection=true
+    else
+        set -- "$@" -Dintrospection=false
+    fi
+
+    meson setup build "$@" || exit 1
+    ninja -C build $MAKEOPTS
+}
+
+pkg_install()
+{
+    cd "$src" || exit 1
+    DESTDIR="$DESTDIR" ninja -C build install
+}

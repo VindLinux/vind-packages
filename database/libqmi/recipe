@@ -1,0 +1,42 @@
+src="libqmi-${PKG_VERSION}"
+tarball="libqmi-${PKG_VERSION}.tar.gz"
+
+pkg_download()
+{
+    fetch_source "$tarball" || exit 1
+    tar -xf "$tarball" || exit 1
+}
+
+pkg_build()
+{
+    cd "$src" || exit 1
+
+    set -- --prefix="$PREFIX" --buildtype=release -Dudev=true -Dman=false -Dgtk_doc=false -Dbash_completion=false
+
+    if attr_on mbim; then
+        set -- "$@" -Dmbim_qmux=true
+    else
+        set -- "$@" -Dmbim_qmux=false
+    fi
+
+    if attr_on qrtr; then
+        set -- "$@" -Dqrtr=true
+    else
+        set -- "$@" -Dqrtr=false
+    fi
+
+    if attr_on introspection; then
+        set -- "$@" -Dintrospection=true
+    else
+        set -- "$@" -Dintrospection=false
+    fi
+
+    meson setup build "$@" || exit 1
+    ninja -C build $MAKEOPTS
+}
+
+pkg_install()
+{
+    cd "$src" || exit 1
+    DESTDIR="$DESTDIR" ninja -C build install
+}

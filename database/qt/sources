@@ -1,0 +1,2 @@
+# tried in order, the first one that works wins
+https://download.qt.io/archive/qt/${PKG_VERSION_MAJOR_MINOR}/${PKG_VERSION}/single/qt-everywhere-src-${PKG_VERSION}.tar.xz

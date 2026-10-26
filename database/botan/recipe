@@ -1,0 +1,21 @@
+src="Botan-${PKG_VERSION}"
+tarball="Botan-${PKG_VERSION}.tar.xz"
+
+pkg_download()
+{
+    fetch_source "$tarball" || exit 1
+    tar -xf "$tarball" || exit 1
+}
+
+pkg_build()
+{
+    cd "$src" || exit 1
+    python3 configure.py --prefix="$PREFIX" --destdir="$DESTDIR$PREFIX" --cc=clang --build-targets=shared,cli --without-documentation || exit 1
+    make $MAKEOPTS
+}
+
+pkg_install()
+{
+    cd "$src" || exit 1
+    make install
+}

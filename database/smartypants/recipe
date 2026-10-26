@@ -1,0 +1,20 @@
+src="smartypants-${PKG_VERSION}"
+tarball="smartypants-${PKG_VERSION}.tar.gz"
+
+pkg_download()
+{
+    fetch_source "$tarball" || exit 1
+    tar -xf "$tarball" || exit 1
+}
+
+pkg_build()
+{
+    cd "$src" || exit 1
+    python3 setup.py build
+}
+
+pkg_install()
+{
+    cd "$src" || exit 1
+    python3 setup.py install --prefix="$PREFIX" --root="$DESTDIR" --single-version-externally-managed
+}

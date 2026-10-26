@@ -1,0 +1,3 @@
+# tried in order, the first one that works wins
+https://ftp.task.gda.pl/debian/pool/main/t/tpm2-tss/tpm2-tss_${PKG_VERSION}.orig.tar.gz
+https://deb.debian.org/debian/pool/main/t/tpm2-tss/tpm2-tss_${PKG_VERSION}.orig.tar.gz

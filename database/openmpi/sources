@@ -1,0 +1,2 @@
+# tried in order, the first one that works wins
+https://download.open-mpi.org/release/open-mpi/v${PKG_VERSION_MAJOR_MINOR}/openmpi-${PKG_VERSION}.tar.gz

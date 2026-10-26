@@ -1,0 +1,1 @@
+GLib library and command-line tools to talk to QMI-based modems, with optional QMI over MBIM and QRTR transports.

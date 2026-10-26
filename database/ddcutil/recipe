@@ -1,0 +1,30 @@
+src="ddcutil-${PKG_VERSION}"
+tarball="ddcutil-${PKG_VERSION}.tar.gz"
+
+pkg_download()
+{
+    fetch_source "$tarball" || exit 1
+    tar -xf "$tarball" || exit 1
+}
+
+pkg_build()
+{
+    cd "$src" || exit 1
+
+    set -- --prefix="$PREFIX" --enable-udev=yes --enable-usb=yes --enable-drm=yes --enable-systemd=no --enable-dbus=no --enable-build-timestamp=no
+
+    if attr_on x11; then
+        set -- "$@" --enable-x11=yes
+    else
+        set -- "$@" --enable-x11=no
+    fi
+
+    ./configure "$@" || exit 1
+    make $MAKEOPTS
+}
+
+pkg_install()
+{
+    cd "$src" || exit 1
+    make DESTDIR="$DESTDIR" install
+}

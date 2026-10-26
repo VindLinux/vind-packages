@@ -1,0 +1,1 @@
+Reference implementation of the Argon2 password hashing function, with a shared library and the argon2 command-line tool.

@@ -1,0 +1,30 @@
+src="libssh-${PKG_VERSION}"
+tarball="libssh-${PKG_VERSION}.tar.xz"
+
+pkg_download()
+{
+    fetch_source "$tarball" || exit 1
+    tar -xf "$tarball" || exit 1
+}
+
+pkg_build()
+{
+    cd "$src" || exit 1
+
+    set -- -DCMAKE_INSTALL_PREFIX="$PREFIX" -DCMAKE_INSTALL_LIBDIR=lib -DCMAKE_BUILD_TYPE=Release -DWITH_EXAMPLES=OFF -DWITH_NACL=OFF -DUNIT_TESTING=OFF -DCLIENT_TESTING=OFF -DSERVER_TESTING=OFF
+
+    if attr_on gssapi; then
+        set -- "$@" -DWITH_GSSAPI=ON
+    else
+        set -- "$@" -DWITH_GSSAPI=OFF
+    fi
+
+    cmake -S . -B build -G Ninja "$@" || exit 1
+    ninja -C build $MAKEOPTS
+}
+
+pkg_install()
+{
+    cd "$src" || exit 1
+    DESTDIR="$DESTDIR" ninja -C build install
+}

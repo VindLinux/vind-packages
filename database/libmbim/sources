@@ -1,0 +1,2 @@
+# tried in order, the first one that works wins
+https://gitlab.freedesktop.org/mobile-broadband/libmbim/-/archive/${PKG_VERSION}/libmbim-${PKG_VERSION}.tar.gz

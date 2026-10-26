@@ -1,0 +1,30 @@
+src="libqrtr-glib-${PKG_VERSION}-69791f8f2a092d0ec8eb83cbe51dfc3d157c3079"
+tarball="libqrtr-glib_${PKG_VERSION}.orig.tar.gz"
+
+pkg_download()
+{
+    fetch_source "$tarball" || exit 1
+    tar -xf "$tarball" || exit 1
+}
+
+pkg_build()
+{
+    cd "$src" || exit 1
+
+    set -- --prefix="$PREFIX" --buildtype=release -Dgtk_doc=false
+
+    if attr_on introspection; then
+        set -- "$@" -Dintrospection=true
+    else
+        set -- "$@" -Dintrospection=false
+    fi
+
+    meson setup build "$@" || exit 1
+    ninja -C build $MAKEOPTS
+}
+
+pkg_install()
+{
+    cd "$src" || exit 1
+    DESTDIR="$DESTDIR" ninja -C build install
+}

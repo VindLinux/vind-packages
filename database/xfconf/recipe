@@ -1,0 +1,30 @@
+src="xfconf-${PKG_VERSION}"
+tarball="xfconf-${PKG_VERSION}.tar.bz2"
+
+pkg_download()
+{
+    fetch_source "$tarball" || exit 1
+    tar -xf "$tarball" || exit 1
+}
+
+pkg_build()
+{
+    cd "$src" || exit 1
+
+    set -- --prefix="$PREFIX" --sysconfdir=/etc --enable-vala=no --disable-gtk-doc
+
+    if attr_on introspection; then
+        set -- "$@" --enable-introspection=yes
+    else
+        set -- "$@" --enable-introspection=no
+    fi
+
+    ./configure "$@" || exit 1
+    make $MAKEOPTS
+}
+
+pkg_install()
+{
+    cd "$src" || exit 1
+    make DESTDIR="$DESTDIR" install
+}

@@ -1,0 +1,9 @@
+gui?fontconfig
+gui?libxkbcommon
+opengl?mesa
+x11?libx11
+x11?libxcb
+x11?xcb-util-image
+x11?xcb-util-keysyms
+x11?xcb-util-renderutil
+x11?xcb-util-wm

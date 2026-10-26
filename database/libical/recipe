@@ -1,0 +1,40 @@
+src="libical-${PKG_VERSION}"
+tarball="libical-${PKG_VERSION}.tar.gz"
+
+pkg_download()
+{
+    fetch_source "$tarball" || exit 1
+    tar -xf "$tarball" || exit 1
+}
+
+pkg_build()
+{
+    cd "$src" || exit 1
+
+    set -- -DCMAKE_INSTALL_PREFIX="$PREFIX" -DCMAKE_INSTALL_LIBDIR=lib -DCMAKE_BUILD_TYPE=Release -DLIBICAL_BUILD_TESTING=OFF -DLIBICAL_BUILD_EXAMPLES=OFF -DLIBICAL_BUILD_DOCS=OFF -DLIBICAL_GLIB_BUILD_DOCS=OFF -DLIBICAL_GLIB_VAPI=OFF -DLIBICAL_JAVA_BINDINGS=OFF -DLIBICAL_CXX_BINDINGS=OFF -DCMAKE_DISABLE_FIND_PACKAGE_BerkeleyDB=ON
+
+    if ! attr_on icu; then
+        set -- "$@" -DCMAKE_DISABLE_FIND_PACKAGE_ICU=ON
+    fi
+
+    if attr_on glib; then
+        set -- "$@" -DLIBICAL_GLIB=ON
+    else
+        set -- "$@" -DLIBICAL_GLIB=OFF
+    fi
+
+    if attr_on introspection; then
+        set -- "$@" -DLIBICAL_GOBJECT_INTROSPECTION=ON
+    else
+        set -- "$@" -DLIBICAL_GOBJECT_INTROSPECTION=OFF
+    fi
+
+    cmake -S . -B build -G Ninja "$@" || exit 1
+    ninja -C build $MAKEOPTS
+}
+
+pkg_install()
+{
+    cd "$src" || exit 1
+    DESTDIR="$DESTDIR" ninja -C build install
+}

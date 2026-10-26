@@ -1,0 +1,50 @@
+src="qt-everywhere-src-${PKG_VERSION}"
+tarball="qt-everywhere-src-${PKG_VERSION}.tar.xz"
+
+pkg_download()
+{
+    fetch_source "$tarball" || exit 1
+    tar -xf "$tarball" || exit 1
+}
+
+pkg_build()
+{
+    cd "$src" || exit 1
+    mkdir -p build || exit 1
+    cd build || exit 1
+
+    set -- -prefix "$PREFIX" -archdatadir "$PREFIX/lib/qt6" -datadir "$PREFIX/share/qt6" -headerdir "$PREFIX/include/qt6" -sysconfdir /etc/xdg -release -submodules qtbase -nomake examples -nomake tests -no-sbom -system-zlib -system-pcre -system-sqlite -qt-freetype -qt-harfbuzz -qt-libpng -qt-libjpeg -qt-doubleconversion -no-icu -no-glib -no-cups -no-gtk -no-libinput -no-evdev -no-mtdev -no-tslib
+
+    if attr_on gui; then
+        set -- "$@" -gui -widgets -fontconfig -xkbcommon
+    else
+        set -- "$@" -no-gui -no-widgets
+    fi
+
+    if attr_on x11; then
+        set -- "$@" -xcb
+    else
+        set -- "$@" -no-xcb
+    fi
+
+    if attr_on opengl; then
+        set -- "$@" -opengl desktop
+    else
+        set -- "$@" -no-opengl
+    fi
+
+    if attr_on dbus; then
+        set -- "$@" -dbus-linked
+    else
+        set -- "$@" -no-dbus
+    fi
+
+    ../configure "$@" || exit 1
+    ninja $MAKEOPTS
+}
+
+pkg_install()
+{
+    cd "$src/build" || exit 1
+    DESTDIR="$DESTDIR" cmake --install .
+}

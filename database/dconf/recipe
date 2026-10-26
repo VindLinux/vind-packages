@@ -1,0 +1,30 @@
+src="dconf-${PKG_VERSION}"
+tarball="dconf-${PKG_VERSION}.tar.xz"
+
+pkg_download()
+{
+    fetch_source "$tarball" || exit 1
+    tar -xf "$tarball" || exit 1
+}
+
+pkg_build()
+{
+    cd "$src" || exit 1
+
+    set -- --prefix="$PREFIX" --buildtype=release -Dbash_completion=false -Dman=false -Dgtk_doc=false
+
+    if attr_on vapi; then
+        set -- "$@" -Dvapi=true
+    else
+        set -- "$@" -Dvapi=false
+    fi
+
+    meson setup build "$@" || exit 1
+    ninja -C build $MAKEOPTS
+}
+
+pkg_install()
+{
+    cd "$src" || exit 1
+    DESTDIR="$DESTDIR" ninja -C build install
+}

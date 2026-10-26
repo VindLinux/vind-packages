@@ -1,0 +1,1 @@
+Low-level configuration system and GSettings backend that stores settings in a binary database, with a D-Bus service handling writes.

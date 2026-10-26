@@ -1,0 +1,2 @@
+# tried in order, the first one that works wins
+https://poppler.freedesktop.org/poppler-${PKG_VERSION}.tar.xz

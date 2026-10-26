@@ -1,0 +1,2 @@
+# tried in order, the first one that works wins
+https://deb.debian.org/debian/pool/main/libq/libqrtr-glib/libqrtr-glib_${PKG_VERSION}.orig.tar.gz

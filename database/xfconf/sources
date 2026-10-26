@@ -1,0 +1,2 @@
+# tried in order, the first one that works wins
+https://archive.xfce.org/src/xfce/xfconf/${PKG_VERSION_MAJOR_MINOR}/xfconf-${PKG_VERSION}.tar.bz2

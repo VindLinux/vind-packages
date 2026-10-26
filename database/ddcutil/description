@@ -1,0 +1,1 @@
+Tool and library to query and change monitor settings, such as brightness and input source, using DDC/CI over the I2C bus.

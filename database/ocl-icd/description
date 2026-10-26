@@ -1,0 +1,1 @@
+OpenCL ICD loader that lets applications use any installed OpenCL implementation through vendor .icd files.

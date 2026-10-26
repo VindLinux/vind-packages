@@ -1,0 +1,1 @@
+C++ library that provides portable SIMD and vector intrinsics, with runtime dispatch to the best instruction set of the CPU.

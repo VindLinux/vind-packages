@@ -1,0 +1,6 @@
+fontconfig
+freetype
+fribidi
+harfbuzz
+libunibreak?libunibreak
+asm?nasm

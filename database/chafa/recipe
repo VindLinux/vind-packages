@@ -1,0 +1,32 @@
+src="chafa-${PKG_VERSION}"
+tarball="chafa-${PKG_VERSION}.tar.xz"
+
+pkg_download()
+{
+    fetch_source "$tarball" || exit 1
+    tar -xf "$tarball" || exit 1
+}
+
+pkg_build()
+{
+    cd "$src" || exit 1
+
+    set -- --prefix="$PREFIX" --disable-man
+
+    for a in tools avif heif jpeg svg tiff webp jxl; do
+        if attr_on "$a"; then
+            set -- "$@" --with-"$a"
+        else
+            set -- "$@" --without-"$a"
+        fi
+    done
+
+    ./configure "$@" || exit 1
+    make $MAKEOPTS
+}
+
+pkg_install()
+{
+    cd "$src" || exit 1
+    make DESTDIR="$DESTDIR" install
+}

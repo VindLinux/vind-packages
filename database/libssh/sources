@@ -1,0 +1,2 @@
+# tried in order, the first one that works wins
+https://www.libssh.org/files/${PKG_VERSION_MAJOR_MINOR}/libssh-${PKG_VERSION}.tar.xz

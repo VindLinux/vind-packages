@@ -1,0 +1,10 @@
+fontconfig
+freetype
+harfbuzz
+lcms2
+libjpeg-turbo
+libpng
+libtiff
+openjpeg
+glib?cairo
+glib?glib

@@ -1,0 +1,1 @@
+GLib-based library to talk to the Qualcomm IPC router (QRTR) protocol, used by modems and other Qualcomm SoC services.

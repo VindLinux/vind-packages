@@ -1,0 +1,2 @@
+# tried in order, the first one that works wins
+https://github.com/libpwquality/libpwquality/releases/download/libpwquality-${PKG_VERSION}/libpwquality-${PKG_VERSION}.tar.bz2

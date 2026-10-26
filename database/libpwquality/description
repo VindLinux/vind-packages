@@ -1,0 +1,1 @@
+Library for password quality checking and generating random passwords that pass the checks, with an optional PAM module.

@@ -1,0 +1,22 @@
+src="c2man-${PKG_VERSION}.orig"
+tarball="c2man_${PKG_VERSION}.orig.tar.gz"
+
+pkg_download()
+{
+    fetch_source "$tarball" || exit 1
+    tar -xf "$tarball" || exit 1
+}
+
+pkg_build()
+{
+    cd "$src" || exit 1
+    sh Configure -des -Dprefix="$PREFIX" || exit 1
+    make $MAKEOPTS
+}
+
+pkg_install()
+{
+    cd "$src" || exit 1
+    mkdir -p "$DESTDIR$PREFIX/bin" "$DESTDIR$PREFIX/lib/c2man" "$DESTDIR$PREFIX/share/man/man1" || exit 1
+    make install bin="$DESTDIR$PREFIX/bin" privlib="$DESTDIR$PREFIX/lib/c2man" mansrc="$DESTDIR$PREFIX/share/man/man1" manext=1
+}

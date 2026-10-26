@@ -1,0 +1,1 @@
+Long-range compression program that applies rzip preprocessing before compressing with LZMA, ZPAQ, bzip2, gzip, LZO, or LZ4.

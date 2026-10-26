@@ -1,0 +1,2 @@
+# tried in order, the first one that works wins
+https://ftp.osuosl.org/pub/rpm/releases/rpm-${PKG_VERSION_MAJOR_MINOR}.x/rpm-${PKG_VERSION}.tar.bz2

@@ -1,0 +1,4 @@
+glib
+libgudev
+mbim?libmbim
+qrtr?libqrtr-glib

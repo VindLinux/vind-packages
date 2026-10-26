@@ -1,0 +1,36 @@
+src="poppler-${PKG_VERSION}"
+tarball="poppler-${PKG_VERSION}.tar.xz"
+
+pkg_download()
+{
+    fetch_source "$tarball" || exit 1
+    tar -xf "$tarball" || exit 1
+}
+
+pkg_build()
+{
+    cd "$src" || exit 1
+
+    set -- -DCMAKE_INSTALL_PREFIX="$PREFIX" -DCMAKE_BUILD_TYPE=Release -DENABLE_QT5=OFF -DENABLE_QT6=OFF -DENABLE_BOOST=OFF -DENABLE_NSS3=OFF -DENABLE_GPGME=OFF -DENABLE_BROTLI=OFF -DBUILD_MANUAL_TESTS=OFF -DBUILD_CPP_TESTS=OFF -DBUILD_GTK_TESTS=OFF
+
+    if attr_on glib; then
+        set -- "$@" -DENABLE_GLIB=ON
+    else
+        set -- "$@" -DENABLE_GLIB=OFF
+    fi
+
+    if attr_on introspection; then
+        set -- "$@" -DENABLE_GOBJECT_INTROSPECTION=ON
+    else
+        set -- "$@" -DENABLE_GOBJECT_INTROSPECTION=OFF
+    fi
+
+    cmake -S . -B build -G Ninja "$@" || exit 1
+    ninja -C build $MAKEOPTS
+}
+
+pkg_install()
+{
+    cd "$src" || exit 1
+    DESTDIR="$DESTDIR" ninja -C build install
+}

@@ -1,0 +1,1 @@
+Library to access the Linux kernel crypto API from user space, for hashing, ciphers, AEAD, and random number generation.

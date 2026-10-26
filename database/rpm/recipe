@@ -1,0 +1,32 @@
+src="rpm-${PKG_VERSION}"
+tarball="rpm-${PKG_VERSION}.tar.bz2"
+
+pkg_download()
+{
+    fetch_source "$tarball" || exit 1
+    tar -xf "$tarball" || exit 1
+}
+
+pkg_build()
+{
+    cd "$src" || exit 1
+
+    set -- -DCMAKE_INSTALL_PREFIX="$PREFIX" -DCMAKE_INSTALL_LIBDIR=lib -DCMAKE_BUILD_TYPE=Release -DENABLE_PYTHON=OFF -DENABLE_OPENMP=OFF -DENABLE_TESTSUITE=OFF -DWITH_SEQUOIA=OFF -DWITH_OPENSSL=ON -DWITH_DBUS=OFF -DWITH_FAPOLICYD=OFF -DWITH_LIBDW=OFF
+
+    for a in cap acl selinux audit; do
+        if attr_on "$a"; then
+            set -- "$@" -DWITH_"$(echo "$a" | tr a-z A-Z)"=ON
+        else
+            set -- "$@" -DWITH_"$(echo "$a" | tr a-z A-Z)"=OFF
+        fi
+    done
+
+    cmake -S . -B build -G Ninja "$@" || exit 1
+    ninja -C build $MAKEOPTS
+}
+
+pkg_install()
+{
+    cd "$src" || exit 1
+    DESTDIR="$DESTDIR" ninja -C build install
+}

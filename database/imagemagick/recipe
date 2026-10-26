@@ -1,0 +1,38 @@
+src="ImageMagick-${PKG_VERSION}"
+tarball="ImageMagick-${PKG_VERSION}.tar.xz"
+
+pkg_download()
+{
+    fetch_source "$tarball" || exit 1
+    tar -xf "$tarball" || exit 1
+}
+
+pkg_build()
+{
+    cd "$src" || exit 1
+
+    set -- --prefix="$PREFIX" --disable-docs --with-bzlib --with-lzma --with-zlib --with-zstd --without-djvu --without-dmr --without-jbig --without-jxl --without-lqr --without-openexr --without-pango --without-raqm --without-raw
+
+    for a in png jpeg tiff webp heic lcms openjp2 xml freetype fontconfig; do
+        if attr_on "$a"; then
+            set -- "$@" --with-"$a"
+        else
+            set -- "$@" --without-"$a"
+        fi
+    done
+
+    if attr_on x11; then
+        set -- "$@" --with-x
+    else
+        set -- "$@" --without-x
+    fi
+
+    ./configure "$@" || exit 1
+    make $MAKEOPTS
+}
+
+pkg_install()
+{
+    cd "$src" || exit 1
+    make DESTDIR="$DESTDIR" install
+}

@@ -1,0 +1,6 @@
+glib
+libgudev
+qmi?libqmi
+mbim?libmbim
+qrtr?libqrtr-glib
+polkit?polkit

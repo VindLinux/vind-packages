@@ -1,0 +1,2 @@
+# tried in order, the first one that works wins
+https://gitlab.freedesktop.org/mobile-broadband/libqmi/-/archive/${PKG_VERSION}/libqmi-${PKG_VERSION}.tar.gz

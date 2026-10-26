@@ -1,0 +1,20 @@
+src="markdown-${PKG_VERSION}"
+tarball="markdown-${PKG_VERSION}.tar.gz"
+
+pkg_download()
+{
+    fetch_source "$tarball" || exit 1
+    tar -xf "$tarball" || exit 1
+}
+
+pkg_build()
+{
+    cd "$src" || exit 1
+    python3 -c 'from setuptools import setup; setup()' build
+}
+
+pkg_install()
+{
+    cd "$src" || exit 1
+    python3 -c 'from setuptools import setup; setup()' install --prefix="$PREFIX" --root="$DESTDIR" --single-version-externally-managed
+}

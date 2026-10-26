@@ -1,0 +1,1 @@
+Incremental parsing library that builds concrete syntax trees for source files and updates them efficiently as the files are edited.

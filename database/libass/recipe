@@ -1,0 +1,36 @@
+src="libass-${PKG_VERSION}"
+tarball="libass-${PKG_VERSION}.tar.gz"
+
+pkg_download()
+{
+    fetch_source "$tarball" || exit 1
+    tar -xf "$tarball" || exit 1
+}
+
+pkg_build()
+{
+    cd "$src" || exit 1
+
+    set -- --prefix="$PREFIX" --buildtype=release -Dfontconfig=enabled -Dtest=disabled -Dcompare=disabled -Dprofile=disabled -Dfuzz=disabled -Dcheckasm=disabled
+
+    if attr_on libunibreak; then
+        set -- "$@" -Dlibunibreak=enabled
+    else
+        set -- "$@" -Dlibunibreak=disabled
+    fi
+
+    if attr_on asm; then
+        set -- "$@" -Dasm=enabled
+    else
+        set -- "$@" -Dasm=disabled
+    fi
+
+    meson setup build "$@" || exit 1
+    ninja -C build $MAKEOPTS
+}
+
+pkg_install()
+{
+    cd "$src" || exit 1
+    DESTDIR="$DESTDIR" ninja -C build install
+}

@@ -1,0 +1,2 @@
+# tried in order, the first one that works wins
+https://http.kali.org/kali/pool/main/libc/libcap-ng/libcap-ng_${PKG_VERSION}.orig.tar.gz

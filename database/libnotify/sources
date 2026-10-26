@@ -1,0 +1,2 @@
+# tried in order, the first one that works wins
+https://download.gnome.org/sources/libnotify/${PKG_VERSION_MAJOR_MINOR}/libnotify-${PKG_VERSION}.tar.xz

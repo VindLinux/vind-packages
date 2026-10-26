@@ -1,0 +1,9 @@
+glib
+tools?freetype
+avif?libavif
+heif?libheif
+jpeg?libjpeg-turbo
+svg?librsvg
+tiff?libtiff
+webp?libwebp
+jxl?libjxl

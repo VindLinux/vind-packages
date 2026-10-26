@@ -1,0 +1,40 @@
+src="libpwquality-${PKG_VERSION}"
+tarball="libpwquality-${PKG_VERSION}.tar.bz2"
+
+pkg_download()
+{
+    fetch_source "$tarball" || exit 1
+    tar -xf "$tarball" || exit 1
+}
+
+pkg_build()
+{
+    cd "$src" || exit 1
+
+    set -- --prefix="$PREFIX" --sysconfdir=/etc
+
+    if attr_on pam; then
+        set -- "$@" --enable-pam
+    else
+        set -- "$@" --disable-pam
+    fi
+
+    if ! attr_on cracklib; then
+        set -- "$@" --disable-cracklib-check
+    fi
+
+    if attr_on python; then
+        set -- "$@" --enable-python-bindings --with-python-binary=python3
+    else
+        set -- "$@" --disable-python-bindings
+    fi
+
+    ./configure "$@" || exit 1
+    make $MAKEOPTS
+}
+
+pkg_install()
+{
+    cd "$src" || exit 1
+    make DESTDIR="$DESTDIR" install
+}

@@ -1,0 +1,2 @@
+# tried in order, the first one that works wins
+https://download.gnome.org/sources/vala/${PKG_VERSION_MAJOR_MINOR}/vala-${PKG_VERSION}.tar.xz

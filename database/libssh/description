@@ -1,0 +1,1 @@
+C library implementing the SSH protocol for clients and servers, with SFTP support and OpenSSL for cryptography.

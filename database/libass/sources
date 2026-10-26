@@ -1,0 +1,2 @@
+# tried in order, the first one that works wins
+https://github.com/libass/libass/archive/refs/tags/${PKG_VERSION}.tar.gz

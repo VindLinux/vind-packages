@@ -1,0 +1,54 @@
+src="ModemManager-${PKG_VERSION}"
+tarball="ModemManager-${PKG_VERSION}.tar.gz"
+
+pkg_download()
+{
+    fetch_source "$tarball" || exit 1
+    tar -xf "$tarball" || exit 1
+}
+
+pkg_build()
+{
+    cd "$src" || exit 1
+
+    set -- --prefix="$PREFIX" --buildtype=release -Dudev=true -Dsystemdsystemunitdir=no -Dsystemd_suspend_resume=false -Dsystemd_journal=false -Dbash_completion=false -Dman=false -Dexamples=false -Dtests=false
+
+    if attr_on qmi; then
+        set -- "$@" -Dqmi=true
+    else
+        set -- "$@" -Dqmi=false
+    fi
+
+    if attr_on mbim; then
+        set -- "$@" -Dmbim=true
+    else
+        set -- "$@" -Dmbim=false
+    fi
+
+    if attr_on qrtr; then
+        set -- "$@" -Dqrtr=true
+    else
+        set -- "$@" -Dqrtr=false
+    fi
+
+    if attr_on polkit; then
+        set -- "$@" -Dpolkit=strict
+    else
+        set -- "$@" -Dpolkit=no
+    fi
+
+    if attr_on introspection; then
+        set -- "$@" -Dintrospection=true
+    else
+        set -- "$@" -Dintrospection=false
+    fi
+
+    meson setup build "$@" || exit 1
+    ninja -C build $MAKEOPTS
+}
+
+pkg_install()
+{
+    cd "$src" || exit 1
+    DESTDIR="$DESTDIR" ninja -C build install
+}
