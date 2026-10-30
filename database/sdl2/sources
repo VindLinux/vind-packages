@@ -1,0 +1,2 @@
+# tried in order, the first one that works wins
+https://www.libsdl.org/release/SDL2-${PKG_VERSION}.tar.gz

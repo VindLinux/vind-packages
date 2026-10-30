@@ -1,0 +1,16 @@
+x11?libx11
+x11?libxext
+x11?libxcursor
+x11?libxfixes
+x11?libxi
+x11?libxrandr
+x11?libxscrnsaver
+wayland?wayland
+wayland?libxkbcommon
+wayland?libdecor
+kmsdrm?libdrm
+kmsdrm?mesa
+alsa?alsa-lib
+pulseaudio?pulseaudio
+pipewire?pipewire
+sndio?sndio

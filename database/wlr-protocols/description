@@ -1,0 +1,1 @@
+Wayland protocol extensions specific to wlroots-based compositors, installed as XML files with a pkg-config file.

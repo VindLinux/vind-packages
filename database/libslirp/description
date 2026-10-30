@@ -1,0 +1,1 @@
+General purpose TCP/IP emulator library that provides a user-mode network stack, used by QEMU for slirp networking.

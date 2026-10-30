@@ -1,0 +1,9 @@
+slirp
+sdl
+gtk
+opengl
+libusb
+seccomp
+fuse
+libssh
+user

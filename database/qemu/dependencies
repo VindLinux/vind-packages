@@ -1,0 +1,13 @@
+glib
+libpng
+pixman
+slirp?libslirp
+sdl?sdl2
+gtk?gtk3
+gtk?libx11
+opengl?libepoxy
+opengl?mesa
+libusb?libusb
+seccomp?libseccomp
+fuse?fuse3
+libssh?libssh

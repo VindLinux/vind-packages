@@ -1,0 +1,36 @@
+src="qemu-${PKG_VERSION}"
+tarball="qemu-${PKG_VERSION}.tar.xz"
+
+pkg_download()
+{
+    fetch_source "$tarball" || exit 1
+    tar -xf "$tarball" || exit 1
+}
+
+pkg_build()
+{
+    cd "$src" || exit 1
+    mkdir -p build || exit 1
+    cd build || exit 1
+
+    set -- --prefix="$PREFIX" --sysconfdir=/etc --localstatedir=/var --disable-werror --disable-docs --without-default-features --enable-kvm --enable-tools --enable-vnc --enable-vhost-kernel --enable-vhost-net --enable-vhost-user --enable-zstd --enable-png
+
+    for a in slirp sdl gtk opengl libusb seccomp fuse libssh; do
+        if attr_on "$a"; then
+            set -- "$@" --enable-"$a"
+        fi
+    done
+
+    if ! attr_on user; then
+        set -- "$@" --disable-user
+    fi
+
+    ../configure "$@" || exit 1
+    make $MAKEOPTS
+}
+
+pkg_install()
+{
+    cd "$src/build" || exit 1
+    make DESTDIR="$DESTDIR" install
+}
