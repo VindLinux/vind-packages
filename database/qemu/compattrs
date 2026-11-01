@@ -7,3 +7,5 @@ seccomp
 fuse
 libssh
 user
+
+vnc

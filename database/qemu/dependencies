@@ -11,3 +11,4 @@ libusb?libusb
 seccomp?libseccomp
 fuse?fuse3
 libssh?libssh
+zstd
