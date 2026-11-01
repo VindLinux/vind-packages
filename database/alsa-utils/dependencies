@@ -6,4 +6,4 @@ bat?fftw
 alsamixer?ncurses
 alsaloop?libsamplerate
 xmlto?xmlto
-rst2man?docutils
+rst2man?python3-docutils

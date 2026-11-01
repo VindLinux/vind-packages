@@ -2,7 +2,7 @@ meson
 ninja
 pkgconf
 python3
-jinja2
+python3-jinja2
 libevdev
 libxkbcommon
 liboeffis?basu

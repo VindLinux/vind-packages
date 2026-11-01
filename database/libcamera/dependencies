@@ -2,14 +2,14 @@ meson
 ninja
 pkgconf
 libyaml
-pyyaml
-ply
-jinja2
+python3-pyyaml
+python3-ply
+python3-jinja2
 openssl
 libjpeg-turbo
 cam?libevent
 kms?libdrm
-sdl2?SDL2
+sdl2?sdl2
 dng?libtiff
 gstreamer?gstreamer
 gstreamer?gst-plugins-base
@@ -25,4 +25,4 @@ pycamera?python3
 pycamera?pybind11
 docs?doxygen
 docs?graphviz
-docs?sphinx
+docs?python3-sphinx

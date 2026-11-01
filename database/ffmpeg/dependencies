@@ -6,7 +6,7 @@ alsa?alsa-lib
 bzlib?bzip2
 lzma?xz
 zlib?zlib
-sdl2?SDL2
+sdl2?sdl2
 sndio?sndio
 xlib?libx11
 xlib?libxext

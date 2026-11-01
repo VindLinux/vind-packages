@@ -9,4 +9,4 @@ mesh?json-c
 midi?alsa-lib
 client?readline
 mesh?readline
-manpages?docutils
+manpages?python3-docutils

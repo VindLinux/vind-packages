@@ -1,8 +1,8 @@
 xorg-libraries
 libdrm
 libelf
-mako-python
-pyyaml
+python3-mako
+python3-pyyaml
 glslang
 rust-bindgen
 libclc

@@ -5,4 +5,4 @@ lv2
 serd
 sord
 docs?doxygen
-docs?sphinx
+docs?python3-sphinx

@@ -12,5 +12,5 @@ bubblewrap
 flatpak?flatpak
 geoclue?geoclue
 gudev?libgudev
-manpages?docutils
-docs?sphinx
+manpages?python3-docutils
+docs?python3-sphinx

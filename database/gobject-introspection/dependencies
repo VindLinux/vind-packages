@@ -6,5 +6,5 @@ flex
 glib
 libffi
 python3
-setuptools
+python3-setuptools
 cairo?cairo

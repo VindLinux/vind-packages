@@ -1,6 +1,6 @@
-jinja2
+python3-jinja2
 markdown
-markupsafe
-pygments
+python3-markupsafe
+python3-pygments
 python3
-typogrify
+python3-typogrify

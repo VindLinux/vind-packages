@@ -2,4 +2,4 @@ meson
 ninja
 pkgconf
 docs?doxygen
-docs?sphinx
+docs?python3-sphinx

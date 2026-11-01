@@ -7,7 +7,7 @@ pulse?pulseaudio
 portaudio?portaudio
 sndio?sndio
 jack?jack2
-sdl?SDL2
+sdl?sdl2
 glsl?mesa
 ncurses?ncurses
 font?kbd

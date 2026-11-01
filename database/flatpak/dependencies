@@ -4,7 +4,7 @@ pkgconf
 bison
 gettext
 python3
-pyparsing
+python3-pyparsing
 glib
 libcap
 libarchive

@@ -28,7 +28,7 @@ mysofa?libmysofa
 ebur128?libebur128
 fftw?fftw
 webrtc?webrtc-audio-processing
-sdl2?SDL2
+sdl2?sdl2
 ffmpeg?ffmpeg
 vulkan?vulkan-headers
 vulkan?vulkan-loader
