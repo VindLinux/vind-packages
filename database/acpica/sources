@@ -1,0 +1,2 @@
+# tried in order, the first one that works wins
+https://github.com/open-acpica/acpica/releases/download/${PKG_VERSION}/acpica-unix-${PKG_VERSION}.tar.gz
