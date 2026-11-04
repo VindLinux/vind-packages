@@ -21,6 +21,8 @@ pkg_build()
 
     make $MAKEOPTS -C BaseTools CC="$CC" CXX="$CXX" EXTRA_OPTFLAGS="$CFLAGS" || exit 1
 
+    . ./edksetup.sh || exit 1
+
     set -- -a X64 -t "$tag" -b RELEASE -p OvmfPkg/OvmfPkgX64.dsc
 
     if attr_on secureboot; then
@@ -55,7 +57,6 @@ pkg_build()
         set -- "$@" -D DEBUG_ON_SERIAL_PORT=TRUE
     fi
 
-    . ./edksetup.sh || exit 1
     CLANG_BIN="$PREFIX/bin/" build "$@"
 }
 
