@@ -1,0 +1,8 @@
+secureboot
+smm
+tpm2
+tls
+ip6
+httpboot
+e1000
+serialdebug

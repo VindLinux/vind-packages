@@ -1,0 +1,69 @@
+src="edk2-stable${PKG_VERSION}"
+tag="CLANGDWARF"
+
+pkg_download()
+{
+    git clone --depth 1 --branch "edk2-stable${PKG_VERSION}" https://github.com/tianocore/edk2.git "$src" || exit 1
+    cd "$src" || exit 1
+    git submodule update --init --depth 1 -- \
+        CryptoPkg/Library/OpensslLib/openssl \
+        CryptoPkg/Library/MbedTlsLib/mbedtls \
+        MdeModulePkg/Library/BrotliCustomDecompressLib/brotli \
+        BaseTools/Source/C/BrotliCompress/brotli \
+        MdePkg/Library/BaseFdtLib/libfdt \
+        MdePkg/Library/MipiSysTLib/mipisyst \
+        SecurityPkg/DeviceSecurity/SpdmLib/libspdm || exit 1
+}
+
+pkg_build()
+{
+    cd "$src" || exit 1
+
+    make $MAKEOPTS -C BaseTools CC="$CC" CXX="$CXX" EXTRA_OPTFLAGS="$CFLAGS" || exit 1
+
+    set -- -a X64 -t "$tag" -b RELEASE -p OvmfPkg/OvmfPkgX64.dsc
+
+    if attr_on secureboot; then
+        set -- "$@" -D SECURE_BOOT_ENABLE=TRUE
+    fi
+
+    if attr_on smm; then
+        set -- "$@" -D SMM_REQUIRE=TRUE
+    fi
+
+    if attr_on tpm2; then
+        set -- "$@" -D TPM2_ENABLE=TRUE
+    fi
+
+    if attr_on tls; then
+        set -- "$@" -D NETWORK_TLS_ENABLE=TRUE
+    fi
+
+    if attr_on ip6; then
+        set -- "$@" -D NETWORK_IP6_ENABLE=TRUE
+    fi
+
+    if attr_on httpboot; then
+        set -- "$@" -D NETWORK_HTTP_BOOT_ENABLE=TRUE
+    fi
+
+    if attr_on e1000; then
+        set -- "$@" -D E1000_ENABLE=TRUE
+    fi
+
+    if attr_on serialdebug; then
+        set -- "$@" -D DEBUG_ON_SERIAL_PORT=TRUE
+    fi
+
+    . ./edksetup.sh || exit 1
+    CLANG_BIN="$PREFIX/bin/" build "$@"
+}
+
+pkg_install()
+{
+    cd "$src/Build/OvmfX64/RELEASE_$tag/FV" || exit 1
+
+    for f in OVMF.fd OVMF_CODE.fd OVMF_VARS.fd; do
+        install -Dm644 "$f" "$DESTDIR$PREFIX/share/edk2/ovmf/$f" || exit 1
+    done
+}
