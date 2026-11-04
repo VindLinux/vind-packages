@@ -1,0 +1,10 @@
+x11
+wayland
+libdecor
+kmsdrm
+alsa
+pulseaudio
+pipewire
+jack
+sndio
+libusb

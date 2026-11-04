@@ -1,0 +1,32 @@
+src="SDL3-${PKG_VERSION}"
+tarball="${src}.tar.gz"
+
+pkg_download()
+{
+    fetch_source "$tarball" || exit 1
+    tar -xf "$tarball" || exit 1
+}
+
+pkg_build()
+{
+    cd "$src" || exit 1
+
+    set -- -S . -B build -G Ninja -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX="$PREFIX" -DSDL_TESTS=OFF
+
+    for opt in x11:SDL_X11 wayland:SDL_WAYLAND libdecor:SDL_WAYLAND_LIBDECOR kmsdrm:SDL_KMSDRM alsa:SDL_ALSA pulseaudio:SDL_PULSEAUDIO pipewire:SDL_PIPEWIRE jack:SDL_JACK sndio:SDL_SNDIO libusb:SDL_HIDAPI_LIBUSB; do
+        if attr_on "${opt%%:*}"; then
+            set -- "$@" -D"${opt#*:}=ON"
+        else
+            set -- "$@" -D"${opt#*:}=OFF"
+        fi
+    done
+
+    cmake "$@" || exit 1
+    cmake --build build -- $MAKEOPTS
+}
+
+pkg_install()
+{
+    cd "$src" || exit 1
+    DESTDIR="$DESTDIR" cmake --install build
+}
